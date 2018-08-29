@@ -1,7 +1,32 @@
 nav.navbar {
   .navbar-menu {
-    color: rgba(0,0,0,.9);
+
     font-size: 2rem;
     line-height: 1em;
   }
+
+  a {
+    color: #6e6d6c;
+  }
+
+  .nav-item.active{
+    color: #FFF;
+  }
+
+  .img-fluid.profile-photo {
+    width: 100%;
+    padding: 5px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+  }
+  .logo {
+    height: 30px;
+    padding-right: 50px;
+  }
+}
+
+.bg-dark-custom{
+  background-color: rgb(51, 51, 51);
 }
