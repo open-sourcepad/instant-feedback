@@ -1,0 +1,46 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+html, html a, body {
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: 'Avenir', "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  color: $default;
+}
+
+body {
+  .main-container {
+    padding: 10px 0px;
+  }
+}
+
+a {
+  color: $gold;
+}
+
+a:hover {
+  color: $goldDark;
+}
+
+.icon-example > span {
+  width: 25%;
+  float: left;
+  padding: 30px 0px;
+  color: #515365;
+}
+
+.icon-example > span i {
+  padding-right: 15px;
+  font-size: 18px;
+}
+
+
+.tooltip {
+  font-family: 'Avenir';
+  font-size: 12px;
+}

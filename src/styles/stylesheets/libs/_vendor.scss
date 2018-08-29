@@ -1,0 +1,35 @@
+/* You can add global styles to this file, and also import other style files */
+.mydrp .header {
+  position: absolute !important;
+}
+
+.mydrp .caltable {
+  margin-top: 30px !important;
+}
+
+
+/* You can add global styles to this file, and also import other style files */
+.mydp .header {
+  position: absolute !important;
+}
+
+.mydp .caltable {
+  margin-top: 30px !important;
+}
+
+.mydp, .mydp .headertodaybtn, .mydp .selection, .mydp .selectiongroup, .mydp .selector {
+  border-radius: 1px !important;
+}
+
+.mydp, .mydp .headertodaybtn {
+  outline: 0 !important;
+  border-radius:1px !important;
+  border-width: 0 0 1px !important;
+  border-color: #969696 !important;
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+  color: #16181b;
+  text-decoration: none !important;
+  background-color: #ffffff !important;
+}

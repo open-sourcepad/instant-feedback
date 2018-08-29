@@ -1,0 +1,40 @@
+.no-backdrop {
+  opacity: 0 !important;
+}
+
+.suite-modal {
+  .modal-content {
+    // border: 1px solid #000;
+  }
+
+  .modal-header {
+    .modal-title {
+      color: $gold;
+      font-weight: 300;
+      text-align: center;
+      width: 100%;
+    }
+
+    .close {
+      font-size: 0.5rem;
+    }
+  }
+
+  .modal-footer {
+    justify-content: center;
+  }
+}
+
+.modal-xl {
+  .modal-dialog{
+    max-width: 90% !important;
+    width: 90% !important;
+  }
+}
+
+.modal-md {
+  .modal-dialog{
+    max-width: 40% !important;
+    width: 40% !important;
+  }
+}

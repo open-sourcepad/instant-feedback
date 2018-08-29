@@ -1,0 +1,43 @@
+/* COLORS */
+.text-blue-green {
+  color: $blueGreen;
+}
+
+.text-gold {
+  color: $gold;
+}
+
+.text-default {
+  color: $default;
+}
+
+
+/* FONT WEIGHT */
+
+.font-light {
+  font-weight: 100;
+}
+
+.font-regular {
+  font-weight: normal;
+}
+
+.font-semi-bold {
+  font-weight: 300;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+/* FONT FAMILY */
+h1,h2,h3,h4,h5,h6 {
+  font-family: "Avenir" !important;
+}
+#employee-dashboard {
+  font-family: "Avenir" !important;
+}
+
+#hris-portal{
+  font-family: "Avenir" !important;
+}
