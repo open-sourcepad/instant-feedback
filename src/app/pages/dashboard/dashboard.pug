@@ -62,19 +62,19 @@
               span.emotion happy
     .col-md-3
       .row
-        .col-md-6
-          .dropdown
-            button.btn.btn-secondary.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-              | Professionals
-            .dropdown-menu(aria-labelledby='dropdownMenu2')
-              button.dropdown-item(type='button') Action
-              button.dropdown-item(type='button') Another action
-              button.dropdown-item(type='button') Something else here
-              
-        .col-md-6
-          img.emotion-filter(src='../../assets/square-smiley-happy.png')
-          img.emotion-filter(src='../../assets/square-smiley-happy.png')
-          img.emotion-filter(src='../../assets/square-smiley-sad.png')
+        .col-md-12
+          .pull-left  
+            .dropdown
+              button.btn.btn-secondary.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                | Professionals
+              .dropdown-menu(aria-labelledby='dropdownMenu2')
+                button.dropdown-item(type='button') Action
+                button.dropdown-item(type='button') Another action
+                button.dropdown-item(type='button') Something else here
+          .pull-right  
+            img.emotion-filter.mr-2(src='../../assets/square-smiley-happy.png')
+            img.emotion-filter.mr-2(src='../../assets/square-smiley-happy.png')
+            img.emotion-filter(src='../../assets/square-smiley-sad.png')
               
       .row.pt-4
         .col-md-5

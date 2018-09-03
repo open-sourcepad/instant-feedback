@@ -65,18 +65,23 @@
 }
 
 .emotion-filter {
-  height: 45px;
-  width: 45px;
+  height: 30px;
+  width: 30px;
 }
 
 .avatar-circle {
   height: 60px;
   width: 60px;
   border-radius: 50%;
+  background-color: #d3d3d3;
 }
 
 .dropdown-toggle {
   color: black;
   background-color: transparent;
   border-color: transparent;
+}
+
+.filter{
+  display: inline-flex;
 }
