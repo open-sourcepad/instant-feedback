@@ -26,7 +26,11 @@
               "src/styles.css",
               "src/styles/stylesheets/app.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/styles/stylesheets/javascripts/jquery.js",
+              "src/styles/stylesheets/javascripts/pooper.min.js",
+              "src/styles/stylesheets/javascripts/bootstrap.js"
+            ]
           },
           "configurations": {
             "production": {
