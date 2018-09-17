@@ -4,7 +4,7 @@
 /dist
 /tmp
 /out-tsc
-
+dist.tar.gz
 # dependencies
 /node_modules
 
