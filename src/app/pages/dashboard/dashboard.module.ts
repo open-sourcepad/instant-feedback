@@ -4,9 +4,11 @@ import { routing } from './dashboard.routing';
 import { FormsModule } from '@angular/forms';
 
 import { DashboardComponent } from './dashboard.component';
+import { TeamPulseComponent } from './team-pulse/team-pulse.component';
 
 const MODULE_COMPONENTS = [
-  DashboardComponent
+  DashboardComponent,
+  TeamPulseComponent
 ]
 
 @NgModule({

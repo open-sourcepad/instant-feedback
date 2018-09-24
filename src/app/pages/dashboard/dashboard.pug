@@ -1,139 +1,120 @@
 #dashboard
   .row
     .col-md-6
-      .team-pulse
-        h1.font-weight-bold.text-uppercase Team Pulse
-        .team-pulse-filter
-          ul
-            li Today
-            li Week
-            li Month
-            li Year
-        .team-pulse-doughnut
-          .team-pulse-doughnut-chart
-            div([hidden]="!chart")
-              canvas#canvas {{ chart }}
-            
-          .team-pulse-doughnut-description
-            h4.font-weight-bold 26 out of 36 are feeling good today!
-        .team-pulse-line
-          .team-pulse-line-chart
-            div([hidden]="!chart")
-              canvas#canvas2 {{ chart }}
-          
-    .col-md-3
-      .team-pulse-percent-container
-        .team-pulse-percent-data
-          .row.pt-5
-            .col-md-8.title
-              h2.font-weight-bold Scrum today
-            .col-md-4.data
-              h2.font-weight-bold.sad 43%
-              span.emotion happy
-        
-          .row.pt-5
-            .col-md-8.title
-              h2.font-weight-bold Team this week
-            .col-md-4.data
-              h2.font-weight-bold 81%
-              span.emotion happy
-              
-        
-          .row.pt-5
-            .col-md-8.title
-              h2.font-weight-bold Amount of tasks
-            .col-md-4.data
-              h2.font-weight-bold 81%
-              span.emotion happy
-      
-      
-          .row.pt-5
-            .col-md-8.title
-              h2.font-weight-bold Mental health
-            .col-md-4.data
-              h2.font-weight-bold 81%
-              span.emotion happy
-      
-          .row.pt-5
-            .col-md-8.title
-              h2.font-weight-bold Growth trajectory
-            .col-md-4.data
-              h2.font-weight-bold 81%
-              span.emotion happy
-    .col-md-3
-      .row
-        .col-md-12
-          .pull-left  
-            .dropdown
-              button.btn.btn-secondary.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                | Professionals
-              .dropdown-menu(aria-labelledby='dropdownMenu2')
-                button.dropdown-item(type='button') Action
-                button.dropdown-item(type='button') Another action
-                button.dropdown-item(type='button') Something else here
-          .pull-right  
-            img.emotion-filter.mr-2(src='../../assets/square-smiley-happy.png')
-            img.emotion-filter.mr-2(src='../../assets/square-smiley-happy.png')
-            img.emotion-filter(src='../../assets/square-smiley-sad.png')
-              
-      .row.pt-4
-        .col-md-5
-          .pull-right
-            img.avatar-circle(src='../../assets/default-avatarf.png')
-        .col-md-2
-          
-        .col-md-5
-          .pull-left
-            img.avatar-circle(src='../../assets/default-avatarm.png')
-
-      .row.pt-4
-        .col-md-5
-          .pull-right
-            img.avatar-circle(src='../../assets/default-avatarf.png')
-        .col-md-2
-          
-        .col-md-5
-          .pull-left
-            img.avatar-circle(src='../../assets/default-avatarm.png')
-          
-      .row.pt-4
-        .col-md-5
-          .pull-right
-            img.avatar-circle(src='../../assets/default-avatarf.png')
-        .col-md-2
-          
-        .col-md-5
-          .pull-left
-            img.avatar-circle(src='../../assets/default-avatarm.png')
-
-      .row.pt-4
-        .col-md-5
-          .pull-right
-            img.avatar-circle(src='../../assets/default-avatarm.png')
-        .col-md-2
-          
-        .col-md-5
-          .pull-left
-            img.avatar-circle(src='../../assets/default-avatarf.png')
-              
-                      
-      .row.pt-4
-        .col-md-5
-          .pull-right
-            img.avatar-circle(src='../../assets/default-avatarf.png')
-        .col-md-2
-          
-        .col-md-5
-          .pull-left
-            img.avatar-circle(src='../../assets/default-avatarm.png')
-
-
-      .row.pt-4
-        .col-md-5
-          .pull-right
-            img.avatar-circle(src='../../assets/default-avatarf.png')
-        .col-md-2
-          
-        .col-md-5
-          .pull-left
-            img.avatar-circle(src='../../assets/default-avatarm.png')
+      team-pulse
+    //- .col-md-3
+    //-   .team-pulse-percent-container
+    //-     .team-pulse-percent-data
+    //-       .row.pt-5
+    //-         .col-md-8.title
+    //-           h2.font-weight-bold Scrum today
+    //-         .col-md-4.data
+    //-           h2.font-weight-bold.sad 43%
+    //-           span.emotion happy
+    //-     
+    //-       .row.pt-5
+    //-         .col-md-8.title
+    //-           h2.font-weight-bold Team this week
+    //-         .col-md-4.data
+    //-           h2.font-weight-bold 81%
+    //-           span.emotion happy
+    //-           
+    //-     
+    //-       .row.pt-5
+    //-         .col-md-8.title
+    //-           h2.font-weight-bold Amount of tasks
+    //-         .col-md-4.data
+    //-           h2.font-weight-bold 81%
+    //-           span.emotion happy
+    //-   
+    //-   
+    //-       .row.pt-5
+    //-         .col-md-8.title
+    //-           h2.font-weight-bold Mental health
+    //-         .col-md-4.data
+    //-           h2.font-weight-bold 81%
+    //-           span.emotion happy
+    //-   
+    //-       .row.pt-5
+    //-         .col-md-8.title
+    //-           h2.font-weight-bold Growth trajectory
+    //-         .col-md-4.data
+    //-           h2.font-weight-bold 81%
+    //-           span.emotion happy
+    //- .col-md-3
+    //-   .row
+    //-     .col-md-12
+    //-       .pull-left  
+    //-         .dropdown
+    //-           button.btn.btn-secondary.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+    //-             | Professionals
+    //-           .dropdown-menu(aria-labelledby='dropdownMenu2')
+    //-             button.dropdown-item(type='button') Action
+    //-             button.dropdown-item(type='button') Another action
+    //-             button.dropdown-item(type='button') Something else here
+    //-       .pull-right  
+    //-         img.emotion-filter.mr-2(src='../../assets/square-smiley-happy.png')
+    //-         img.emotion-filter.mr-2(src='../../assets/square-smiley-happy.png')
+    //-         img.emotion-filter(src='../../assets/square-smiley-sad.png')
+    //-           
+    //-   .row.pt-4
+    //-     .col-md-5
+    //-       .pull-right
+    //-         img.avatar-circle(src='../../assets/default-avatarf.png')
+    //-     .col-md-2
+    //-       
+    //-     .col-md-5
+    //-       .pull-left
+    //-         img.avatar-circle(src='../../assets/default-avatarm.png')
+    //- 
+    //-   .row.pt-4
+    //-     .col-md-5
+    //-       .pull-right
+    //-         img.avatar-circle(src='../../assets/default-avatarf.png')
+    //-     .col-md-2
+    //-       
+    //-     .col-md-5
+    //-       .pull-left
+    //-         img.avatar-circle(src='../../assets/default-avatarm.png')
+    //-       
+    //-   .row.pt-4
+    //-     .col-md-5
+    //-       .pull-right
+    //-         img.avatar-circle(src='../../assets/default-avatarf.png')
+    //-     .col-md-2
+    //-       
+    //-     .col-md-5
+    //-       .pull-left
+    //-         img.avatar-circle(src='../../assets/default-avatarm.png')
+    //- 
+    //-   .row.pt-4
+    //-     .col-md-5
+    //-       .pull-right
+    //-         img.avatar-circle(src='../../assets/default-avatarm.png')
+    //-     .col-md-2
+    //-       
+    //-     .col-md-5
+    //-       .pull-left
+    //-         img.avatar-circle(src='../../assets/default-avatarf.png')
+    //-           
+    //-                   
+    //-   .row.pt-4
+    //-     .col-md-5
+    //-       .pull-right
+    //-         img.avatar-circle(src='../../assets/default-avatarf.png')
+    //-     .col-md-2
+    //-       
+    //-     .col-md-5
+    //-       .pull-left
+    //-         img.avatar-circle(src='../../assets/default-avatarm.png')
+    //- 
+    //- 
+    //-   .row.pt-4
+    //-     .col-md-5
+    //-       .pull-right
+    //-         img.avatar-circle(src='../../assets/default-avatarf.png')
+    //-     .col-md-2
+    //-       
+    //-     .col-md-5
+    //-       .pull-left
+    //-         img.avatar-circle(src='../../assets/default-avatarm.png')

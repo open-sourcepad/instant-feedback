@@ -9,6 +9,13 @@
     display:inline;
     padding-right: 10px;
     text-transform: uppercase;
+
+    cursor: pointer;
+  }
+  .filter-selected {
+    text-decoration: underline;
+    text-underline-position: under;
+    text-decoration-color: #f3585c;
   }
 }
 

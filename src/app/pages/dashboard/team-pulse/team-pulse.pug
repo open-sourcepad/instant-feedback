@@ -1,0 +1,36 @@
+.team-pulse
+  h1.font-weight-bold.text-uppercase Team Pulse
+  .team-pulse-filter
+    ul
+      li(
+        [ngClass]="{'filter-selected': filter == 'today'}",
+        (click)="setFilter('today')"
+      ) Today
+      
+      li(
+        [ngClass]="{'filter-selected': filter == 'week'}",
+        (click)="setFilter('week')"
+      ) Week
+      
+      li(
+        [ngClass]="{'filter-selected': filter == 'month'}",
+        (click)="setFilter('month')"
+      ) Month
+      
+      li(
+        [ngClass]="{'filter-selected': filter == 'year'}",
+        (click)="setFilter('year')"
+      ) Year
+  
+  .team-pulse-doughnut
+    .team-pulse-doughnut-chart
+      div([hidden]="!chart")
+        canvas#canvas {{ chart }}
+      
+    .team-pulse-doughnut-description
+      h4.font-weight-bold 26 out of 36 are feeling good today!
+  .team-pulse-line
+    .team-pulse-line-chart
+      div([hidden]="!chart")
+        //- canvas#canvas2 {{ chart }}
+  
