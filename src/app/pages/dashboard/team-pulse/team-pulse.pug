@@ -28,9 +28,9 @@
         canvas#canvas {{ chart }}
       
     .team-pulse-doughnut-description
-      h4.font-weight-bold 26 out of 36 are feeling good today!
+      h4.font-weight-bold {{happyCount}} out of {{totalResponder}} are feeling good today!
   .team-pulse-line
     .team-pulse-line-chart
       div([hidden]="!chart")
-        //- canvas#canvas2 {{ chart }}
+        canvas#canvas2 {{ chart }}
   

@@ -11,23 +11,28 @@ import { PulseService } from '../../../services/api/pulse.service';
 export class TeamPulseComponent implements OnInit {
   chart = [];
   filter: string;
+  happyCount: number;
+  totalResponder: number;
   constructor(
     private pulseService: PulseService
   ) {
+      this.happyCount = 0;
+      this.totalResponder = 0;
     }
 
   ngOnInit() {
-    this.doughnutChart();
-    this.lineChart();
+
+    // this.lineChart();
     this.setFilter('today');
   }
 
   setFilter(filter){
     this.filter = filter;
-
     this.pulseService.query({filter: filter}).subscribe(
       resp => {
-
+        this.doughnutChart(resp['meta']['happy_percent'], resp['meta']['sad_percent']);
+        this.happyCount = resp['meta']['happy_count'];
+        this.totalResponder = resp['meta']['total_responder'];
       },
       error => {
         console.log(error);
@@ -35,7 +40,7 @@ export class TeamPulseComponent implements OnInit {
     );
   }
 
-  doughnutChart() {
+  doughnutChart(happyPercent, sadPercent) {
     var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
     var red_min_hex = '45';
@@ -99,7 +104,7 @@ export class TeamPulseComponent implements OnInit {
             var fontStyle = centerConfig.fontStyle;
             var fontFamily = Chart.helpers.getValueOrDefault(centerConfig.fontFamily, 'Avenir');
             var fontSize = Chart.helpers.getValueOrDefault(centerConfig.minFontSize, 20);
-            var maxFontSize = Chart.helpers.getValueOrDefault(centerConfig.maxFontSize, 90);
+            var maxFontSize = Chart.helpers.getValueOrDefault(centerConfig.maxFontSize, 60);
             var maxText = Chart.helpers.getValueOrDefault(centerConfig.maxText, centerConfig.text);
             do {
                 chart.ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
@@ -114,7 +119,7 @@ export class TeamPulseComponent implements OnInit {
                 fillStyle: Chart.helpers.getValueOrDefault(centerConfig.fontColor, globalConfig.defaultFontColor)
             };
             fontSize = Chart.helpers.getValueOrDefault(centerConfigSub.minFontSize, 10);
-            maxFontSize = Chart.helpers.getValueOrDefault(centerConfigSub.maxFontSize, 25);
+            maxFontSize = Chart.helpers.getValueOrDefault(centerConfigSub.maxFontSize, 15);
             maxText = centerConfigSub.text;
             do {
                 chart.ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
@@ -179,7 +184,7 @@ export class TeamPulseComponent implements OnInit {
     };
 
     var datasets = [{
-        "data": [72, 16],
+        "data": [happyPercent, sadPercent],
         "backgroundColor": ["#36455a", "#36455a"]
     }];
     var chartData = {
@@ -197,13 +202,11 @@ export class TeamPulseComponent implements OnInit {
                     borderWidth: 0
                 },
                 center: {
-                    maxText: "100%",
                     text: '' + datasets[0].data[0] +'%',
                     fontColor: "#646464",
                     fontFamily: "Avenir",
                     fontStyle: "normal",
-                    minFontSize: 20,
-                    maxFontSize: 90
+                    sidePadding: 10
                 },
                 centerSub: {
                     text: '',
