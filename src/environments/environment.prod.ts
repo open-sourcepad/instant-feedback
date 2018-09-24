@@ -1,5 +1,6 @@
 export const environment = {
-  production: true
+  production: true,
+  api_url: "https://instant-feedback-api.spstage.com"
 };
 
 // export const environment = {
