@@ -12,12 +12,12 @@ export class TeamPulseComponent implements OnInit {
   chart = [];
   filter: string;
   happyCount: number;
-  totalResponder: number;
+  totalQuestion: number;
   constructor(
     private pulseService: PulseService
   ) {
       this.happyCount = 0;
-      this.totalResponder = 0;
+      this.totalQuestion = 0;
     }
 
   ngOnInit() {
@@ -32,7 +32,7 @@ export class TeamPulseComponent implements OnInit {
       resp => {
         this.doughnutChart(resp['meta']['happy_percent'], resp['meta']['sad_percent']);
         this.happyCount = resp['meta']['happy_count'];
-        this.totalResponder = resp['meta']['total_responder'];
+        this.totalQuestion = resp['meta']['total_questions'];
       },
       error => {
         console.log(error);
@@ -182,7 +182,6 @@ export class TeamPulseComponent implements OnInit {
             chart.ctx.restore();
         }
     };
-
     var datasets = [{
         "data": [happyPercent, sadPercent],
         "backgroundColor": ["#36455a", "#36455a"]
