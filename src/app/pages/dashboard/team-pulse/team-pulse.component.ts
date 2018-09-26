@@ -30,7 +30,7 @@ export class TeamPulseComponent implements OnInit {
     this.filter = filter;
     this.pulseService.query({filter: filter}).subscribe(
       resp => {
-        this.doughnutChart(resp['meta']['happy_percent'], resp['meta']['sad_percent']);
+        this.doughnutChart(resp['meta']['happy_percent'], resp['meta']['total_remaining_percent']);
         this.happyCount = resp['meta']['happy_count'];
         this.totalQuestion = resp['meta']['total_questions'];
       },
