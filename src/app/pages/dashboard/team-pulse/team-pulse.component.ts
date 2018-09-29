@@ -21,8 +21,6 @@ export class TeamPulseComponent implements OnInit {
     }
 
   ngOnInit() {
-
-    // this.lineChart();
     this.setFilter('today');
   }
 
@@ -31,6 +29,7 @@ export class TeamPulseComponent implements OnInit {
     this.pulseService.query({filter: filter}).subscribe(
       resp => {
         this.doughnutChart(resp['meta']['happy_percent'], resp['meta']['total_remaining_percent']);
+        this.lineChart(resp['meta']['team_pulse_data_history']);
         this.happyCount = resp['meta']['happy_count'];
         this.totalQuestion = resp['meta']['total_questions'];
       },
@@ -259,19 +258,17 @@ export class TeamPulseComponent implements OnInit {
     }));
   }
 
-  lineChart(){
-
+  lineChart(teamPulseData){
     var canvas : any = document.getElementById('canvas2');
     var chart = canvas.getContext("2d");
-
     var data  = {
-        labels: [ 'Aug 7', 'Aug 8', 'Aug 9', 'Aug 10', 'Aug 13', 'Aug 14', 'Aug 15', 'Today' ],
+        labels: [ teamPulseData[0][0], teamPulseData[1][0], teamPulseData[2][0], teamPulseData[3][0], teamPulseData[4][0], teamPulseData[5][0], teamPulseData[6][0]],
         datasets: [{
           backgroundColor: 'rgb(65, 82, 104)',
           pointBackgroundColor: 'white',
           borderWidth: 4,
           borderColor: '#83d6c0',
-          data: [60, 50, 55, 80, 81, 54, 50, 72]
+          data: [ teamPulseData[0][1], teamPulseData[1][1], teamPulseData[2][1], teamPulseData[3][1], teamPulseData[4][1], teamPulseData[5][1], teamPulseData[6][1]]
         }]
     };
 
