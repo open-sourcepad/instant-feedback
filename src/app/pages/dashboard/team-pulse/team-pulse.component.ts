@@ -294,7 +294,9 @@ export class TeamPulseComponent implements OnInit {
           },
           ticks: {
             beginAtZero: true,
-            suggestedMin: 60,
+            suggestedMin: 0,
+            suggestedMax: 100,
+            stepSize: 10,
             callback: function(tick) {
               return tick.toString() + '%';
             }
@@ -337,7 +339,4 @@ export class TeamPulseComponent implements OnInit {
         options: options
     });
   }
-
-
-
 }
