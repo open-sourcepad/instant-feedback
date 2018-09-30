@@ -1,36 +1,48 @@
 .team-pulse
-  h1.font-weight-bold.text-uppercase Team Pulse
-  .team-pulse-filter
-    ul
-      li(
-        [ngClass]="{'filter-selected': filter == 'today'}",
-        (click)="setFilter('today')"
-      ) Today
+  .row
+    .col-md-4
+      h1.font-weight-bold.text-uppercase Team Pulse
+      .team-pulse-filter
+        ul
+          li(
+            [ngClass]="{'filter-selected': filter == 'today'}",
+            (click)="setFilter('today')"
+          ) Today
+          
+          li(
+            [ngClass]="{'filter-selected': filter == 'week'}",
+            (click)="setFilter('week')"
+          ) Week
+          
+          li(
+            [ngClass]="{'filter-selected': filter == 'month'}",
+            (click)="setFilter('month')"
+          ) Month
+          
+          li(
+            [ngClass]="{'filter-selected': filter == 'year'}",
+            (click)="setFilter('year')"
+          ) Year
       
-      li(
-        [ngClass]="{'filter-selected': filter == 'week'}",
-        (click)="setFilter('week')"
-      ) Week
+      .team-pulse-doughnut
+        .team-pulse-doughnut-chart
+          div([hidden]="!chart")
+            canvas#canvas {{ chart }}
+          
+        .team-pulse-doughnut-description
+          h4.font-weight-bold {{happyCount}} out of {{totalQuestion}} are feeling good today!
+      .team-pulse-line
+        .team-pulse-line-chart
+          div([hidden]="!chart")
+            canvas#canvas2 {{ chart }}
       
-      li(
-        [ngClass]="{'filter-selected': filter == 'month'}",
-        (click)="setFilter('month')"
-      ) Month
-      
-      li(
-        [ngClass]="{'filter-selected': filter == 'year'}",
-        (click)="setFilter('year')"
-      ) Year
-  
-  .team-pulse-doughnut
-    .team-pulse-doughnut-chart
-      div([hidden]="!chart")
-        canvas#canvas {{ chart }}
-      
-    .team-pulse-doughnut-description
-      h4.font-weight-bold {{happyCount}} out of {{totalQuestion}} are feeling good today!
-  .team-pulse-line
-    .team-pulse-line-chart
-      div([hidden]="!chart")
-        canvas#canvas2 {{ chart }}
-  
+    .col-md-4
+      .team-pulse-percent-container
+        .team-pulse-percent-data
+          .row.pt-5(*ngFor="let data of questionsData")
+            .col-md-8.title
+              h2.font-weight-bold {{data.question}}
+            .col-md-4.data
+              h2.font-weight-bold([ngClass]="{'sad': data.happy_percent < 60}") {{data.happy_percent}}%
+              span.emotion happy
+    .col-md-4

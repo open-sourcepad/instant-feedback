@@ -13,6 +13,7 @@ export class TeamPulseComponent implements OnInit {
   filter: string;
   happyCount: number;
   totalQuestion: number;
+  questionsData: any;
   constructor(
     private pulseService: PulseService
   ) {
@@ -21,6 +22,7 @@ export class TeamPulseComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.questionsData = []
     this.setFilter('today');
   }
 
@@ -32,6 +34,7 @@ export class TeamPulseComponent implements OnInit {
         this.lineChart(resp['meta']['team_pulse_data_history']);
         this.happyCount = resp['meta']['happy_count'];
         this.totalQuestion = resp['meta']['total_questions'];
+        this.questionsData = resp['meta']['questions_data'];
       },
       error => {
         console.log(error);
@@ -40,48 +43,48 @@ export class TeamPulseComponent implements OnInit {
   }
 
   doughnutChart(happyPercent, sadPercent) {
-    var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+    let _extends = Object.assign || function (target) { for (let i = 1; i < arguments.length; i++) { let source = arguments[i]; for (let key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-    var red_min_hex = '45';
-    var red_min_dec = parseInt(red_min_hex, 16);
-    var red_max_hex = 'cc';
-    var red_max_dec = parseInt(red_max_hex, 16);
-    var green_min_hex = '35';
-    var green_min_dec = parseInt(green_min_hex, 16);
-    var green_max_hex = 'ac';
-    var green_max_dec = parseInt(green_max_hex, 16);
-    var blue_min_hex = '20';
-    var blue_min_dec = parseInt(blue_min_hex, 16);
-    var blue_max_hex = '78';
-    var blue_max_dec = parseInt(blue_max_hex, 16);
+    let red_min_hex = '45';
+    let red_min_dec = parseInt(red_min_hex, 16);
+    let red_max_hex = 'cc';
+    let red_max_dec = parseInt(red_max_hex, 16);
+    let green_min_hex = '35';
+    let green_min_dec = parseInt(green_min_hex, 16);
+    let green_max_hex = 'ac';
+    let green_max_dec = parseInt(green_max_hex, 16);
+    let blue_min_hex = '20';
+    let blue_min_dec = parseInt(blue_min_hex, 16);
+    let blue_max_hex = '78';
+    let blue_max_dec = parseInt(blue_max_hex, 16);
 
-    var pi = Math.PI;
+    let pi = Math.PI;
 
-    var animateArc = function animateArc(chart) {
-        var arc = chart.getDatasetMeta(0).data[0];
-        var angle = arc._view.endAngle + pi / 2;
-        var angle_inverse = 2 * pi - angle;
-        var blue = Math.round(angle / (2 * pi) * blue_max_dec + angle_inverse / (2 * pi) * blue_min_dec).toString(16);
+    let animateArc = function animateArc(chart) {
+        let arc = chart.getDatasetMeta(0).data[0];
+        let angle = arc._view.endAngle + pi / 2;
+        let angle_inverse = 2 * pi - angle;
+        let blue = Math.round(angle / (2 * pi) * blue_max_dec + angle_inverse / (2 * pi) * blue_min_dec).toString(16);
         if (arc._view.endAngle < pi / 2) {
-            var green = Math.round(angle / pi * green_max_dec + (pi - angle) / pi * green_min_dec).toString(16);
+            let green = Math.round(angle / pi * green_max_dec + (pi - angle) / pi * green_min_dec).toString(16);
             if (green.length < 2) green = '0' + green;
-            var color = '#' + red_max_hex + green + blue;
+            let color = '#' + red_max_hex + green + blue;
             arc.round.backgroundColor = color;
             drawArc(chart, arc, color);
         } else {
-            var red = Math.round((2 * pi - angle) / pi * red_max_dec + (angle - pi) / pi * red_min_dec).toString(16);
+            let red = Math.round((2 * pi - angle) / pi * red_max_dec + (angle - pi) / pi * red_min_dec).toString(16);
             if (red.length < 2) red = '0' + red;
             if (red === '45') red = '50';
             if (blue === '78') blue = '74';
-            var _color = '#83d6c0';
+            let _color = '#83d6c0';
             arc.round.backgroundColor = _color;
             drawArc(chart, arc, _color);
         }
     };
 
-    var drawArc = function drawArc(chartm, arc, color) {
-        var x = (chart.chartArea.left + chart.chartArea.right) / 2;
-        var y = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+    let drawArc = function drawArc(chartm, arc, color) {
+        let x = (chart.chartArea.left + chart.chartArea.right) / 2;
+        let y = (chart.chartArea.top + chart.chartArea.bottom) / 2;
         chart.ctx.fillStyle = color;
         chart.ctx.strokeStyle = color;
         chart.ctx.beginPath();
@@ -95,19 +98,19 @@ export class TeamPulseComponent implements OnInit {
         chart.ctx.fill();
     };
 
-    var addCenterTextAfterUpdate = function addCenterTextAfterUpdate(chart) {
+    let addCenterTextAfterUpdate = function addCenterTextAfterUpdate(chart) {
         if (chart.config.options.elements.center && chart.config.options.elements.centerSub && chart.ctx) {
-            var centerConfig = chart.config.options.elements.center;
-            var centerConfigSub = chart.config.options.elements.centerSub;
-            var globalConfig = Chart.defaults.global;
-            var fontStyle = centerConfig.fontStyle;
-            var fontFamily = Chart.helpers.getValueOrDefault(centerConfig.fontFamily, 'Avenir');
-            var fontSize = Chart.helpers.getValueOrDefault(centerConfig.minFontSize, 20);
-            var maxFontSize = Chart.helpers.getValueOrDefault(centerConfig.maxFontSize, 60);
-            var maxText = Chart.helpers.getValueOrDefault(centerConfig.maxText, centerConfig.text);
+            let centerConfig = chart.config.options.elements.center;
+            let centerConfigSub = chart.config.options.elements.centerSub;
+            let globalConfig = Chart.defaults.global;
+            let fontStyle = centerConfig.fontStyle;
+            let fontFamily = Chart.helpers.getValueOrDefault(centerConfig.fontFamily, 'Avenir');
+            let fontSize = Chart.helpers.getValueOrDefault(centerConfig.minFontSize, 20);
+            let maxFontSize = Chart.helpers.getValueOrDefault(centerConfig.maxFontSize, 60);
+            let maxText = Chart.helpers.getValueOrDefault(centerConfig.maxText, centerConfig.text);
             do {
                 chart.ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
-                var textWidth = chart.ctx.measureText(maxText).width;
+                let textWidth = chart.ctx.measureText(maxText).width;
                 if (textWidth < chart.innerRadius * 2 && fontSize < maxFontSize) fontSize += 1;else {
                     fontSize -= 1;
                     break;
@@ -122,7 +125,7 @@ export class TeamPulseComponent implements OnInit {
             maxText = centerConfigSub.text;
             do {
                 chart.ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
-                var _textWidth = chart.ctx.measureText(maxText).width;
+                let _textWidth = chart.ctx.measureText(maxText).width;
                 if (_textWidth < chart.innerRadius * 2 && fontSize < maxFontSize) fontSize += 1;else {
                     fontSize -= 1;
                     break;
@@ -135,9 +138,9 @@ export class TeamPulseComponent implements OnInit {
         }
     };
 
-    var roundCornersAfterUpdate = function roundCornersAfterUpdate(chart) {
+    let roundCornersAfterUpdate = function roundCornersAfterUpdate(chart) {
         if (chart.config.options.elements.arc.roundCorners !== undefined) {
-            var arc = chart.getDatasetMeta(0).data[chart.config.options.elements.arc.roundCorners];
+            let arc = chart.getDatasetMeta(0).data[chart.config.options.elements.arc.roundCorners];
             arc.round = {
                 x: (chart.chartArea.left + chart.chartArea.right) / 2,
                 y: (chart.chartArea.top + chart.chartArea.bottom) / 2,
@@ -148,29 +151,29 @@ export class TeamPulseComponent implements OnInit {
         }
     };
 
-    var addCenterTextAfterDraw = function addCenterTextAfterDraw(chart) {
+    let addCenterTextAfterDraw = function addCenterTextAfterDraw(chart) {
         if (chart.center && chart.centerSub) {
             chart.ctx.textAlign = 'center';
             chart.ctx.textBaseline = 'middle';
-            var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
-            var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-            var lowerY = (chart.chartArea.top + chart.chartArea.bottom) / 2 + 65;
-            var centerConfig = chart.config.options.elements.center;
+            let centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+            let centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+            let lowerY = (chart.chartArea.top + chart.chartArea.bottom) / 2 + 65;
+            let centerConfig = chart.config.options.elements.center;
             chart.ctx.font = chart.center.font;
             chart.ctx.fillStyle = chart.center.fillStyle;
             chart.ctx.fillText(centerConfig.text, centerX, centerY);
-            var centerSubConfig = chart.config.options.elements.centerSub;
+            let centerSubConfig = chart.config.options.elements.centerSub;
             chart.ctx.font = chart.centerSub.font;
             chart.ctx.fillStyle = chart.centerSub.fillStyle;
             chart.ctx.fillText(centerSubConfig.text, centerX, lowerY);
         }
     };
 
-    var roundCornersAfterDraw = function roundCornersAfterDraw(chart) {
+    let roundCornersAfterDraw = function roundCornersAfterDraw(chart) {
         if (chart.config.options.elements.arc.roundCorners !== undefined) {
-            var arc = chart.getDatasetMeta(0).data[chart.config.options.elements.arc.roundCorners];
-            var startAngle = pi / 2 - arc._view.startAngle;
-            var endAngle = pi / 2 - arc._view.endAngle;
+            let arc = chart.getDatasetMeta(0).data[chart.config.options.elements.arc.roundCorners];
+            let startAngle = pi / 2 - arc._view.startAngle;
+            let endAngle = pi / 2 - arc._view.endAngle;
             chart.ctx.save();
             chart.ctx.translate(arc.round.x, arc.round.y);
             chart.ctx.fillStyle = arc.round.backgroundColor;
@@ -181,11 +184,11 @@ export class TeamPulseComponent implements OnInit {
             chart.ctx.restore();
         }
     };
-    var datasets = [{
+    let datasets = [{
         "data": [happyPercent, sadPercent],
         "backgroundColor": ["#36455a", "#36455a"]
     }];
-    var chartData = {
+    let chartData = {
         type: 'doughnut',
         data: { datasets: datasets },
         options: {
@@ -222,9 +225,9 @@ export class TeamPulseComponent implements OnInit {
         }
     };
 
-    var canvas : any = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
-    var chart = new Chart(ctx, _extends({}, chartData, {
+    let canvas : any = document.getElementById("canvas");
+    let ctx = canvas.getContext("2d");
+    let chart = new Chart(ctx, _extends({}, chartData, {
         plugins: [{
             beforeDraw: function beforeDraw(chart) {
                 drawArc(chart, null, '#36455a');
@@ -259,9 +262,9 @@ export class TeamPulseComponent implements OnInit {
   }
 
   lineChart(teamPulseData){
-    var canvas : any = document.getElementById('canvas2');
-    var chart = canvas.getContext("2d");
-    var data  = {
+    let canvas : any = document.getElementById('canvas2');
+    let chart = canvas.getContext("2d");
+    let data  = {
         labels: [ teamPulseData[0][0], teamPulseData[1][0], teamPulseData[2][0], teamPulseData[3][0], teamPulseData[4][0], teamPulseData[5][0], teamPulseData[6][0]],
         datasets: [{
           backgroundColor: 'rgb(65, 82, 104)',
@@ -273,7 +276,7 @@ export class TeamPulseComponent implements OnInit {
     };
 
 
-    var options = {
+    let options = {
       responsive: true,
       maintainAspectRatio: true,
       animation: {
@@ -324,8 +327,8 @@ export class TeamPulseComponent implements OnInit {
         yPadding: 10,
         callbacks: {
           label: function(tooltipItem, data) {
-            var dataset = data.datasets[tooltipItem.datasetIndex];
-            var label = data.labels[tooltipItem.datasetIndex];
+            let dataset = data.datasets[tooltipItem.datasetIndex];
+            let label = data.labels[tooltipItem.datasetIndex];
             return  'Happy for ' + label + ' is ' + dataset.data[tooltipItem.index] + "%";
           }
         }
@@ -333,7 +336,7 @@ export class TeamPulseComponent implements OnInit {
     };
 
 
-    var chartInstance = new Chart(chart, {
+    let chartInstance = new Chart(chart, {
         type: 'line',
         data: data,
         options: options
