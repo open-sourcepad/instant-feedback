@@ -265,13 +265,13 @@ export class TeamPulseComponent implements OnInit {
     let canvas : any = document.getElementById('canvas2');
     let chart = canvas.getContext("2d");
     let data  = {
-        labels: [ teamPulseData[0][0], teamPulseData[1][0], teamPulseData[2][0], teamPulseData[3][0], teamPulseData[4][0], teamPulseData[5][0], teamPulseData[6][0]],
+        labels: [ teamPulseData[0]["date"], teamPulseData[1]["date"], teamPulseData[2]["date"], teamPulseData[3]["date"], teamPulseData[4]["date"], teamPulseData[5]["date"], teamPulseData[6]["date"]],
         datasets: [{
           backgroundColor: 'rgb(65, 82, 104)',
           pointBackgroundColor: 'white',
           borderWidth: 4,
           borderColor: '#83d6c0',
-          data: [ teamPulseData[0][1], teamPulseData[1][1], teamPulseData[2][1], teamPulseData[3][1], teamPulseData[4][1], teamPulseData[5][1], teamPulseData[6][1]]
+          data: [ teamPulseData[0]["happy_percent"], teamPulseData[1]["happy_percent"], teamPulseData[2]["happy_percent"], teamPulseData[3]["happy_percent"], teamPulseData[4]["happy_percent"], teamPulseData[5]["happy_percent"], teamPulseData[6]["happy_percent"]]
         }]
     };
 
