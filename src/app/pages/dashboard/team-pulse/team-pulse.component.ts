@@ -9,11 +9,12 @@ import { PulseService } from '../../../services/api/pulse.service';
   styleUrls: ['../dashboard.scss']
 })
 export class TeamPulseComponent implements OnInit {
-  chart = [];
   filter: string;
   happyCount: number;
   totalQuestion: number;
   questionsData: any;
+  lineChartInstance: any;
+
   constructor(
     private pulseService: PulseService
   ) {
@@ -262,10 +263,13 @@ export class TeamPulseComponent implements OnInit {
   }
 
   lineChart(teamPulseData){
+    if (!!this.lineChartInstance) {
+      this.lineChartInstance.destroy()
+    }
     let canvas : any = document.getElementById('canvas2');
     let chart = canvas.getContext("2d");
     let data  = {
-        labels: [ teamPulseData[0]["date"], teamPulseData[1]["date"], teamPulseData[2]["date"], teamPulseData[3]["date"], teamPulseData[4]["date"], teamPulseData[5]["date"], teamPulseData[6]["date"]],
+        labels: [ teamPulseData[0]["date"], teamPulseData[1]["date"], teamPulseData[2]["date"], teamPulseData[3]["date"], teamPulseData[4]["date"], teamPulseData[5]["date"], teamPulseData[6]["date"] ],
         datasets: [{
           backgroundColor: 'rgb(65, 82, 104)',
           pointBackgroundColor: 'white',
@@ -328,7 +332,7 @@ export class TeamPulseComponent implements OnInit {
         callbacks: {
           label: function(tooltipItem, data) {
             let dataset = data.datasets[tooltipItem.datasetIndex];
-            let label = data.labels[tooltipItem.datasetIndex];
+            let label = data.labels[tooltipItem.index]
             return  'Happy for ' + label + ' is ' + dataset.data[tooltipItem.index] + "%";
           }
         }
@@ -336,7 +340,7 @@ export class TeamPulseComponent implements OnInit {
     };
 
 
-    let chartInstance = new Chart(chart, {
+    this.lineChartInstance = new Chart(chart, {
         type: 'line',
         data: data,
         options: options
