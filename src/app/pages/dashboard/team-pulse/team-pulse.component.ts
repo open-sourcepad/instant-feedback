@@ -9,6 +9,7 @@ import { PulseService } from '../../../services/api/pulse.service';
   styleUrls: ['../dashboard.scss']
 })
 export class TeamPulseComponent implements OnInit {
+  chart= [];
   filter: string;
   happyCount: number;
   totalQuestion: number;
