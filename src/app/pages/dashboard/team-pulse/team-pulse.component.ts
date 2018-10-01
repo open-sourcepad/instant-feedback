@@ -285,7 +285,7 @@ export class TeamPulseComponent implements OnInit {
       maintainAspectRatio: true,
       animation: {
         easing: 'easeInOutQuad',
-        duration: 520
+        duration: 300
       },
       scales: {
         xAxes: [{
