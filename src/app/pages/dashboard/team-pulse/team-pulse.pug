@@ -30,7 +30,8 @@
             canvas#canvas
           
         .team-pulse-doughnut-description
-          h4.font-weight-bold {{happyCount}} out of {{totalQuestion}} are feeling good today!
+          h4.font-weight-bold(*ngIf="filter == 'today'") {{happyCount}} out of {{totalQuestion}} are feeling good {{filter}}!
+          h4.font-weight-bold(*ngIf="filter != 'today'") {{happyCount}} out of {{totalQuestion}} are feeling good this {{filter}}!
       .team-pulse-line
         .team-pulse-line-chart
           div#chart2

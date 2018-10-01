@@ -9,7 +9,6 @@ import { PulseService } from '../../../services/api/pulse.service';
   styleUrls: ['../dashboard.scss']
 })
 export class TeamPulseComponent implements OnInit {
-  chart= [];
   filter: string;
   happyCount: number;
   totalQuestion: number;
@@ -333,7 +332,7 @@ export class TeamPulseComponent implements OnInit {
         callbacks: {
           label: function(tooltipItem, data) {
             let dataset = data.datasets[tooltipItem.datasetIndex];
-            let label = data.labels[tooltipItem.index]
+            let label = data.labels[tooltipItem.index];
             return  'Happy for ' + label + ' is ' + dataset.data[tooltipItem.index] + "%";
           }
         }
