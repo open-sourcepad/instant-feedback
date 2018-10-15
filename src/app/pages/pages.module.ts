@@ -6,14 +6,13 @@ import { routing } from './pages.routes';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from './shared/shared.module';
 
-
 const PAGES_MODULE = [
   SharedModule
 ]
 
 @NgModule({
   declarations: [
-    PagesComponent
+    PagesComponent,
   ],
   imports: [
     CommonModule,
