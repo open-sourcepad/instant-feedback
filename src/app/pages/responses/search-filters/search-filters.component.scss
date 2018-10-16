@@ -1,0 +1,40 @@
+$lightBrown: #C3BAAA;
+$white: #FFFFFF;
+$black: #333333;
+
+.btn-filter {
+  font-size: 14px;
+  color: $white;
+  letter-spacing: 0;
+  line-height: 24px;
+  background-color: $lightBrown;
+  border-radius: 24px;
+  padding: 4px 16px;
+  margin-top: 8px;
+}
+
+.btn-filter span.icon-holder {
+  font-size: 10px;
+  line-height: inherit;
+  margin-left: 5px;
+}
+
+.btn-terms {
+  border: 1px solid $lightBrown;
+  background: $white;
+  color: $black;
+}
+
+#btn-add-filter {
+  flex: 0 0 12.666667%;
+  max-width: 12.666667%;
+}
+
+.search-terms {
+  display: inline-block;
+
+  .btn-filter {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}

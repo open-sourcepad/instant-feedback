@@ -11,6 +11,7 @@ body {
   font-family: 'Avenir', "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
   color: $default;
+  background-color: $white;
 }
 
 body {
@@ -43,4 +44,16 @@ a:hover {
 .tooltip {
   font-family: 'Avenir';
   font-size: 12px;
+}
+
+.page-data-content {
+  margin: 30px 64px;
+}
+
+.page-data-content .title {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 32px;
+  color: #333333;
+  letter-spacing: 0;
+  line-height: 48px;
 }
