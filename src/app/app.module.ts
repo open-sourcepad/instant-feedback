@@ -5,13 +5,14 @@ import { PagesModule } from './pages/pages.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routes';
 import { SharedModule } from './pages/shared/shared.module';
-import { PulseService } from './services/api/pulse.service';
-import {  HttpService, LocalStorage, CommonService } from './services/utils';
+import { PulseService, AnswerService } from './services/api';
+import { HttpService, LocalStorage, CommonService } from './services/utils';
 import { HttpClientModule } from '@angular/common/http';
 
 
 const APP_SERVICES = [
   PulseService,
+  AnswerService,
   LocalStorage
 ]
 const APP_PROVIDERS = [
