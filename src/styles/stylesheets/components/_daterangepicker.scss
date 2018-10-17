@@ -1,0 +1,37 @@
+//datepicker custom css
+.daterangepicker {
+  background: $main-color !important;
+  color: $lightBrown !important;
+}
+
+.daterangepicker .calendar-table {
+  background: $main-color !important;
+  border-color: $main-color !important;
+}
+
+.daterangepicker .daterangepicker_input {
+  display: none;
+}
+
+.daterangepicker .calendar td {
+  color: $white !important;
+  letter-spacing: 0.3px;
+  font-size: 12px;
+}
+
+.daterangepicker td.active, .daterangepicker td.active:hover,
+.daterangepicker td.in-range,
+.daterangepicker td.available:hover, .daterangepicker th.available:hover {
+    background-color: $lightBrown !important;
+}
+
+.daterangepicker td.off, .daterangepicker td.off.in-range, .daterangepicker td.off.start-date, .daterangepicker td.off.end-date {
+    background-color: $main-color !important;
+    border-color: transparent;
+    color: $lightGray !important;
+}
+
+.daterangepicker:before, .daterangepicker:after {
+  border-bottom-color: $main-color !important;
+}
+

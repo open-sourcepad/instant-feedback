@@ -21,15 +21,21 @@
           span Date Range
       .opts-group-filter
         h5.filter-title.sub Date Range
-        input.form-control
+        input.form-control(type="text" name="dateRangeInput" daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
     .col-md-12
       .opts-group-filter
         h5.filter-title.sub Questions
-        input.form-control
+        div
+          ng-container(*ngFor="let question of questions")
+            button.btn-filter.btn-terms.mr-2
+              span {{ question }}
     .col-md-12
       .opts-group-filter
         h5.filter-title.sub Answers
-        input.form-control
+        div
+          ng-container(*ngFor="let answer of answers")
+            button.btn-filter.btn-terms.mr-2
+              span {{ answer }}
     .col-md-12
       .opts-group-filter
         h5.filter-title.sub Users

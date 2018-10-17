@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { ResponsesComponent } from './responses.component';
 import { SearchFiltersComponent } from './search-filters/search-filters.component';
 
+import { Daterangepicker } from 'ng2-daterangepicker';
+
 
 const MODULE_COMPONENTS = [
   ResponsesComponent,
@@ -16,7 +18,8 @@ const MODULE_COMPONENTS = [
   imports: [
     CommonModule,
     routing,
-    FormsModule
+    FormsModule,
+    Daterangepicker
   ],
   declarations: [
     ...MODULE_COMPONENTS
