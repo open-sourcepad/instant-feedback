@@ -1,4 +1,4 @@
-#sidenav-search_filter.sidenav.open
+#sidenav-search_filter.sidenav([class.open]="openSearchFilter")
   .row
     .col-md-12
       .row
@@ -10,31 +10,26 @@
     .col-md-12
       br
       #daterange-filters
-        button.btn-filter.btn-terms.active
-          span Today
-        button.btn-filter.btn-terms.ml-2.inline-block
-          span This Week
-        br
-        button.btn-filter.btn-terms
-          span This Month
-        button.btn-filter.btn-terms.ml-2.inline-block
-          span Date Range
-      .opts-group-filter
-        h5.filter-title.sub Date Range
-        input.form-control(type="text" name="dateRangeInput" daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
+        ng-container(*ngFor="let opt of dateOpts")
+          button.btn-filter.btn-terms.mr-2([class.active]="selectedDateFilter == opt.id", (click)="chooseDateRange(opt.id)")
+            span {{opt.label}}
+      ng-container(*ngIf="selectedDateFilter == 4")
+        .opts-group-filter
+          h5.filter-title.sub Date Range
+          input.form-control(type="text" name="dateRangeInput" daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
     .col-md-12
       .opts-group-filter
         h5.filter-title.sub Questions
         div
           ng-container(*ngFor="let question of questions")
-            button.btn-filter.btn-terms.mr-2
+            button.btn-filter.btn-terms.mr-2((click)="addFilter(selectedQuestionsFilter, question, 'questions')")
               span {{ question }}
     .col-md-12
       .opts-group-filter
         h5.filter-title.sub Answers
         div
           ng-container(*ngFor="let answer of answers")
-            button.btn-filter.btn-terms.mr-2
+            button.btn-filter.btn-terms.mr-2((click)="addFilter(selectedAnswersFilter, answer, 'answers')")
               span {{ answer }}
     .col-md-12
       .opts-group-filter
@@ -45,20 +40,26 @@
   .mt-md-1
     .row
       .col-md-2#btn-add-filter
-        button.btn-filter
+        button.btn-filter((click)="toggleSearchFilter()")
           span Add Filter&nbsp;
           span.icon-holder.ti-plus
+        button.btn-filter((click)="onSubmit(form.value)")
+          span Search&nbsp;
+          span.icon-holder.ti-search
       .col-md-9
         .search-terms
           button.btn-filter.btn-terms
-            span 04/08/2018 - 09/21/2018
+            span {{ daterange.start | date: 'MM/dd/yyyy' }} - {{ daterange.end | date: 'MM/dd/yyyy' }}
             span.icon-holder.ti-close
-          button.btn-filter.btn-terms
-            span Q: Scrum Today
-            span.icon-holder.ti-close
-          button.btn-filter.btn-terms
-            span Q: Mental Health
-            span.icon-holder.ti-close
-          button.btn-filter.btn-terms
-            span A: Happy
-            span.icon-holder.ti-close
+          ng-container(*ngIf="selectedQuestionsFilter.length > 0")
+            ng-container(*ngFor="let q of selectedQuestionsFilter")
+              button.btn-filter.btn-terms
+                span Q: {{ q }}
+                span.icon-holder.ti-close
+          ng-container(*ngIf="selectedAnswersFilter.length > 0")
+            ng-container(*ngFor="let a of selectedAnswersFilter")
+              button.btn-filter.btn-terms
+                span A: {{ a }}
+                span.icon-holder.ti-close
+      .col-md-12
+        | {{ form.value | json }}

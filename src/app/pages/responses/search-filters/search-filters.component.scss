@@ -66,11 +66,11 @@ $black: #333333;
   background: #FFFFFF;
   box-shadow: 0 0 16px 0 rgba(0,0,0,0.24);
   overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 60px;
-  padding-left: 49px;
-  padding-right: 15px;
+  transition: width 0.5s cubic-bezier(0.6, -0.28, 0.74, 0.05);
   &.open {
+    padding-top: 60px;
+    padding-left: 49px;
+    padding-right: 15px;
     width: 392px;
   }
 }
