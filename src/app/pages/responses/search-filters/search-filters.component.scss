@@ -11,6 +11,7 @@ $black: #333333;
   border-radius: 24px;
   padding: 4px 16px;
   margin-top: 8px;
+  cursor: pointer;
 }
 
 .btn-filter span.icon-holder {
@@ -19,10 +20,21 @@ $black: #333333;
   margin-left: 5px;
 }
 
+.btn-border-none {
+  border: 0;
+  background: $white;
+  color: $lightBrown;
+}
+
 .btn-terms {
   border: 1px solid $lightBrown;
   background: $white;
   color: $black;
+
+  &:hover, &.active {
+    background-color: $lightBrown;
+    color: $white;
+  }
 }
 
 #btn-add-filter {
@@ -36,5 +48,48 @@ $black: #333333;
   .btn-filter {
     margin-left: 8px;
     margin-right: 8px;
+  }
+}
+
+#daterange-filters > button{
+  width: 114px;
+  height: 33px;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background: #FFFFFF;
+  box-shadow: 0 0 16px 0 rgba(0,0,0,0.24);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  padding-left: 49px;
+  padding-right: 15px;
+  &.open {
+    width: 392px;
+  }
+}
+
+#sidenav-search_filter .filter-title {
+  color: $black;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 32px;
+
+  &.sub {
+    line-height: 24px;
+  }
+}
+
+.opts-group-filter {
+  margin-top: 32px;
+
+  .filter-title {
+    margin-bottom: 15px;
   }
 }

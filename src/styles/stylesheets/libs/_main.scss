@@ -57,3 +57,17 @@ a:hover {
   letter-spacing: 0;
   line-height: 48px;
 }
+
+.form-control {
+  border: 1px solid $gray;
+  border-radius: 2px;
+  color: $main-color;
+  height: 34px;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 24px;
+  
+  &:focus {
+    border: 1px solid $lightBrown;
+  }
+}
