@@ -13,7 +13,7 @@ export class ResponsesComponent implements OnInit {
   users = ['All', 'Yana V'];
   loading = false;
   collection = [];
-  page = {number: 1, size: 1};
+  page = {number: 1, size: 20};
 
   constructor(private answerApi: AnswerService) { }
 
