@@ -6,6 +6,7 @@
       search-filters(
         [questions]="questions",
         [answers]="answers",
+        [users]="users",
         [loading]="loading",
         (submit)="search($event)"
       )
@@ -35,14 +36,24 @@
                 span.name Date
                 span.icon-holder.ti-arrow-up
         tbody
-          tr
-            td
-              span Vera Hogan
-            td
-              span How was scrum today?
-            td.text-center
-              img.answer(src="/assets/happy-draw-black.png")
-            td
-              span 9/12/2018
+          ng-container(*ngIf="!loading && collection.length <= 0")
+            tr
+              td.text-center(colspan="4")
+                span No results found
+          ng-container(*ngIf="!loading && collection.length > 0")
+            tr(*ngFor="let obj of collection")
+              td
+                span {{obj.user}}
+              td
+                span {{ obj.question }}
+              td.text-center
+                ng-container(*ngIf="obj.answer == 'happy'")
+                  img.answer(src="/assets/happy-draw-black.png")
+                ng-container(*ngIf="obj.answer == 'sad'")
+                  img.answer(src="/assets/sad-draw-black.png")
+                ng-container(*ngIf="obj.answer == 'idle'")
+                  img.answer(src="/assets/square-smiley-sad.png")
+              td
+                span {{ obj.created_at | date: 'MM/dd/yyyy' }}
 
 

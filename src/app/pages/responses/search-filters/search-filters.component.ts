@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import * as moment from 'moment';
 
 @Component({
@@ -11,13 +11,11 @@ export class SearchFiltersComponent implements OnInit {
 
   @Input() questions;
   @Input() answers;
+  @Input() users;
   @Input() loading;
   @Output() submit = new EventEmitter<object>();
 
-  daterange: any = {
-    start: moment().format('YYYY/MM/DD 00:00:00'),
-    end: moment().format('YYYY/MM/DD 23:59:59')
-  };
+  daterange: any;
   //daterangepicker options
   options: any = {
     locale: {
@@ -50,25 +48,19 @@ export class SearchFiltersComponent implements OnInit {
     {id: 4, label: 'Date Range'},
   ]
 
-  openSearchFilter = true;
+  openSearchFilter = false;
   form: FormGroup;
 
   //selected search filters
-  selectedDateFilter = 1;
-  selectedQuestionsFilter = ['All'];
-  selectedAnswersFilter = ['All'];
-  selectedUserFilter = 'All';
+  selectedDateFilter: number;
+  selectedQuestionsFilter: any;
+  selectedAnswersFilter: any;
+  selectedUserFilter: string;
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.form = this.fb.group({
-      date_since: [this.daterange.start, Validators.required],
-      date_until: [this.daterange.end, Validators.required],
-      user: [this.selectedUserFilter, Validators.required],
-      questions: [this.selectedQuestionsFilter, Validators.required],
-      answers: [this.selectedAnswersFilter, Validators.required],
-    });
+    this.resetFilter();
   }
 
   chooseDateRange(option) {
@@ -118,8 +110,42 @@ export class SearchFiltersComponent implements OnInit {
   }
 
   addFilter(arr, value, attr) {
-    arr.push(value)
+    if(arr.indexOf(value) < 0) {
+      if(arr.indexOf('All') > -1 && value != 'All') {
+        let idx = arr.indexOf('All');
+        this.removeFilter(arr, idx, attr);
+      }else if(value == 'All'){
+        arr.splice(0,arr.length);
+      }
+
+      arr.push(value);
+      this.form.get(attr).setValue(arr);
+   }
+
+  }
+
+  removeFilter(arr, idx, attr) {
+    arr.splice(idx, 1);
     this.form.get(attr).setValue(arr);
+  }
+
+  resetFilter() {
+    this.daterange = {
+      start: moment().format('YYYY/MM/DD 00:00:00'),
+      end: moment().format('YYYY/MM/DD 23:59:59')
+    };
+    this.selectedDateFilter = 1;
+    this.selectedQuestionsFilter = ['All'];
+    this.selectedAnswersFilter = ['All'];
+    this.selectedUserFilter = 'All';
+
+    this.form = this.fb.group({
+      date_since: [this.daterange.start, Validators.required],
+      date_until: [this.daterange.end, Validators.required],
+      user: [this.selectedUserFilter, Validators.required],
+      questions: [this.selectedQuestionsFilter, Validators.required],
+      answers: [this.selectedAnswersFilter, Validators.required],
+    });
   }
 
   toggleSearchFilter(){

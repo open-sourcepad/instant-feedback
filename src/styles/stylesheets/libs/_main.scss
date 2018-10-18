@@ -71,3 +71,10 @@ a:hover {
     border: 1px solid $lightBrown;
   }
 }
+
+.form-control.dropdown {
+  border: 1px solid $lightBrown;
+  border-radius: 24px;
+  width: auto;
+  max-width: 50%;
+}

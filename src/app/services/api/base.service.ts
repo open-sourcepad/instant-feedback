@@ -33,16 +33,44 @@ export class BaseService {
     let keys = Object.keys(query);
     for (let item of keys) {
       let value = query[item];
-      if (value == null) {
+      if (!value) {
         continue;
       }
       if (Array.isArray(value)) {
         let payloadArr = [];
         for (let val of value) {
-          payloadArr.push(`${item}[]=${encodeURIComponent(val)}`);
+          if (val instanceof Object) {
+            payloadArr.push(this.encodeObject(val, item));
+          }else {
+            payloadArr.push(`${item}[]=${encodeURIComponent(val)}`);
+          }
         }
         payload = payloadArr.join("&");
-        console.log(payload);
+      } else if(value instanceof Object){
+        let payloadArr = [];
+        let keys = Object.keys(value);
+        for(let key of keys) {
+          if (!value[key]) {
+            continue;
+          }
+          if (value[key] instanceof Object) {
+            if (Array.isArray(value[key])) {
+              for(let val of value[key]) {
+                payloadArr.push(`${item}[${key}][]=${encodeURIComponent(val)}`);
+              }
+            } else {
+              let objKeys = Object.keys(value[key]);
+              console.log(objKeys);
+              for(let k of objKeys) {
+                payloadArr.push(`${item}[${key}[${k}]]=${encodeURIComponent(value[key][k])}`);
+              }
+            }
+          }else {
+            payloadArr.push(`${item}[${key}]=${encodeURIComponent(value[key])}`);
+          }
+          
+        }
+        payload = payloadArr.join("&");
       } else {
         payload = item+"="+encodeURIComponent(value);
       }
@@ -57,6 +85,19 @@ export class BaseService {
 
   destroy(id: number, payload: Object): any {
    return this.http.delete(`${this.apiEndpoint}/${id}`);
+  }
+
+  private encodeObject(query, arrKey) {
+    let payload = '';
+    let params = [];
+    
+    let keys = Object.keys(query);
+    for (let item of keys) {
+      let value = query[item];
+      params.push(`${arrKey}[][${item}]=${encodeURIComponent(value)}`);
+    }
+    return params.join("&");
+
   }
 
 }

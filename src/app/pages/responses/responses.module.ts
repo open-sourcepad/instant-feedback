@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { routing } from './responses.routing';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ResponsesComponent } from './responses.component';
 import { SearchFiltersComponent } from './search-filters/search-filters.component';
@@ -19,6 +19,7 @@ const MODULE_COMPONENTS = [
     CommonModule,
     routing,
     FormsModule,
+    ReactiveFormsModule,
     Daterangepicker
   ],
   declarations: [
