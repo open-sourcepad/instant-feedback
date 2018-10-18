@@ -1,7 +1,6 @@
 require 'net/ssh/proxy/command'
 require 'sshkit'
 require 'sshkit/dsl'
-require 'sshkit/sudo'
 include SSHKit::DSL
 
 
@@ -23,8 +22,8 @@ SSHKit::Backend::Netssh.configure do |ssh|
 end
 
 run_locally do
-  execute! 'ng build --prod'
-  execute! 'env GZIP=-9 tar -zcvf dist.tar.gz dist'
+  execute 'ng build --prod'
+  execute 'env GZIP=-9 tar -zcvf dist.tar.gz dist'
 end
 
 on APP_SSH do
