@@ -42,7 +42,7 @@
   .mt-md-1
     .row
       .col-md-2#btn-add-filter
-        button.btn-filter((click)="toggleSearchFilter()")
+        button.btn-filter([disabled]="openSearchFilter", (click)="toggleSearchFilter()")
           span Add Filter&nbsp;
           span.icon-holder.ti-plus
         button.btn-filter((click)="onSubmit(form.value)")
@@ -55,11 +55,11 @@
             span.icon-holder.ti-close
           ng-container(*ngIf="selectedQuestionsFilter.length > 0")
             ng-container(*ngFor="let q of selectedQuestionsFilter; let idx = index")
-              button.btn-filter.btn-terms((click)="removeFilter(selectedQuestionsFilter, idx, 'questions')")
+              button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter(selectedQuestionsFilter, idx, 'questions')")
                 span Q: {{ q }}
                 span.icon-holder.ti-close
           ng-container(*ngIf="selectedAnswersFilter.length > 0")
             ng-container(*ngFor="let a of selectedAnswersFilter; let idx = index")
-              button.btn-filter.btn-terms((click)="removeFilter(selectedAnswersFilter, idx, 'answers')")
+              button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter(selectedAnswersFilter, idx, 'answers')")
                 span A: {{ a }}
                 span.icon-holder.ti-close

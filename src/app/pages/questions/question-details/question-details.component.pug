@@ -1,0 +1,39 @@
+.row
+  .col-md-12
+    h2.title Add a Question
+  .col-md-12
+    .row
+      .col-md-8
+        .card
+          form(novalidate, autocomplete="off")
+            .form-group
+              label Question
+              input.form-control
+            .form-row
+              .form-group.col-md-3
+                label Frequency
+                .select-dropdown
+                  select.form-control
+                    option Once
+              .form-group.col-md-3
+                label Day
+                .select-dropdown
+                  select.form-control
+                    option option 1
+                    option option 2
+              .form-group.col-md-3
+                label Hour
+                .select-dropdown
+                  select.form-control
+                    option option 1
+                    option option 2
+              .form-group.col-md-3
+                label Minute
+                input.form-control.input-number(type="number")
+      .col-md-4
+        .card
+          button.btn.btn-instant-feedback.btn-instant-feedback-primary
+            span Save
+          button.btn.btn-instant-feedback
+            span Cancel
+

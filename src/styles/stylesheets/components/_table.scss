@@ -1,0 +1,28 @@
+.table-instant-feedback th {
+  border-top: 0;
+  border-bottom: 2px solid #3333335c !important;
+  color: #33333380 !important;
+  font-size: 14px;
+}
+
+.table-instant-feedback td {
+  font-size: 14px;
+  color: $main-color;
+  letter-spacing: 0;
+  line-height: 3rem !important;
+  border-top: 0;
+  border-bottom: 1px solid #c3baaa5c;
+}
+
+.table-instant-feedback td.actions {
+  text-align: right;
+
+  a {
+
+    margin-right: 17px;
+    img {
+      width: 13px;
+      height: 17px;
+    }
+  }
+}

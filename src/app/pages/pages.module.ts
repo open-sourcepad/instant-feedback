@@ -12,7 +12,7 @@ const PAGES_MODULE = [
 
 @NgModule({
   declarations: [
-    PagesComponent,
+    PagesComponent
   ],
   imports: [
     CommonModule,

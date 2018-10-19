@@ -15,6 +15,10 @@ export const routes: Routes = [
       {
         path: 'responses',
         loadChildren: "./responses/responses.module#ResponsesModule"
+      },
+      {
+        path: 'questions',
+        loadChildren: "./questions/questions.module#QuestionsModule"
       }
     ]
   },

@@ -8,3 +8,24 @@
   background-color: $goldDark;
   color: $white;
 }
+
+
+.btn-instant-feedback {
+  font-size: 14px;
+  font-weight: 700;
+  font-family: "Avenir", sans-serif;
+  border-radius: 4px;
+  padding: 13px 10px;
+
+  > span.icon-holder {
+    font-size: 10px;
+    font-weight: 700;
+    margin-right: 3px;
+  }
+}
+
+.btn-instant-feedback-primary {
+  color: $white;
+  background-color: $lightBrown;
+  border-color: $lightBrown;
+}

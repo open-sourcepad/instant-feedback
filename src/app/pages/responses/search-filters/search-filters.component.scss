@@ -22,13 +22,13 @@ $black: #333333;
 
 .btn-border-none {
   border: 0;
-  background: $white;
+  background: transparent;
   color: $lightBrown;
 }
 
 .btn-terms {
   border: 1px solid $lightBrown;
-  background: $white;
+  background: transparent;
   color: $black;
 
   &:hover, &.active {

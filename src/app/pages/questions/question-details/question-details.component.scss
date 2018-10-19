@@ -1,0 +1,29 @@
+.card {
+  background: #FFFFFF;
+  box-shadow: 0 2px 9px 0 rgba(0,0,0,0.03);
+  border-radius: 6px;
+  padding: 39px;
+}
+
+.select-dropdown {
+  background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 98% 0;
+  background-size: contain;
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid #E9EFF4;
+  border-radius: 4px;
+
+  select {
+    background: transparent;
+    border: none;
+    width: calc(100% + 15px);
+    font-size: 14px;
+    color: #323C47;
+    letter-spacing: 0;
+    margin: 5px 10px;
+  }
+}
+
+.input-number::after {
+  content: 'am';
+}

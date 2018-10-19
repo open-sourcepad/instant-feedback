@@ -1,0 +1,43 @@
+.row
+  .col-md-12
+    h2.title Questions
+  .col-md-12.text-right
+    button.btn.btn-instant-feedback.btn-instant-feedback-primary([routerLink]="['/questions/add']")
+      span.icon-holder.ti-plus
+      span Add a Question
+  .col-md-12
+    table.table.table-instant-feedback
+      thead
+        tr
+          th
+            span Question
+          th
+            span Frequency
+          th
+            span Time
+          th
+      tbody
+        tr
+          td
+            span How was your scum today?
+          td
+            span Twice a Week
+          td
+            span 10:30AM EST
+          td.actions
+            a
+              img.icon-holder(src="/assets/edit.png")
+            a
+              img.icon-holder(src="/assets/delete.png")
+        tr
+          td
+            span How do you feel about your team this week?
+          td
+            span Weekly
+          td
+            span
+          td.actions
+            a
+              img.icon-holder(src="/assets/edit.png")
+            a
+              img.icon-holder(src="/assets/delete.png")
