@@ -73,6 +73,8 @@ export class SearchFiltersComponent implements OnInit {
           start: moment().format('YYYY/MM/DD 00:00:00'),
           end: moment().format('YYYY/MM/DD 23:59:59')
         };
+
+        this.selectedDate(this.daterange);
         break;
       }
       case 2: {
@@ -80,6 +82,8 @@ export class SearchFiltersComponent implements OnInit {
           start: moment().startOf('week').format('YYYY/MM/DD 00:00:00'),
           end: moment().endOf('week').format('YYYY/MM/DD 23:59:59')
         };
+
+        this.selectedDate(this.daterange);
         break;
       }
       case 3: {
@@ -87,13 +91,14 @@ export class SearchFiltersComponent implements OnInit {
           start: moment().startOf('month').format('YYYY/MM/DD 00:00:00'),
           end: moment().endOf('month').format('YYYY/MM/DD 23:59:59')
         };
+
+        this.selectedDate(this.daterange);
         break;
       }
       default: {
         break;
       }
     }
-    this.selectedDate(this.daterange);
   }
 
   selectedDate(value: any, datepicker?: any) {
