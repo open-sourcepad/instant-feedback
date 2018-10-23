@@ -60,7 +60,6 @@ export class BaseService {
               }
             } else {
               let objKeys = Object.keys(value[key]);
-              console.log(objKeys);
               for(let k of objKeys) {
                 payloadArr.push(`${item}[${key}[${k}]]=${encodeURIComponent(value[key][k])}`);
               }

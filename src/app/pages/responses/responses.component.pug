@@ -13,9 +13,9 @@
       hr.divider
     .col-md-12
       span.total-results Showing&nbsp;
-        span.font-bold 1-20&nbsp;
+        span.font-bold {{ recordShownCount }}&nbsp;
         | of 
-        span.font-bold 220&nbsp;
+        span.font-bold {{ recordCount }}&nbsp;
         | results
     .col-md-10.m-auto
       table.table.search-results.mt-md-4
@@ -41,7 +41,7 @@
               td.text-center(colspan="4")
                 span No results found
           ng-container(*ngIf="!loading && collection.length > 0")
-            tr(*ngFor="let obj of collection")
+            tr(*ngFor="let obj of collection | paginate: { id: 'responseResults', itemsPerPage: page['size'], currentPage: page['number'], totalItems: recordCount}")
               td
                 span {{obj.user}}
               td
@@ -57,5 +57,10 @@
                   span NO ANSWER - X
               td
                 span {{ obj.created_at | date: 'MM/dd/yyyy' }}
-
+    .col-md-12.text-right
+      pagination-controls#responseResults(
+        (pageChange)="changePage($event)",
+        maxSize="5",
+        directionLinks="true",
+        screenReaderPageLabel="page")
 

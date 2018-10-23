@@ -7,7 +7,7 @@ import { ResponsesComponent } from './responses.component';
 import { SearchFiltersComponent } from './search-filters/search-filters.component';
 
 import { Daterangepicker } from 'ng2-daterangepicker';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 
 const MODULE_COMPONENTS = [
   ResponsesComponent,
@@ -20,7 +20,8 @@ const MODULE_COMPONENTS = [
     routing,
     FormsModule,
     ReactiveFormsModule,
-    Daterangepicker
+    Daterangepicker,
+    NgxPaginationModule
   ],
   declarations: [
     ...MODULE_COMPONENTS
