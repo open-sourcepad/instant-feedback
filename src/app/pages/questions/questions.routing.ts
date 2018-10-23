@@ -9,8 +9,8 @@ export const routes: Routes = [
     path: '',
     component: QuestionsComponent,
     children: [
-      { path: '', component: QuestionIndexComponent }
-      { path: '/add', component: QuestionDetailsComponent }
+      { path: '', component: QuestionIndexComponent },
+      { path: '/add', component: QuestionDetailsComponent },
       { path: ':id', component: QuestionDetailsComponent }
     ]
   },
