@@ -48,9 +48,9 @@
                 span {{ obj.question }}
               td.text-center
                 ng-container(*ngIf="obj.answer == 'happy'")
-                  img.answer(src="/src/styles/icons/happy-draw-black.png")
+                  .answer.icon-happy.icon-sm
                 ng-container(*ngIf="obj.answer == 'sad'")
-                  img.answer(src="/src/styles/icons/sad-draw-black.png")
+                  .answer.icon-sad.icon-sm
                 ng-container(*ngIf="obj.answer == 'idle'")
                   span NO ANSWER - IDLE
                 ng-container(*ngIf="obj.answer == 'x'")
