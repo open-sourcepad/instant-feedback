@@ -9,7 +9,7 @@ import { AnswerService, QuestionService } from '../../services/api'
 export class ResponsesComponent implements OnInit {
 
   questions: any;
-  answers = ['All', 'Happy', 'Sad', 'No Answer - X', 'No Answer - Idle'];
+  answers = ['All', 'Happy', 'Sad', 'X', 'Idle'];
   users = ['All', 'Yana V'];
   loading = false;
   collection = [];

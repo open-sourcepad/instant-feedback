@@ -52,7 +52,9 @@
                 ng-container(*ngIf="obj.answer == 'sad'")
                   img.answer(src="/assets/sad-draw-black.png")
                 ng-container(*ngIf="obj.answer == 'idle'")
-                  img.answer(src="/assets/square-smiley-sad.png")
+                  span NO ANSWER - IDLE
+                ng-container(*ngIf="obj.answer == 'x'")
+                  span NO ANSWER - X
               td
                 span {{ obj.created_at | date: 'MM/dd/yyyy' }}
 

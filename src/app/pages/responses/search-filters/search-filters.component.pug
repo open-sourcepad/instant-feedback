@@ -31,7 +31,9 @@
           div
             ng-container(*ngFor="let answer of answers")
               button.btn-filter.btn-terms.mr-2([class.active]="selectedAnswersFilter.indexOf(answer) > -1", (click)="addFilter(selectedAnswersFilter, answer, 'answers')")
-                span {{ answer }}
+                span(*ngIf="answer != 'X' && answer != 'Idle'") {{ answer }}
+                span(*ngIf="answer == 'X' || answer == 'Idle'") No Answer - {{ answer }}
+
       .col-md-12
         .opts-group-filter
           h5.filter-title.sub Users
@@ -45,21 +47,26 @@
         button.btn-filter([disabled]="openSearchFilter", (click)="toggleSearchFilter()")
           span Add Filter&nbsp;
           span.icon-holder.ti-plus
-        button.btn-filter((click)="onSubmit(form.value)")
-          span Search&nbsp;
-          span.icon-holder.ti-search
       .col-md-9
         .search-terms
           button.btn-filter.btn-terms
             span {{ daterange.start | date: 'MM/dd/yyyy' }} - {{ daterange.end | date: 'MM/dd/yyyy' }}
-            span.icon-holder.ti-close
           ng-container(*ngIf="selectedQuestionsFilter.length > 0")
             ng-container(*ngFor="let q of selectedQuestionsFilter; let idx = index")
-              button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter(selectedQuestionsFilter, idx, 'questions')")
-                span Q: {{ q }}
-                span.icon-holder.ti-close
+              ng-container(*ngIf="q == 'All'")
+                button.btn-filter.btn-terms
+                  span Q: {{ q }}
+              ng-container(*ngIf="q != 'All'")
+                button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter(selectedQuestionsFilter, idx, 'questions')")
+                  span Q: {{ q }}
+                  span.icon-holder.ti-close
           ng-container(*ngIf="selectedAnswersFilter.length > 0")
             ng-container(*ngFor="let a of selectedAnswersFilter; let idx = index")
-              button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter(selectedAnswersFilter, idx, 'answers')")
-                span A: {{ a }}
-                span.icon-holder.ti-close
+              ng-container(*ngIf="a == 'All'")
+                button.btn-filter.btn-terms
+                  span A: {{ a }}
+              ng-container(*ngIf="a != 'All'")
+                button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter(selectedAnswersFilter, idx, 'answers')")
+                  span(*ngIf="answer != 'X' && answer != 'Idle'") A: {{ a }}
+                  span(*ngIf="answer == 'X' || answer == 'Idle'") A: No Answer - {{ a }}
+                  span.icon-holder.ti-close

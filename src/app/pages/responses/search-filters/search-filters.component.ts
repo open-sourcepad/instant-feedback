@@ -49,6 +49,7 @@ export class SearchFiltersComponent implements OnInit {
   ]
 
   openSearchFilter = false;
+  skipToggle = true;
   form: FormGroup;
 
   //selected search filters
@@ -61,6 +62,7 @@ export class SearchFiltersComponent implements OnInit {
 
   ngOnInit() {
     this.resetFilter();
+    this.skipToggle = false;
   }
 
   chooseDateRange(option) {
@@ -91,7 +93,6 @@ export class SearchFiltersComponent implements OnInit {
         break;
       }
     }
-
     this.selectedDate(this.daterange);
   }
 
@@ -107,25 +108,34 @@ export class SearchFiltersComponent implements OnInit {
     this.daterange.end = value.end;
     this.form.get('date_since').setValue(moment(value.start).format('YYYY/MM/DD 00:00:00'));
     this.form.get('date_until').setValue(moment(value.end).format('YYYY/MM/DD 23:59:59'));
+  
+    this.onSubmit(this.form.value);
   }
 
   addFilter(arr, value, attr) {
     if(arr.indexOf(value) < 0) {
+      arr.push(value);
+
       if(arr.indexOf('All') > -1 && value != 'All') {
         let idx = arr.indexOf('All');
         this.removeFilter(arr, idx, attr);
       }else if(value == 'All'){
-        arr.splice(0,arr.length);
+        arr.splice(0,arr.length-1);
       }
 
-      arr.push(value);
       this.form.get(attr).setValue(arr);
-   }
-
+    }
+    this.onSubmit(this.form.value);
   }
 
   removeFilter(arr, idx, attr) {
+
     arr.splice(idx, 1);
+    if(arr.length < 1) {
+      this.skipToggle = true;
+      this.addFilter(arr, 'All', attr);
+      this.skipToggle = false;
+    }
     this.form.get(attr).setValue(arr);
   }
 
@@ -146,6 +156,7 @@ export class SearchFiltersComponent implements OnInit {
       questions: [this.selectedQuestionsFilter, Validators.required],
       answers: [this.selectedAnswersFilter, Validators.required],
     });
+    this.onSubmit(this.form.value);
   }
 
   toggleSearchFilter(){
@@ -154,6 +165,9 @@ export class SearchFiltersComponent implements OnInit {
 
   onSubmit(values) {
     this.loading = true;
+    if(!this.skipToggle) {
+      this.toggleSearchFilter();
+    }
     this.submit.emit(values);
   }
 
