@@ -17,27 +17,16 @@
             span Time
           th
       tbody
-        tr
+        tr(*ngFor="let question of questions")
           td
-            span How was your scum today?
+            span {{ question.message }}
           td
-            span Twice a Week
-          td
-            span 10:30AM EST
-          td.actions
-            a
-              .icon-edit.icon-sm.icon-holder
-            a
-              .icon-remove.icon-sm.icon-holder
-        tr
-          td
-            span How do you feel about your team this week?
-          td
-            span Weekly
+            span {{ question.trigger_schedule }}
           td
             span
           td.actions
-            a
-              .icon-edit.icon-sm.icon-holder
-            a
-              .icon-remove.icon-sm.icon-holder
+            ng-container(*ngIf="question.category == 'Custom'")
+              a
+                .icon-edit.icon-sm.icon-holder
+              a
+                .icon-remove.icon-sm.icon-holder

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { QuestionService } from '../../../services/api'
 
 @Component({
   selector: 'app-question-index',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuestionIndexComponent implements OnInit {
 
-  constructor() { }
+  questions = [];
+
+  constructor(
+    private questionApi: QuestionService
+  ) { }
 
   ngOnInit() {
+    this.loadQuestions();
+  }
+
+  loadQuestions() {
+    this.questionApi.query({})
+      .subscribe(res => {
+        this.questions = res['collection']['data'];
+      });
   }
 
 }
