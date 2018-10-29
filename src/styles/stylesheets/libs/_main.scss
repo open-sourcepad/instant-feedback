@@ -11,21 +11,20 @@ body {
   font-family: 'Avenir', "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
   color: $default;
-  background-color: #FBFBFB;
 }
 
 body {
   .main-container {
-    padding: 10px 0px;
+    background-color: #FBFBFB;
   }
 }
 
 a {
-  color: $gold;
+  color: $linkColor;
 }
 
 a:hover {
-  color: $goldDark;
+  color: $white;
 }
 
 .icon-example > span {
@@ -47,7 +46,7 @@ a:hover {
 }
 
 .page-data-content {
-  margin: 30px 64px;
+  padding: 30px 64px;
 }
 
 .page-data-content .title {

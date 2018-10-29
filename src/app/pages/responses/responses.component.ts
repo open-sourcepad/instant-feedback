@@ -15,6 +15,7 @@ export class ResponsesComponent implements OnInit {
   collection = [];
   recordCount = 0;
   recordShownCount;
+  recordAnswerSummary;
   queryParams;
   page = {number: 1, size: 10};
 
@@ -36,6 +37,7 @@ export class ResponsesComponent implements OnInit {
       .subscribe(res => {
         this.collection = res['collection']['data'];
         this.recordCount = res['metadata']['record_count'];
+        this.recordAnswerSummary = res['metadata']['answer_summary'];
         this.calculateShownCount();
         this.loading = false;
       }, err => {

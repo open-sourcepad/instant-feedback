@@ -3,13 +3,30 @@
     .col-md-12
       h2.title Responses
     .col-md-12
-      search-filters(
-        [questions]="questions",
-        [answers]="answers",
-        [users]="users",
-        [loading]="loading",
-        (submit)="search($event)"
-      )
+      .row
+        .col-md-8
+          search-filters(
+            [questions]="questions",
+            [answers]="answers",
+            [users]="users",
+            [loading]="loading",
+            (submit)="search($event)"
+          )
+        .col-md-3
+          ng-container(*ngIf="queryParams['answers'][0] == 'All' && !!recordAnswerSummary")
+            #answer-summary-count.row
+              .col-md-3
+                span Happy
+                br
+                span.answer.text-green {{ recordAnswerSummary['happy_count'] }}
+              .col-md-3
+                span Sad
+                br
+                span.answer.text-red {{ recordAnswerSummary['sad_count'] }}
+              .col-md-6
+                span No Answer (X / idle)
+                br
+                span.answer.text-idle {{ recordAnswerSummary['x_count'] }} / {{ recordAnswerSummary['idle_count'] }}
       hr.divider
     .col-md-12
       span.total-results Showing&nbsp;
