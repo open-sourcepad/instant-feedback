@@ -39,9 +39,14 @@
         thead
           tr
             td
-              button
-                span.name Name
-                span.icon-holder.ti-arrow-up
+              ng-container(*ngIf="order['name'] == 'asc'")
+                button((click)="changeOrder('name', 'desc')")
+                  span.name Name
+                  span.icon-holder.ti-arrow-up
+              ng-container(*ngIf="order['name'] == 'desc'")
+                button((click)="changeOrder('name', 'asc')")
+                  span.name Name
+                  span.icon-holder.ti-arrow-down
             td
               button
                 span.name Question
@@ -49,9 +54,14 @@
               button
                 span.name Answer
             td
-              button
-                span.name Date
-                span.icon-holder.ti-arrow-up
+              ng-container(*ngIf="order['created_at'] == 'asc'")
+                button((click)="changeOrder('created_at', 'desc')")
+                  span.name Date
+                  span.icon-holder.ti-arrow-up
+              ng-container(*ngIf="order['created_at'] == 'desc'")
+                button((click)="changeOrder('created_at', 'asc')")
+                  span.name Date
+                  span.icon-holder.ti-arrow-down
         tbody
           ng-container(*ngIf="!loading && collection.length <= 0")
             tr

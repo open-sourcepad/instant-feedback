@@ -18,6 +18,7 @@ export class ResponsesComponent implements OnInit {
   recordAnswerSummary;
   queryParams;
   page = {number: 1, size: 10};
+  order = {name: 'asc', created_at: 'desc'};
 
   constructor(
     private answerApi: AnswerService,
@@ -32,6 +33,7 @@ export class ResponsesComponent implements OnInit {
     if (queryParams instanceof Event) {return;}
     this.queryParams = queryParams;
     queryParams['page'] = this.page;
+    queryParams['order'] = this.order;
 
     this.answerApi.query({query: queryParams})
       .subscribe(res => {
@@ -56,7 +58,6 @@ export class ResponsesComponent implements OnInit {
   }
 
   changePage(evt) {
-    console.log(evt);
     this.page['number'] = evt;
     this.search(this.queryParams);
   }
@@ -72,6 +73,11 @@ export class ResponsesComponent implements OnInit {
     }else {
       this.recordShownCount = `${(count - 9)}-${count}`;
     }
+  }
+
+  changeOrder(key, val){
+    this.order[key] = val;
+    this.search(this.queryParams);
   }
 
 }
