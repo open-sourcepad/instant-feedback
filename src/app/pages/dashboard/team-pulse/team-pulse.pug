@@ -1,49 +1,118 @@
 .team-pulse
   .row
-    .col-md-4
-      h1.font-weight-bold.text-uppercase Team Pulse
-      .team-pulse-filter
-        ul
-          li(
-            [ngClass]="{'filter-selected': filter == 'today'}",
-            (click)="setFilter('today')"
-          ) Today
-          
-          li(
-            [ngClass]="{'filter-selected': filter == 'week'}",
-            (click)="setFilter('week')"
-          ) Week
-          
-          li(
-            [ngClass]="{'filter-selected': filter == 'month'}",
-            (click)="setFilter('month')"
-          ) Month
-          
-          li(
-            [ngClass]="{'filter-selected': filter == 'year'}",
-            (click)="setFilter('year')"
-          ) Year
-      
-      .team-pulse-doughnut
-        .team-pulse-doughnut-chart
-          div
-            canvas#canvas
-          
-        .team-pulse-doughnut-description
-          h4.font-weight-bold(*ngIf="filter == 'today'") {{happyCount}} out of {{totalQuestion}} are feeling good {{filter}}!
-          h4.font-weight-bold(*ngIf="filter != 'today'") {{happyCount}} out of {{totalQuestion}} are feeling good this {{filter}}!
-      .team-pulse-line
-        .team-pulse-line-chart
-          div#chart2
-            canvas#canvas2
-      
-    .col-md-4
-      .team-pulse-percent-container
-        .team-pulse-percent-data
-          .row.pt-5(*ngFor="let data of questionsData")
-            .col-md-8.title
-              h2.font-weight-bold {{data.question}}
-            .col-md-4.data
-              h2.font-weight-bold([ngClass]="{'sad': data.happy_percent < 60}") {{data.happy_percent}}%
-              span.emotion happy
-    .col-md-4
+    .col-md-7
+      h1.title Team Pulse
+      span {{ form.value | json }}
+    .col-md-5
+      .date-filter-box
+        button.btn.btn-instant-feedback.btn-if-date-filter([class.active]="selectedDateFilter == 1", (click)="chooseDateRange(1)")
+          span THIS WEEK
+        button.btn.btn-instant-feedback.btn-if-date-filter([class.active]="selectedDateFilter == 2", (click)="chooseDateRange(2)")
+          span MONTH
+        button.btn.btn-instant-feedback.btn-if-date-filter([class.active]="selectedDateFilter == 3", (click)="chooseDateRange(3)")
+          span YEAR
+        button.btn.btn-instant-feedback.btn-if-date-filter([class.active]="selectedDateFilter == 4", (click)="chooseDateRange(4)", daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
+          span.icon-holder.ti-calendar
+          | &nbsp;&nbsp;
+          span.icon-holder.ti-angle-down
+    .col-md-12
+      h2.current-daterange October 8-12
+      hr.hr-underline
+    .col-md-12
+      .row
+        .col-md-5
+          .card
+            h2 Chart
+        .col-md-3
+          .row
+            .col-md-12.col-sm-6
+              .card.card-avg-summary([ng2-loading]="loading")
+                .card-title Happy
+                a.data {{ happyUsers.length }}
+                .hovered-box
+                  .data-hovered
+                    ng-container(*ngIf="happyUsers.length <= 0")
+                      .user-details
+                        .user-info
+                          span No users
+                    ng-container(*ngIf="happyUsers.length > 0")
+                      .user-details(*ngFor="let user of happyUsers")
+                        img(src="/styles/icons/feedback-white.png")
+                        .user-info  
+                          span {{ user.user.name }}
+                          br
+                          span.percent {{ user.percentage }}%
+            .col-md-12.col-sm-6
+              .card.card-avg-summary([ng2-loading]="loading")
+                .card-title Sad
+                a.data {{ sadUsers.length }}
+                .hovered-box
+                  .data-hovered
+                    ng-container(*ngIf="sadUsers.length <= 0")
+                      .user-details
+                        .user-info
+                          span No users
+                    ng-container(*ngIf="sadUsers.length > 0")
+                      .user-details(*ngFor="let user of sadUsers")
+                        img(src="/styles/icons/feedback-white.png")
+                        .user-info  
+                          span {{ user.user.name }}
+                          br
+                          span.percent {{ user.percentage }}%
+        .col-md-4
+          .row
+            .col-md-12.col-sm-6
+              .card.card-avg-summary([ng2-loading]="loading")
+                .card-title % of users who clicked X
+                a.data {{ answerPercentage.x }}%
+            .col-md-12.col-sm-6
+              .card.card-avg-summary([ng2-loading]="loading")
+                .card-title % of users who did not answer
+                a.data {{ answerPercentage['idle'] }}%
+    .col-md-12
+      .row.equal
+        .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
+          .card-box
+            .card-title {{ questionsData[0]?.question }}
+            .stats-summary
+              ng-container(*ngIf="!questionsData[0]?.answers")
+                span No data available
+              ng-container(*ngIf="questionsData[0]?.answers")
+                span data ready
+              canvas#canvas1
+        .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
+          .card-box
+            .card-title {{ questionsData[1]?.question }}
+            .stats-summary
+              ng-container(*ngIf="!questionsData[1]?.answers")
+                span No data available
+              ng-container(*ngIf="questionsData[1]?.answers")
+                span data ready
+              canvas#canvas2
+        .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
+          .card-box
+            .card-title {{ questionsData[2]?.question }}
+            .stats-summary
+              ng-container(*ngIf="!questionsData[2]?.answers")
+                span No data available
+              ng-container(*ngIf="questionsData[2]?.answers")
+                span data ready
+              canvas#canvas3
+        .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
+          .card-box
+            .card-title {{ questionsData[3]?.question }}
+            .stats-summary
+              ng-container(*ngIf="!questionsData[3]?.answers")
+                span No data available
+              ng-container(*ngIf="questionsData[3]?.answers")
+                span data ready
+              canvas#canvas4
+        .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
+          .card-box
+            .card-title {{ questionsData[4]?.question }}
+            .stats-summary
+              ng-container(*ngIf="!questionsData[4]?.answers")
+                span No data available
+              ng-container(*ngIf="questionsData[4]?.answers")
+                span data ready
+              canvas#canvas5

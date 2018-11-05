@@ -1,0 +1,145 @@
+$darkGray: #323C47;
+
+.date-filter-box {
+  opacity: 0.55;
+  background: rgba(125,124,122,0.48);
+  border-radius: 4px;
+  padding: 5px 10px;
+  text-align: center;
+}
+
+.btn-if-date-filter {
+  margin: 0 6px;
+  font-size: 13px;
+  letter-spacing: 0;
+  padding: 8px 10px;
+  background: transparent;
+  color: #fff;
+
+  &.active {
+    background: #fff;
+    color: initial;
+  }
+}
+
+.current-daterange {
+  color: #C3BAAA;
+  letter-spacing: 0.19px;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.hr-underline {
+  border-top: 4px solid  #333333;
+  margin-left: 0;
+  margin-top: 0;
+  width: 52px;
+  max-width: 100%;
+}
+
+.card-avg-summary {
+  box-shadow: 0 4px 9px 0 rgba(0,0,0,0.02);
+  border-radius: 6px;
+  text-align: center;
+  padding: 30px;
+  .card-title {
+    font-size: 16px;
+    color: $darkGray;
+    letter-spacing: 0;
+  }
+  .data {
+    font-family: "Poppins";
+    font-size: 26px;
+    color: #7D7C7A;
+    letter-spacing: 0;
+    line-height: 28px;
+
+    &:hover + .hovered-box {
+      display: block;
+    }
+  }
+
+  .hovered-box {
+    position: absolute;
+    z-index: 1;
+    top: 100px;
+    left: 105px;
+    display: none;
+
+  }
+
+  .data-hovered {
+    background: #333333;
+    border-radius: 3px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 28px;
+    max-height: 280px;
+    width: 237px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: left;
+    &::before {
+      content: '';
+      border-bottom: 8px solid #333333;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      position: absolute;
+      top: -6px;
+      left: 15px;
+    }
+
+    .user-details > img {
+      display: inline-block;
+      height: 49px;
+      vertical-align: top;
+      width: 51px;
+      margin-right: 12px;
+    }
+
+    .user-details > .user-info {
+      display: inline-block;
+      font-size: 14px;
+      color: #F9FBF2;
+      letter-spacing: 0;
+
+      > .percent {
+        font-family: 'Poppins';
+        font-size: 18px;
+        color: #C3BAAA;
+        letter-spacing: 0;
+        line-height: 28px;
+      }
+    }
+  }
+}
+
+.card-questions {
+  padding: 0;
+  background-clip: padding-box;
+  border: 10px solid transparent;
+  .card-box {
+    box-shadow: 0 2px 9px 0 rgba(0,0,0,0.02);
+    border-radius: 6px;
+    height: 100%;
+    padding: 24px 38px 38px;
+    text-align: center;
+  }
+}
+
+.card-box  {
+  .card-title {
+    font-family: 'Poppins';
+    font-weight: bold;
+    font-size: 17px;
+    color: $darkGray;
+    letter-spacing: -0.19px;
+    position: relative;
+    margin-bottom: 25%;
+  }
+
+  .stats-summary {
+      border: 1px solid #E9EFF4;
+      border-radius: 5px;
+    }
+}

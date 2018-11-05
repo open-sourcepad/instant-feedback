@@ -6,6 +6,9 @@ import { FormsModule } from '@angular/forms';
 import { DashboardComponent } from './dashboard.component';
 import { TeamPulseComponent } from './team-pulse/team-pulse.component';
 
+import { Daterangepicker } from 'ng2-daterangepicker';
+import { Ng2LoadingSpinnerModule } from 'ng2-loading-spinner';
+
 const MODULE_COMPONENTS = [
   DashboardComponent,
   TeamPulseComponent
@@ -15,7 +18,9 @@ const MODULE_COMPONENTS = [
   imports: [
     CommonModule,
     routing,
-    FormsModule
+    FormsModule,
+    Daterangepicker,
+    Ng2LoadingSpinnerModule
   ],
   declarations: [
     ...MODULE_COMPONENTS
