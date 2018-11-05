@@ -159,14 +159,21 @@ export class TeamPulseComponent implements OnInit {
     let canvas_name = `canvas${question['id']}`;
     let canvas : any = document.getElementById(canvas_name);
     let chart = canvas.getContext("2d");
+    let gradientFill = chart.createLinearGradient(0, 0, 0, 150);
+    gradientFill.addColorStop(0, "rgba(0,172,255,1)");
+    gradientFill.addColorStop(1, "rgba(0,172,255,0)");
 
     let data  = {
         labels: question["data"].map(data => data['date']),
         datasets: [{
-          backgroundColor: 'rgb(65, 82, 104)',
-          pointBackgroundColor: 'white',
-          borderWidth: 4,
-          borderColor: '#83d6c0',
+          backgroundColor: gradientFill,
+          pointBackgroundColor: 'rgba(162,185,253,1)',
+          pointHoverBorderWidth: 3,
+          pointRadius: 0.5,
+          pointHoverRadius: 7,
+          pointHoverBorderColor: '#fff',
+          borderWidth: 3,
+          borderColor: "rgba(0,170,255,0.8)",
           data: question["data"].map(data => data['percentage']['happy'])
         }]
     };
@@ -175,12 +182,45 @@ export class TeamPulseComponent implements OnInit {
         type: 'line',
         data: data,
         options: {
+          labels: {
+            display: false
+          },
+          legend: {
+            display: false
+          },
+          title: {
+            display: true,
+            text: 'Overall Activity',
+            fontColor: '#323C47',
+            fontStyle: 'light',
+            fontSize: 11,
+            padding: 15
+          },
+          tooltips: {
+            mode: 'nearest'
+          },
           scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
+            xAxes: [{
+              display: false,
+              gridLines: {
+                display:false
+              }
+            }],
+            yAxes: [{
+              beginAtZero: true,
+              display: false,
+              gridLines: {
+                display: false
+              }   
+            }]
+          },
+          layout: {
+            padding: {
+                left: 8,
+                right: 8,
+                top: 0,
+                bottom: 15
+            }
           }
         }
     });

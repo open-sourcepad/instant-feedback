@@ -76,43 +76,119 @@
             .card-title {{ questionsData[0]?.question }}
             .stats-summary
               ng-container(*ngIf="!questionsData[0]?.answers")
-                span No data available
+                ul.reset.summary-count
+                  li
+                    span No data available
               ng-container(*ngIf="questionsData[0]?.answers")
-                span data ready
+                ul.reset.summary-count
+                  li
+                    span Happy
+                    br
+                    span.text-green {{ questionsData[0]?.answers?.happy }}%
+                  li
+                    span Sad
+                    br
+                    span.text-red {{ questionsData[0]?.answers?.sad }}%
+                  li
+                    span No Answer&nbsp;
+                    span.text-idle.font-light (X / Idle)
+                    br
+                    span.text-idle {{ questionsData[0]?.answers?.x }}% / {{ questionsData[0]?.answers?.idle }}%
+
               canvas#canvas1
         .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
           .card-box
             .card-title {{ questionsData[1]?.question }}
             .stats-summary
               ng-container(*ngIf="!questionsData[1]?.answers")
-                span No data available
+                ul.reset.summary-count
+                  li
+                    span No data available
               ng-container(*ngIf="questionsData[1]?.answers")
-                span data ready
+                ul.reset.summary-count
+                  li
+                    span Happy
+                    br
+                    span.text-green {{ questionsData[1]?.answers?.happy }}%
+                  li
+                    span Sad
+                    br
+                    span.text-red {{ questionsData[1]?.answers?.sad }}%
+                  li
+                    span No Answer&nbsp;
+                    span.text-idle.font-light (X / Idle)
+                    br
+                    span.text-idle {{ questionsData[1]?.answers?.x }}% / {{ questionsData[1]?.answers?.idle }}%
               canvas#canvas2
         .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
           .card-box
             .card-title {{ questionsData[2]?.question }}
             .stats-summary
               ng-container(*ngIf="!questionsData[2]?.answers")
-                span No data available
+                ul.reset.summary-count
+                  li
+                    span No data available
               ng-container(*ngIf="questionsData[2]?.answers")
-                span data ready
+                ul.reset.summary-count
+                  li
+                    span Happy
+                    br
+                    span.text-green {{ questionsData[2]?.answers?.happy }}%
+                  li
+                    span Sad
+                    br
+                    span.text-red {{ questionsData[2]?.answers?.sad }}%
+                  li
+                    span No Answer&nbsp;
+                    span.text-idle.font-light (X / Idle)
+                    br
+                    span.text-idle {{ questionsData[2]?.answers?.x }}% / {{ questionsData[2]?.answers?.idle }}%
               canvas#canvas3
         .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
           .card-box
             .card-title {{ questionsData[3]?.question }}
             .stats-summary
               ng-container(*ngIf="!questionsData[3]?.answers")
-                span No data available
+                ul.reset.summary-count
+                  li
+                    span No data available
               ng-container(*ngIf="questionsData[3]?.answers")
-                span data ready
+                ul.reset.summary-count
+                  li
+                    span Happy
+                    br
+                    span.text-green {{ questionsData[3]?.answers?.happy }}%
+                  li
+                    span Sad
+                    br
+                    span.text-red {{ questionsData[3]?.answers?.sad }}%
+                  li
+                    span No Answer&nbsp;
+                    span.text-idle.font-light (X / Idle)
+                    br
+                    span.text-idle {{ questionsData[3]?.answers?.x }}% / {{ questionsData[3]?.answers?.idle }}%
               canvas#canvas4
         .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
           .card-box
             .card-title {{ questionsData[4]?.question }}
             .stats-summary
               ng-container(*ngIf="!questionsData[4]?.answers")
-                span No data available
+                ul.reset.summary-count
+                  li
+                    span No data available
               ng-container(*ngIf="questionsData[4]?.answers")
-                span data ready
+                ul.reset.summary-count
+                  li
+                    span Happy
+                    br
+                    span.text-green {{ questionsData[4]?.answers?.happy }}%
+                  li
+                    span Sad
+                    br
+                    span.text-red {{ questionsData[4]?.answers?.sad }}%
+                  li
+                    span No Answer&nbsp;
+                    span.text-idle.font-light (X / Idle)
+                    br
+                    span.text-idle {{ questionsData[4]?.answers?.x }}% / {{ questionsData[4]?.answers?.idle }}%
               canvas#canvas5
