@@ -17,7 +17,7 @@ export class ResponsesComponent implements OnInit {
   recordShownCount;
   recordAnswerSummary;
   queryParams;
-  page = {number: 1, size: 10};
+  page = {number: 1, size: 20};
   order = {name: 'asc', created_at: 'desc'};
 
   constructor(
@@ -65,13 +65,16 @@ export class ResponsesComponent implements OnInit {
   calculateShownCount(){
     var totalPages = Math.ceil(this.recordCount / this.page['size']);
     var count = this.page['number'] * this.page['size'];
-    if(this.page['number'] == 1 && this.recordCount < this.page['size']) {
+
+    if(this.page['number'] == 1 && this.recordCount == 0) {
+      this.recordShownCount = `0-${this.recordCount}`;
+    }else if(this.page['number'] == 1 && this.recordCount < this.page['size']) {
       this.recordShownCount = `${this.page['number']}-${this.recordCount}`;
     }else if(this.page['number'] == totalPages ) {
       let endRange = (count - this.page['size']) + this.collection.length;
-      this.recordShownCount = `${(count - 9)}-${endRange}`;
+      this.recordShownCount = `${(count - 19)}-${endRange}`;
     }else {
-      this.recordShownCount = `${(count - 9)}-${count}`;
+      this.recordShownCount = `${(count - 19)}-${count}`;
     }
   }
 
