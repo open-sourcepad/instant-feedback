@@ -2,7 +2,6 @@
   .row
     .col-md-7
       h1.title Team Pulse
-      span {{ form.value | json }}
     .col-md-5
       .date-filter-box
         button.btn.btn-instant-feedback.btn-if-date-filter([class.active]="selectedDateFilter == 1", (click)="chooseDateRange(1)")
@@ -74,22 +73,22 @@
         .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
           .card-box
             .card-title {{ questionsData[0]?.question }}
-            .stats-summary
+            .stats-summary.container
               ng-container(*ngIf="!questionsData[0]?.answers")
-                ul.reset.summary-count
-                  li
+                .row.summary-count
+                  .col-md-3
                     span No data available
               ng-container(*ngIf="questionsData[0]?.answers")
-                ul.reset.summary-count
-                  li
+                .row.summary-count
+                  .col-md-3
                     span Happy
                     br
                     span.text-green {{ questionsData[0]?.answers?.happy }}%
-                  li
+                  .col-md-3
                     span Sad
                     br
                     span.text-red {{ questionsData[0]?.answers?.sad }}%
-                  li
+                  .col-md-auto
                     span No Answer&nbsp;
                     span.text-idle.font-light (X / Idle)
                     br
@@ -99,22 +98,22 @@
         .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
           .card-box
             .card-title {{ questionsData[1]?.question }}
-            .stats-summary
+            .stats-summary.container
               ng-container(*ngIf="!questionsData[1]?.answers")
-                ul.reset.summary-count
-                  li
+                .row.summary-count
+                  .col-md-12
                     span No data available
               ng-container(*ngIf="questionsData[1]?.answers")
-                ul.reset.summary-count
-                  li
+                .row.summary-count
+                  .col-md-3
                     span Happy
                     br
                     span.text-green {{ questionsData[1]?.answers?.happy }}%
-                  li
+                  .col-md-3
                     span Sad
                     br
                     span.text-red {{ questionsData[1]?.answers?.sad }}%
-                  li
+                  .col-md-auto
                     span No Answer&nbsp;
                     span.text-idle.font-light (X / Idle)
                     br
@@ -123,22 +122,22 @@
         .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
           .card-box
             .card-title {{ questionsData[2]?.question }}
-            .stats-summary
+            .stats-summary.container
               ng-container(*ngIf="!questionsData[2]?.answers")
-                ul.reset.summary-count
-                  li
+                .row.summary-count
+                  .col-md-12
                     span No data available
               ng-container(*ngIf="questionsData[2]?.answers")
-                ul.reset.summary-count
-                  li
+                .row.summary-count
+                  .col-md-3
                     span Happy
                     br
                     span.text-green {{ questionsData[2]?.answers?.happy }}%
-                  li
+                  .col-md-3
                     span Sad
                     br
                     span.text-red {{ questionsData[2]?.answers?.sad }}%
-                  li
+                  .col-md-auto
                     span No Answer&nbsp;
                     span.text-idle.font-light (X / Idle)
                     br
@@ -147,22 +146,22 @@
         .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
           .card-box
             .card-title {{ questionsData[3]?.question }}
-            .stats-summary
+            .stats-summary.container
               ng-container(*ngIf="!questionsData[3]?.answers")
-                ul.reset.summary-count
-                  li
+                .row.summary-count
+                  .col-md-12
                     span No data available
               ng-container(*ngIf="questionsData[3]?.answers")
-                ul.reset.summary-count
-                  li
+                .row.summary-count
+                  .col-md-3
                     span Happy
                     br
                     span.text-green {{ questionsData[3]?.answers?.happy }}%
-                  li
+                  .col-md-3
                     span Sad
                     br
                     span.text-red {{ questionsData[3]?.answers?.sad }}%
-                  li
+                  .col-md-auto
                     span No Answer&nbsp;
                     span.text-idle.font-light (X / Idle)
                     br
@@ -171,22 +170,22 @@
         .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
           .card-box
             .card-title {{ questionsData[4]?.question }}
-            .stats-summary
+            .stats-summary.container
               ng-container(*ngIf="!questionsData[4]?.answers")
-                ul.reset.summary-count
-                  li
+                .row.summary-count
+                  .col-md-12
                     span No data available
               ng-container(*ngIf="questionsData[4]?.answers")
-                ul.reset.summary-count
-                  li
+                .row.summary-count
+                  .col-md-3
                     span Happy
                     br
                     span.text-green {{ questionsData[4]?.answers?.happy }}%
-                  li
+                  .col-md-3
                     span Sad
                     br
                     span.text-red {{ questionsData[4]?.answers?.sad }}%
-                  li
+                  .col-md-6
                     span No Answer&nbsp;
                     span.text-idle.font-light (X / Idle)
                     br

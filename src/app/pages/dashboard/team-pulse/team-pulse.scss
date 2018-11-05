@@ -148,16 +148,15 @@ $darkGray: #323C47;
   border-bottom: 1px solid #E9EFF4;
 }
 
-.summary-count > li {
+.summary-count > div {
   display: inline-block;
-  padding: 13px 11px;
+  padding: 13px 6px;
   font-size: 12px;
   color: #323C47;
   letter-spacing: 0.39px;
   font-weight: 600;
   text-align: center;
   border-right: 1px solid #E9EFF4;
-  width: 25%;
   &:last-child {
     border-right: 0;
     width: 50%;
