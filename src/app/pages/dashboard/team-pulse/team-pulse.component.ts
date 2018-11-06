@@ -96,7 +96,9 @@ export class TeamPulseComponent implements OnInit {
                 currentData = questionStats['percentage'];
               }
             }
-            this.generateQuestionChart(question);
+            if(this.filter != 'custom'){
+              this.generateQuestionChart(question);
+            }
           }
           this.questionsData.push({id: question['id'], question: question['question'], answers: currentData});
         }
@@ -140,8 +142,6 @@ export class TeamPulseComponent implements OnInit {
         break;
       }
       default: {
-        this.filter = 'custom'
-        this.form.get('filter').setValue(this.filter);
         break;
       }
     }
@@ -151,6 +151,8 @@ export class TeamPulseComponent implements OnInit {
     if(datepicker){
       datepicker.start = value.start;
       datepicker.end = value.end;
+      this.filter = 'custom'
+      this.form.get('filter').setValue(this.filter);
     }
 
     this.daterange.start = value.start;
@@ -276,7 +278,6 @@ export class TeamPulseComponent implements OnInit {
     let data = {
         labels: stats.map(data => {
           if(data['date'] == 'current'){
-            console.log(this.filter);
            return `This ${this.filter.charAt(0).toUpperCase()}${this.filter.slice(1)}`;
           }else{
             return data['date'];
