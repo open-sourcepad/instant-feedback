@@ -14,9 +14,9 @@ export class TeamPulseComponent implements OnInit {
   happyUsers: any;
   sadUsers: any;
   questionsData: any;
-  questionChart: any;
+  questionsChart: any;
   answerPercentage: any;
-  questionInstance: any;
+  happyChart: any;
   loading = false;
 
   form: FormGroup;
@@ -60,8 +60,8 @@ export class TeamPulseComponent implements OnInit {
       this.happyUsers = [];
       this.sadUsers = [];
       this.questionsData = [];
-      this.questionChart = {};
-      this.answerPercentage = {x: 0, idle: 0};
+      this.questionsChart = {};
+      this.answerPercentage = {x: 0, idle: 0, happy: 0};
     }
 
   ngOnInit() {
@@ -82,6 +82,12 @@ export class TeamPulseComponent implements OnInit {
         this.sadUsers = res['sad_users'];
         this.answerPercentage['x'] = res['answer_percentage']['x'];
         this.answerPercentage['idle'] = res['answer_percentage']['idle'];
+        this.answerPercentage['happy'] = res['happiness_meter'].slice(-1)[0]['percentage'];
+
+        if(this.filter != 'custom'){
+          this.generateHappyMeter(res['happiness_meter']);
+         }
+
         for(let question of res['stats_per_questions']){
           let currentData;
           if(question['data'].length > 0){
@@ -101,7 +107,8 @@ export class TeamPulseComponent implements OnInit {
     this.selectedDateFilter = option;
     switch(option){
       case 1: {
-        this.form.get('filter').setValue('week');
+        this.filter = 'week'
+        this.form.get('filter').setValue(this.filter);
         this.daterange = {
           start: moment().startOf('week').format('YYYY/MM/DD 00:00:00'),
           end: moment().endOf('week').format('YYYY/MM/DD 23:59:59')
@@ -111,7 +118,8 @@ export class TeamPulseComponent implements OnInit {
         break;
       }
       case 2: {
-        this.form.get('filter').setValue('month');
+        this.filter = 'month'
+        this.form.get('filter').setValue(this.filter);
         this.daterange = {
           start: moment().startOf('month').format('YYYY/MM/DD 00:00:00'),
           end: moment().endOf('month').format('YYYY/MM/DD 23:59:59')
@@ -121,7 +129,8 @@ export class TeamPulseComponent implements OnInit {
         break;
       }
       case 3: {
-        this.form.get('filter').setValue('year');
+        this.filter = 'year'
+        this.form.get('filter').setValue(this.filter);
         this.daterange = {
           start: moment().startOf('year').format('YYYY/MM/DD 00:00:00'),
           end: moment().endOf('year').format('YYYY/MM/DD 23:59:59')
@@ -131,7 +140,8 @@ export class TeamPulseComponent implements OnInit {
         break;
       }
       default: {
-        this.form.get('filter').setValue('custom');
+        this.filter = 'custom'
+        this.form.get('filter').setValue(this.filter);
         break;
       }
     }
@@ -152,8 +162,8 @@ export class TeamPulseComponent implements OnInit {
   }
 
   generateQuestionChart(question) {
-    if (!!this.questionChart[question['id']]) {
-      this.questionChart[question['id']].destroy()
+    if (!!this.questionsChart[question['id']]) {
+      this.questionsChart[question['id']].destroy()
     }
 
     let canvas_name = `canvas${question['id']}`;
@@ -178,7 +188,7 @@ export class TeamPulseComponent implements OnInit {
         }]
     };
 
-    this.questionChart[question['id']] = new Chart(chart, {
+    this.questionsChart[question['id']] = new Chart(chart, {
         type: 'line',
         data: data,
         options: {
@@ -197,7 +207,23 @@ export class TeamPulseComponent implements OnInit {
             padding: 15
           },
           tooltips: {
-            mode: 'nearest'
+            backgroundColor: 'transparent',
+            bodyFontFamily: 'Avenir',
+            bodyFontColor: '#4A4A4A',
+            bodyFontStyle: 'light',
+            bodySpacing: 5,
+            custom: function(tooltip) {
+              if (!tooltip) return;
+              tooltip.displayColors = false;
+            },
+            callbacks: {
+              label: function(tooltipItem, data) {
+                return tooltipItem.yLabel + "%";
+              },
+              title: function(tooltipItem, data) {
+                return;
+              }
+            }
           },
           scales: {
             xAxes: [{
@@ -207,18 +233,21 @@ export class TeamPulseComponent implements OnInit {
               }
             }],
             yAxes: [{
-              beginAtZero: true,
               display: false,
               gridLines: {
                 display: false
-              }   
+              },
+              ticks: {
+                beginAtZero: true,
+                max: 105
+              }
             }]
           },
           layout: {
             padding: {
                 left: 8,
                 right: 8,
-                top: 0,
+                top: 1.5,
                 bottom: 15
             }
           }
@@ -226,103 +255,116 @@ export class TeamPulseComponent implements OnInit {
     });
   }
 
+  generateHappyMeter(stats){
+    if (!!this.happyChart) {
+      this.happyChart.destroy()
+    }
 
-  // lineChart(teamPulseData){
-  //   if (!!this.lineChartInstance) {
-  //     this.lineChartInstance.destroy()
-  //   }
-  //   let canvas : any = document.getElementById('canvas2');
-  //   let chart = canvas.getContext("2d");
-  //   let data  = {
-  //       labels: [ 'Aug 20', 'Aug 27', 'Sep 3', 'Sep 10', 'Sep 17','Sep 24', 'Oct 1', 'This Week' ],
-  //       datasets: [{
-  //         backgroundColor: 'rgb(65, 82, 104)',
-  //         pointBackgroundColor: 'white',
-  //         borderWidth: 4,
-  //         borderColor: '#83d6c0',
-  //         data: [ 20, 15, 27, 59, 24, 52, 74, 42]
-  //       }]
-  //   };
+    let canvas : any = document.getElementById('happyMeterChart');
+    let chart = canvas.getContext("2d");
 
+    let gradientStroke = chart.createLinearGradient(0, 0, 350, 0);
+    gradientStroke.addColorStop(0, '#FFC875');
+    gradientStroke.addColorStop(0.4, '#F3595B');
+    gradientStroke.addColorStop(0.8, '#D9A783');
+    gradientStroke.addColorStop(1, '#83D7C0');
 
-  //   let options = {
-  //     responsive: true,
-  //     maintainAspectRatio: true,
-  //     animation: {
-  //       easing: 'easeInOutQuad',
-  //       duration: 300
-  //     },
-  //     scales: {
-  //       xAxes: [{
-  //         gridLines: {
-  //           color: 'rgba(200, 200, 200, 0.05)',
-  //           lineWidth: 1
-  //         }
-  //       }],
-  //       yAxes: [{
-  //         gridLines: {
-  //           color: 'rgba(200, 200, 200, 0.08)',
-  //           lineWidth: 1
-  //         },
-  //         ticks: {
-  //           beginAtZero: true,
-  //           suggestedMin: 0,
-  //           suggestedMax: 100,
-  //           stepSize: 10,
-  //           callback: function(tick) {
-  //             return tick.toString() + '%';
-  //           }
-  //         }
-  //       }]
-  //     },
-  //     elements: {
-  //       line: {
-  //         tension: 0.4
-  //       }
-  //     },
-  //     legend: {
-  //       display: false
-  //     },
-  //     point: {
-  //       backgroundColor: 'white'
-  //     },
-  //     tooltips: {
-  //       titleFontFamily: 'Open Sans',
-  //       backgroundColor: 'rgba(0,0,0,0.3)',
-  //       titleFontColor: 'red',
-  //       caretSize: 5,
-  //       cornerRadius: 2,
-  //       xPadding: 10,
-  //       yPadding: 10,
-  //       callbacks: {
-  //         label: function(tooltipItem, data) {
-  //           let dataset = data.datasets[tooltipItem.datasetIndex];
-  //           let label = data.labels[tooltipItem.index];
-  //           return  'Happy for ' + label + ' is ' + dataset.data[tooltipItem.index] + "%";
-  //         }
-  //       }
-  //     },
-  //     annotation: {
-  //       annotations: [{
-  //         type: 'line',
-  //         mode: 'horizontal',
-  //         scaleID: 'y-axis-0',
-  //         value: 40,
-  //         borderColor: 'rgb(75, 192, 192)',
-  //         borderWidth: 4,
-  //         label: {
-  //           enabled: false,
-  //           content: 'Test label'
-  //         }
-  //       }]
-  //     }
-  //   };
+    let gradientFill = chart.createLinearGradient(0, 50, 0, 100);
+    gradientFill.addColorStop(0, "#293B52");
+    gradientFill.addColorStop(1, "#4E617A");
 
+    let data = {
+        labels: stats.map(data => {
+          if(data['date'] == 'current'){
+            console.log(this.filter);
+           return `This ${this.filter.charAt(0).toUpperCase()}${this.filter.slice(1)}`;
+          }else{
+            return data['date'];
+          }
+        }),
+        datasets: [{
+          backgroundColor: gradientFill,
+          pointBackgroundColor: 'rgba(162,185,253,1)',
+          pointHoverBorderWidth: 3,
+          pointRadius: 0,
+          pointHoverRadius: 7,
+          pointHoverBorderColor: '#fff',
+          borderWidth: 5,
+          borderColor: gradientStroke,
+          data: stats.map(data => data['percentage'])
+        }]
+    };
 
-  //   this.lineChartInstance = new Chart(chart, {
-  //       type: 'line',
-  //       data: data,
-  //       options: options
-  //   });
-  // }
+    let options = {
+        responsive: true,
+        spanGaps: true,
+        labels: {
+          display: false
+        },
+        legend: {
+          display: false
+        },
+        title: {
+          display: false
+        },
+        tooltips: {
+          backgroundColor: '#fff',
+          bodyFontFamily: 'Avenir',
+          bodyFontColor: '#4A4A4A',
+          bodyFontStyle: 'light',
+          custom: function(tooltip) {
+            if (!tooltip) return;
+            tooltip.displayColors = false;
+          },
+          callbacks: {
+            label: function(tooltipItem, data) {
+              return tooltipItem.yLabel + "%";
+            },
+            title: function(tooltipItem, data) {
+              return;
+            }
+          }
+        },
+        scales: {
+          xAxes: [{
+            gridLines: {
+              display: false,
+              tickMarkLength: 5
+            },
+            fontColor: '#4A4A4A',
+            ticks: {
+              autoSkip: false,
+              zeroLineColor: "transparent",
+              unitStepSize: 5,
+              tickMarkLength: 20
+            }
+          }],
+          yAxes: [{
+            display: false,
+            gridLines: {
+              drawTicks: false,
+              display: false
+            },
+            ticks: {
+              beginAtZero: 0,
+              max: 105
+            }
+          }]
+        },
+        layout: {
+          padding: {
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 15
+          }
+        }
+    };
+
+    this.happyChart = new Chart(chart, {
+        type: 'line',
+        data: data,
+        options: options
+    });
+  }
 }

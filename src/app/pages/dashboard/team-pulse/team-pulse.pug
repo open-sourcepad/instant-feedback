@@ -15,13 +15,17 @@
           | &nbsp;&nbsp;
           span.icon-holder.ti-angle-down
     .col-md-12
-      h2.current-daterange October 8-12
+      h2.current-daterange {{ this.daterange.start | date : 'MMMM d'}}-{{ this.daterange.end | date : 'd'}}
       hr.hr-underline
     .col-md-12
       .row
         .col-md-5
           .card
-            h2 Chart
+            .card-content.text-center
+              br
+              h5 Happiness Meter
+              .text-green.percentage {{ answerPercentage.happy }}%
+            canvas#happyMeterChart
         .col-md-3
           .row
             .col-md-12.col-sm-6
@@ -67,7 +71,7 @@
             .col-md-12.col-sm-6
               .card.card-avg-summary([ng2-loading]="loading")
                 .card-title % of users who did not answer
-                a.data {{ answerPercentage['idle'] }}%
+                a.data {{ answerPercentage.idle }}%
     .col-md-12
       .row.equal
         .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
@@ -88,7 +92,7 @@
                     span Sad
                     br
                     span.text-red {{ questionsData[0]?.answers?.sad }}%
-                  .col-md-auto
+                  .col-md-6
                     span No Answer&nbsp;
                     span.text-idle.font-light (X / Idle)
                     br
@@ -113,7 +117,7 @@
                     span Sad
                     br
                     span.text-red {{ questionsData[1]?.answers?.sad }}%
-                  .col-md-auto
+                  .col-md-6
                     span No Answer&nbsp;
                     span.text-idle.font-light (X / Idle)
                     br
@@ -137,7 +141,7 @@
                     span Sad
                     br
                     span.text-red {{ questionsData[2]?.answers?.sad }}%
-                  .col-md-auto
+                  .col-md-6
                     span No Answer&nbsp;
                     span.text-idle.font-light (X / Idle)
                     br
@@ -161,7 +165,7 @@
                     span Sad
                     br
                     span.text-red {{ questionsData[3]?.answers?.sad }}%
-                  .col-md-auto
+                  .col-md-6
                     span No Answer&nbsp;
                     span.text-idle.font-light (X / Idle)
                     br

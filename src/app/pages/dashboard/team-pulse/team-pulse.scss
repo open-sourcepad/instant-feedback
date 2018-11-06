@@ -114,6 +114,16 @@ $darkGray: #323C47;
   }
 }
 
+.card-content .percentage {
+  font-family: 'Poppins';
+  font-size: 48px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 28px;
+  margin-top: 26px;
+  margin-bottom: 26px;
+}
+
 .card-questions {
   padding: 0;
   background-clip: padding-box;
@@ -159,7 +169,6 @@ $darkGray: #323C47;
   border-right: 1px solid #E9EFF4;
   &:last-child {
     border-right: 0;
-    width: 50%;
   }
 
   .answer {
