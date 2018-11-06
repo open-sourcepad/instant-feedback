@@ -88,6 +88,7 @@ export class TeamPulseComponent implements OnInit {
           this.generateHappyMeter(res['happiness_meter']);
          }
 
+        let idx = 1;
         for(let question of res['stats_per_questions']){
           let currentData;
           if(question['data'].length > 0){
@@ -97,10 +98,11 @@ export class TeamPulseComponent implements OnInit {
               }
             }
             if(this.filter != 'custom'){
-              this.generateQuestionChart(question);
+              this.generateQuestionChart(question, idx);
             }
           }
           this.questionsData.push({id: question['id'], question: question['question'], answers: currentData});
+          idx++;
         }
     });
   }
@@ -163,12 +165,12 @@ export class TeamPulseComponent implements OnInit {
     this.filterStats();
   }
 
-  generateQuestionChart(question) {
-    if (!!this.questionsChart[question['id']]) {
-      this.questionsChart[question['id']].destroy()
+  generateQuestionChart(question, idx) {
+    if (!!this.questionsChart[idx]) {
+      this.questionsChart[idx].destroy()
     }
 
-    let canvas_name = `canvas${question['id']}`;
+    let canvas_name = `canvas${idx}`;
     let canvas : any = document.getElementById(canvas_name);
     let chart = canvas.getContext("2d");
     let gradientFill = chart.createLinearGradient(0, 0, 0, 150);
@@ -257,9 +259,9 @@ export class TeamPulseComponent implements OnInit {
     });
   }
 
-  generateHappyMeter(stats){
+  generateHappyMeter(stats) {
     if (!!this.happyChart) {
-      this.happyChart.destroy()
+      this.happyChart.destroy();
     }
 
     let canvas : any = document.getElementById('happyMeterChart');

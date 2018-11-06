@@ -15,12 +15,19 @@
           | &nbsp;&nbsp;
           span.icon-holder.ti-angle-down
     .col-md-12
-      h2.current-daterange {{ this.daterange.start | date : 'MMMM d'}}-{{ this.daterange.end | date : 'd'}}
+      ng-container(*ngIf="filter == 'week'")
+        h2.current-daterange {{ this.daterange.start | date : 'MMMM d'}}-{{ this.daterange.end | date : 'd'}}
+      ng-container(*ngIf="filter == 'month'")
+        h2.current-daterange {{ this.daterange.start | date : 'MMMM y'}}
+      ng-container(*ngIf="filter == 'year'")
+        h2.current-daterange {{ this.daterange.start | date : 'y'}}
+      ng-container(*ngIf="filter == 'custom'")
+        h2.current-daterange {{ this.daterange.start | date : 'MMMM d y'}}-{{ this.daterange.end | date : 'MMMM d y'}}
       hr.hr-underline
     .col-md-12
       .row
         .col-md-5
-          .card([ng2-loading]="loading")
+          .card.card-happy-chart([ng2-loading]="loading")
             .card-content.text-center
               br
               h5 Happiness Meter
@@ -81,7 +88,7 @@
             .stats-summary.container
               ng-container(*ngIf="!questionsData[0]?.answers")
                 .row.summary-count
-                  .col-md-3
+                  .col-md-12
                     span No data available
               ng-container(*ngIf="questionsData[0]?.answers")
                 .row.summary-count
