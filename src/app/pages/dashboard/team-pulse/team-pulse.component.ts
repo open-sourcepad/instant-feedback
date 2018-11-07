@@ -73,6 +73,11 @@ export class TeamPulseComponent implements OnInit {
     this.filterStats();
   }
 
+  setHeight(){
+    var height = document.getElementById('cardHappyChart');
+    return ((height.offsetHeight / 2)- 15);
+  }
+
   filterStats(){
     this.loading = true;
     this.pulseService.query(this.form.value)

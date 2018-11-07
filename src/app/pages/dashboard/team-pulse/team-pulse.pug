@@ -27,7 +27,7 @@
     .col-md-12
       .row
         .col-md-5
-          .card.card-happy-chart([ng2-loading]="loading")
+          #cardHappyChart.card([ng2-loading]="loading")
             .card-content.text-center
               br
               h5 Happiness Meter
@@ -37,49 +37,53 @@
         .col-md-3
           .row
             .col-md-12.col-sm-6
-              .card.card-avg-summary([ng2-loading]="loading")
-                .card-title Happy
-                a.data {{ happyUsers.length }}
-                .hovered-box
-                  .data-hovered
-                    ng-container(*ngIf="happyUsers.length <= 0")
-                      .user-details
-                        .user-info
-                          span No users
-                    ng-container(*ngIf="happyUsers.length > 0")
-                      .user-details(*ngFor="let user of happyUsers")
-                        img(src="/styles/icons/feedback-white.png")
-                        .user-info  
-                          span {{ user.user.name }}
-                          br
-                          span.percent {{ user.percentage }}%
+              .card.card-avg-summary([ng2-loading]="loading", [style.height.px]="setHeight()")
+                .m-auto
+                  .card-title Happy
+                  a.data {{ happyUsers.length }}
+                  .hovered-box
+                    .data-hovered
+                      ng-container(*ngIf="happyUsers.length <= 0")
+                        .user-details
+                          .user-info
+                            span No users
+                      ng-container(*ngIf="happyUsers.length > 0")
+                        .user-details(*ngFor="let user of happyUsers")
+                          img(src="/styles/icons/feedback-white.png")
+                          .user-info
+                            span {{ user.user.name }}
+                            br
+                            span.percent {{ user.percentage }}%
             .col-md-12.col-sm-6
-              .card.card-avg-summary([ng2-loading]="loading")
-                .card-title Sad
-                a.data {{ sadUsers.length }}
-                .hovered-box
-                  .data-hovered
-                    ng-container(*ngIf="sadUsers.length <= 0")
-                      .user-details
-                        .user-info
-                          span No users
-                    ng-container(*ngIf="sadUsers.length > 0")
-                      .user-details(*ngFor="let user of sadUsers")
-                        img(src="/styles/icons/feedback-white.png")
-                        .user-info  
-                          span {{ user.user.name }}
-                          br
-                          span.percent {{ user.percentage }}%
+              .card.card-avg-summary([ng2-loading]="loading", [style.height.px]="setHeight()")
+                .m-auto
+                  .card-title Sad
+                  a.data {{ sadUsers.length }}
+                  .hovered-box
+                    .data-hovered
+                      ng-container(*ngIf="sadUsers.length <= 0")
+                        .user-details
+                          .user-info
+                            span No users
+                      ng-container(*ngIf="sadUsers.length > 0")
+                        .user-details(*ngFor="let user of sadUsers")
+                          img(src="/styles/icons/feedback-white.png")
+                          .user-info
+                            span {{ user.user.name }}
+                            br
+                            span.percent {{ user.percentage }}%
         .col-md-4
           .row
             .col-md-12.col-sm-6
-              .card.card-avg-summary([ng2-loading]="loading")
-                .card-title % of users who clicked X
-                a.data {{ answerPercentage.x }}%
+              .card.card-avg-summary([ng2-loading]="loading", [style.height.px]="setHeight()")
+                .m-auto
+                  .card-title % of users who clicked X
+                  a.data {{ answerPercentage.x }}%
             .col-md-12.col-sm-6
-              .card.card-avg-summary([ng2-loading]="loading")
-                .card-title % of users who did not answer
-                a.data {{ answerPercentage.idle }}%
+              .card.card-avg-summary([ng2-loading]="loading", [style.height.px]="setHeight()")
+                .m-auto
+                  .card-title % of users who did not answer
+                  a.data {{ answerPercentage.idle }}%
     .col-md-12
       .row.equal
         .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
