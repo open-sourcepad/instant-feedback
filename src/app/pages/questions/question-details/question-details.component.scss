@@ -3,10 +3,17 @@
   box-shadow: 0 2px 9px 0 rgba(0,0,0,0.03);
   border-radius: 6px;
   padding: 39px;
+
+  .input-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #323C47;
+    letter-spacing: 0.13px;
+  }
 }
 
 .select-dropdown {
-  background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 98% 0;
+  background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 93% 0;
   background-size: contain;
   overflow: hidden;
   width: 100%;
@@ -21,9 +28,120 @@
     color: #323C47;
     letter-spacing: 0;
     margin: 5px 10px;
+    text-transform: capitalize;
+  }
+
+  select.form-control:not([size]):not([multiple]) {
+    height: calc(2.25rem - 1px);
   }
 }
 
 .input-number::after {
   content: 'am';
+}
+
+.form-control {
+  border: 1px solid #E9EFF4;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #323C47;
+  letter-spacing: -0.17px;
+  line-height: 27px;
+  padding: 10px 21px;
+  font-weight: 300;
+  height: 47px;
+}
+
+.input-group {
+  .icon-holder {
+    height: 21px;
+    width: 21px;
+  }
+
+  .input-group-text {
+    background: rgba(244,247,249,0.40);
+    border: 1px solid #E9EFF4;
+  }
+}
+
+.icon-check-green {
+  width: 11px;
+  height: 11px;
+  display: inline-block;
+}
+
+.text-information {
+  font-size: 11px;
+  color: #808FA3;
+  letter-spacing: 0;
+  font-weight: 300;
+}
+
+.border-lightgray {
+  border: 1px solid #E9EFF4;
+  border-radius: 4px;
+}
+
+.checkbox-group {
+  padding: 9px 0;
+  > input {
+    margin-right: 6px;
+    margin-left: 15px;
+  }
+  > label {
+    font-size: 13px;
+    color: #323C47;
+    letter-spacing: -0.16px;
+    line-height: 27px;
+    margin-left: 6px;
+    margin-right: 20px;
+  }
+}
+
+#search-recipients {
+  padding: 0;
+
+  > input:focus, .input-container input:active {
+    outline: none;
+  }
+
+  > input {
+    width: 80%;
+    border: 0;
+    display: inline-block;
+  }
+
+  > button {
+    border: 1px solid rgba(195,186,170,0.70);
+    border-radius: 2px;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 300;
+    color: #C3BAAA;
+    letter-spacing: 0;
+    margin: 0;
+    padding: 7px 17px;
+  }
+}
+
+.user-container {
+  margin-top: 20px;
+  > img {
+    height: 56px;
+    width: 58px;
+    border-radius: 50%;
+    margin-bottom: 8px;
+  }
+
+  > .name {
+    font-size: 12px;
+    color: rgba(51,51,51,0.76);
+    letter-spacing: 0;
+  }
+
+  > .icon-sm {
+    width: 16px;
+    height: 17px;
+    margin: auto;
+  }
 }

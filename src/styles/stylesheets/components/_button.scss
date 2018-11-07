@@ -17,3 +17,11 @@
   background-color: $lightBrown;
   border-color: $lightBrown;
 }
+
+.btn-instant-feedback-muted {
+  opacity: 0.45;
+  font-weight: normal;
+  font-size: 12px;
+  color: $btn-muted;
+  letter-spacing: 0;
+}

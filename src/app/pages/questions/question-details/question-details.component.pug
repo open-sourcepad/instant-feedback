@@ -5,35 +5,64 @@
     .row
       .col-md-8
         .card
-          form(novalidate, autocomplete="off")
+          form(novalidate, autocomplete="off", [formGroup]="form")
             .form-group
-              label Question
+              label.input-label QUESTION
               input.form-control
             .form-row
               .form-group.col-md-3
-                label Frequency
+                label.input-label FREQUNCY
                 .select-dropdown
-                  select.form-control
-                    option Once
-              .form-group.col-md-3
-                label Day
+                  select.form-control(formControlName="trigger_schedule")
+                    option once
+              .form-group.col-md-5
+                label.input-label DAY
+                .input-group(daterangepicker, [options]="datepickeroptions", (selected)="selectedDate($event, daterange)")
+                  input.form-control(type="text", formControlName="chosenDate")
+                  .input-group-append
+                    .input-group-text
+                      .icon-calendar.icon-sm.icon-holder
+              .form-group.col-md-2
+                label.input-label HOUR
                 .select-dropdown
                   select.form-control
                     option option 1
                     option option 2
-              .form-group.col-md-3
-                label Hour
-                .select-dropdown
-                  select.form-control
-                    option option 1
-                    option option 2
-              .form-group.col-md-3
-                label Minute
+              .form-group.col-md-2
+                label.input-label MINUTE
                 input.form-control.input-number(type="number")
+            .form-group
+              .icon-check-green.icon-sm
+              span.text-information &nbsp;This question will be shown {{ form.get('trigger_schedule').value }} on the {{ (chosenDate | date: 'd') | dateSuffix }} of {{ chosenDate | date: 'MMMM yyyy' }} at 10:15am.
+            .form-group
+              label.input-label RECIPIENTS
+              br
+              .checkbox-group.border-lightgray.form-check.form-check-inline
+                ng-container(*ngFor="let type of recipientTypes")
+                  input.form-check-input(type="radio", formControlName="recipientType", [value]="type.value")
+                  label.form-check-label {{ type.label }}
+          .container
+            .row
+              #search-recipients.col-md-6.border-lightgray
+                input.form-control(type="text", placeholder="Search for a name")
+                button.btn.btn-instant-feedback Add
+            .row
+              .col-md-2
+                .user-container.text-center
+                  img(src="http://icons.iconarchive.com/icons/dapino/teenage-girl/256/girl-chuckle-icon.png")
+                  br
+                  label.name Gene D.
+                  .icon-remove.icon-sm
+              .col-md-2
+                .user-container.text-center
+                  img(src="http://icons.iconarchive.com/icons/dapino/teenage-girl/256/girl-chuckle-icon.png")
+                  br
+                  label.name Gene D.
+                  .icon-remove.icon-sm
       .col-md-4
         .card
           button.btn.btn-instant-feedback.btn-instant-feedback-primary
             span Save
-          button.btn.btn-instant-feedback
+          button.btn.btn-instant-feedback.btn-instant-feedback-muted
             span Cancel
 

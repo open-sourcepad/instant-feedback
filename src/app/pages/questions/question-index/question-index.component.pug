@@ -16,6 +16,7 @@
           th
             span Time
           th
+            span
       tbody
         tr(*ngFor="let question of questions")
           td
@@ -25,7 +26,7 @@
           td
             span
           td.actions
-            ng-container(*ngIf="question.category == 'Custom'")
+            ng-container(*ngIf="question.category == 'custom'")
               a
                 .icon-edit.icon-sm.icon-holder
               a

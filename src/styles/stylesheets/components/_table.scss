@@ -1,3 +1,7 @@
+.table-instant-feedback th, .table-instant-feedback td {
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
 .table-instant-feedback th {
   border-top: 0;
   border-bottom: 2px solid #3333335c !important;
@@ -15,10 +19,9 @@
 }
 
 .table-instant-feedback td.actions {
-  text-align: right;
+  text-align: center;
 
   a {
-
     margin-right: 17px;
     .icon-holder {
       width: 13px;
