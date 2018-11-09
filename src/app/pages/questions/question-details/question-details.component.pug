@@ -17,23 +17,27 @@
                     option once
               .form-group.col-md-5
                 label.input-label DAY
-                .input-group(daterangepicker, [options]="datepickeroptions", (selected)="selectedDate($event, daterange)")
-                  input.form-control(type="text", formControlName="chosenDate")
+                .input-group(daterangepicker, [options]="datepickeroptions", (selected)="selectedDate($event)")
+                  input.form-control(type="text", formControlName="chosenDay")
                   .input-group-append
                     .input-group-text
                       .icon-calendar.icon-sm.icon-holder
               .form-group.col-md-2
                 label.input-label HOUR
                 .select-dropdown
-                  select.form-control
-                    option option 1
-                    option option 2
+                  select.form-control(formControlName="chosenHour", (change)="selectedTime()")
+                    option(*ngFor="let hour of hourList", [value]="hour.value")
+                      | {{ hour.label}}
               .form-group.col-md-2
                 label.input-label MINUTE
-                input.form-control.input-number(type="number")
+                .select-dropdown
+                  select.form-control(formControlName="chosenMinute", (change)="selectedTime()")
+                    option(*ngFor="let minute of minuteList", [value]="minute.value")
+                      | {{ minute.label}}
+              .form-group.col-md-2
             .form-group
               .icon-check-green.icon-sm
-              span.text-information &nbsp;This question will be shown {{ form.get('trigger_schedule').value }} on the {{ (chosenDate | date: 'd') | dateSuffix }} of {{ chosenDate | date: 'MMMM yyyy' }} at 10:15am.
+              span.text-information &nbsp;This question will be shown {{ form.get('trigger_schedule').value }} on the {{ (chosenDate | date: 'd') | dateSuffix }} of {{ chosenDate | date: 'MMMM yyyy' }} at {{ chosenDate | date: 'HH:mm a' }}.
             .form-group
               label.input-label RECIPIENTS
               br
@@ -41,27 +45,26 @@
                 ng-container(*ngFor="let type of recipientTypes")
                   input.form-check-input(type="radio", formControlName="recipientType", [value]="type.value")
                   label.form-check-label {{ type.label }}
-          .container
+          .container(*ngIf="form.get('recipientType').value == 'specific'")
             .row
               #search-recipients.col-md-6.border-lightgray
-                input.form-control(type="text", placeholder="Search for a name")
-                button.btn.btn-instant-feedback Add
+                input.form-control(type="text", placeholder="Search for a name", [ngModel]="searchName", (keyup)="searchUserTerm$.next($event.target.value)")
+                button.btn.btn-instant-feedback((click)="addUser(searchName)") Add
             .row
-              .col-md-2
+              .col-md-6
+                ul#search-suggestion-list
+                  li(*ngFor="let user of users")
+                    a((click)="selectUser(user.display_name)") {{ user.display_name }}
+            .row
+              .col-md-2(*ngFor="let recipient of recipients; let i = index")
                 .user-container.text-center
                   img(src="http://icons.iconarchive.com/icons/dapino/teenage-girl/256/girl-chuckle-icon.png")
                   br
-                  label.name Gene D.
-                  .icon-remove.icon-sm
-              .col-md-2
-                .user-container.text-center
-                  img(src="http://icons.iconarchive.com/icons/dapino/teenage-girl/256/girl-chuckle-icon.png")
-                  br
-                  label.name Gene D.
-                  .icon-remove.icon-sm
+                  label.name {{ recipient.display_name }}
+                  .icon-remove.icon-sm((click)="removeUser(i)")
       .col-md-4
         .card
-          button.btn.btn-instant-feedback.btn-instant-feedback-primary
+          button.btn.btn-instant-feedback.btn-instant-feedback-primary((click)="save()")
             span Save
           button.btn.btn-instant-feedback.btn-instant-feedback-muted
             span Cancel
