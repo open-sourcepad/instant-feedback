@@ -21,9 +21,13 @@ export class QuestionIndexComponent implements OnInit {
   }
 
   loadQuestions() {
+    this.loading = true;
     this.questionApi.query({})
       .subscribe(res => {
+        this.loading = false;
         this.questions = res['collection']['data'];
+      }, err => {
+        this.loading = false;
       });
   }
 
