@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import * as moment from 'moment';
 
-import { UserService } from '../../../services/api';
+import { UserService, QuestionService } from '../../../services/api';
 import { Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -79,16 +80,27 @@ export class QuestionDetailsComponent implements OnInit {
     {value: 23, label: '11pm'}
   ]
   minuteList = [];
+  loading = false;
+
+  //update
+  private sub: any;
+  slug_id = null;
+  currentObj = null;
+  isUpdate = false;
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserService
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private userService: UserService,
+    private questionService: QuestionService
   ) {
     this.userService.searchNames(this.searchUserTerm$)
       .subscribe(
         res => {
           this.users = res['collection']['data'];
           this.showSuggestion = !!this.searchUserTerm$;
+          this.errorMsg.addUser = "";
         }
       );
     for(let num=0; num <= 60; num++) {
@@ -105,11 +117,21 @@ export class QuestionDetailsComponent implements OnInit {
       'message': ["", Validators.required],
       'occurence': [1, Validators.required],
       'trigger_schedule': ["once", Validators.required],
+      'category': ["custom", Validators.required],
       'chosenHour': [0, Validators.required],
       'chosenMinute': [0, Validators.required],
       'chosenDay': [this.chosenDay],
-      'recipientType': [this.recipientTypes[0].value, Validators.required]
+      'recipient_type': [this.recipientTypes[0].value, Validators.required]
     });
+
+    this.activeRoute.params.subscribe(params => {
+      this.slug_id = +params['id'];
+
+      if(this.slug_id){
+        this.loadData(this.slug_id);
+      }
+    });
+    
   }
 
   selectedDate(value, datepicker=null){
@@ -135,9 +157,10 @@ export class QuestionDetailsComponent implements OnInit {
       .subscribe(res => {
         if(res['data']){
           this.recipients.push(res['data']);
-        }else {
-          this.errorMsg.addUser = "User not found";
+          this.searchName = '';
         }
+      }, err => {
+        this.errorMsg.addUser = "User not found";
       });
   }
 
@@ -146,12 +169,46 @@ export class QuestionDetailsComponent implements OnInit {
   }
 
   save(){
+    this.loading = true;
     let params = {
       question: this.form.value,
-      user_question: {asking_date: this.chosenDate, users: this.recipients}
+      user_question: {
+        asking_date: this.form.get('chosenDay').value,
+        asking_time: this.chosenDate,
+        user_ids: this.recipients.map( recipient => recipient.id)
+      }
     };
 
     console.log(params);
+    if(this.isUpdate) {
+      this.questionService.update(this.slug_id, params).subscribe( res => {
+        this.loading = false;
+      });
+    } else{
+      this.questionService.create(params).subscribe( res => {
+        this.loading = false;
+        this.router.navigate(['/questions']);
+      });
+    }
+  }
+
+  private loadData(slug_id: number) {
+    this.questionService.get(slug_id)
+      .subscribe(
+        res => {
+          this.currentObj = res['data'];
+          this.form.get('message').setValue(this.currentObj['message']);
+          this.form.get('recipient_type').setValue(this.currentObj['recipient_type']);
+          let momentDate= moment(this.currentObj['asking_time']).utc();
+          this.chosenDate = momentDate.format(`D MMMM YYYY hh:mm:00`);
+          this.chosenDay = momentDate.format(`D MMMM YYYY`);
+          this.form.get('chosenDay').setValue(this.chosenDay);  
+          this.form.get('chosenHour').setValue(momentDate.hour());  
+          this.form.get('chosenMinute').setValue(momentDate.minute());  
+          this.recipients = this.currentObj['recipients'];
+          this.isUpdate = true;
+        }
+      );
   }
 
 }

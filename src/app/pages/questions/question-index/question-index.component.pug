@@ -27,7 +27,7 @@
             span
           td.actions
             ng-container(*ngIf="question.category == 'custom'")
-              a
+              a([routerLink]="['/questions', question.id]")
                 .icon-edit.icon-sm.icon-holder
               a
                 .icon-remove.icon-sm.icon-holder

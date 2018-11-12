@@ -4,11 +4,11 @@
   .col-md-12
     .row
       .col-md-8
-        .card
+        .card([ng2-loading]="loading")
           form(novalidate, autocomplete="off", [formGroup]="form")
             .form-group
               label.input-label QUESTION
-              input.form-control
+              input.form-control(formControlName="message")
             .form-row
               .form-group.col-md-3
                 label.input-label FREQUNCY
@@ -43,9 +43,11 @@
               br
               .checkbox-group.border-lightgray.form-check.form-check-inline
                 ng-container(*ngFor="let type of recipientTypes")
-                  input.form-check-input(type="radio", formControlName="recipientType", [value]="type.value")
+                  input.form-check-input(type="radio", formControlName="recipient_type", [value]="type.value")
                   label.form-check-label {{ type.label }}
-          .container(*ngIf="form.get('recipientType').value == 'specific'")
+          .container(*ngIf="form.get('recipient_type').value == 'specific'")
+            .row(*ngIf="errorMsg.addUser")
+              .col-md-3.alert.alert-danger {{ errorMsg.addUser }}
             .row
               #search-recipients.col-md-6.border-lightgray
                 input.form-control(type="text", placeholder="Search for a name", [ngModel]="searchName", (keyup)="searchUserTerm$.next($event.target.value)")
@@ -63,9 +65,9 @@
                   label.name {{ recipient.display_name }}
                   .icon-remove.icon-sm((click)="removeUser(i)")
       .col-md-4
-        .card
+        .card([ng2-loading]="loading")
           button.btn.btn-instant-feedback.btn-instant-feedback-primary((click)="save()")
             span Save
-          button.btn.btn-instant-feedback.btn-instant-feedback-muted
+          button.btn.btn-instant-feedback.btn-instant-feedback-muted([routerLink]="['/questions']")
             span Cancel
 
