@@ -5,6 +5,7 @@
     .row
       .col-md-8
         .card([ng2-loading]="loading")
+          .alert.alert-danger(*ngIf="errorMsg.question") {{ errorMsg.question }}
           form(novalidate, autocomplete="off", [formGroup]="form")
             .form-group
               label.input-label QUESTION

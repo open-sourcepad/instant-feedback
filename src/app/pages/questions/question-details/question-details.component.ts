@@ -52,7 +52,7 @@ export class QuestionDetailsComponent implements OnInit {
   searchName = '';
   users = [];
   showSuggestion = false;
-  errorMsg = {addUser: ''};
+  errorMsg = {addUser: '', question: ''};
   hourList = [
     {value: 0, label: '12am'},
     {value: 1, label: '01am'},
@@ -179,15 +179,20 @@ export class QuestionDetailsComponent implements OnInit {
       }
     };
 
-    console.log(params);
     if(this.isUpdate) {
       this.questionService.update(this.slug_id, params).subscribe( res => {
         this.loading = false;
+      }, err => {
+        this.loading = false;
+        this.errorMsg.question = "Failed to update question";
       });
     } else{
       this.questionService.create(params).subscribe( res => {
         this.loading = false;
         this.router.navigate(['/questions']);
+      }, err => {
+        this.loading = false;
+        this.errorMsg.question = err.error.errors[0];
       });
     }
   }
