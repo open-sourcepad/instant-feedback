@@ -61,7 +61,10 @@
             .row
               .col-md-2(*ngFor="let recipient of recipients; let i = index")
                 .user-container.text-center
-                  img(src="http://icons.iconarchive.com/icons/dapino/teenage-girl/256/girl-chuckle-icon.png")
+                  .avatar-user
+                    .avatar-name
+                      | {{ recipient.display_name.split(" ")[0].charAt(0) }}
+                      | {{ recipient.display_name.split(" ")[1].charAt(0) }}
                   br
                   label.name {{ recipient.display_name }}
                   .icon-remove.icon-sm((click)="removeUser(i)")
