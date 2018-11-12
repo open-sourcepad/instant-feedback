@@ -165,7 +165,7 @@ export class QuestionDetailsComponent implements OnInit {
   }
 
   removeUser(idx){
-    this.recipients.splice(idx, 0);
+    this.recipients.splice(idx, 1);
   }
 
   save(){
