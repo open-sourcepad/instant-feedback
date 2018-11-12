@@ -6,7 +6,8 @@
       span.icon-holder.ti-plus
       span Add a Question
   .col-md-12
-    table.table.table-instant-feedback
+    .alert.alert-danger(*ngIf="errorMsg") {{ errorMsg }}
+    table.table.table-instant-feedback([ng2-loading]="loading")
       thead
         tr
           th
@@ -18,7 +19,7 @@
           th
             span
       tbody
-        tr(*ngFor="let question of questions")
+        tr(*ngFor="let question of questions; let idx = index")
           td
             span {{ question.message }}
           td
@@ -29,5 +30,5 @@
             ng-container(*ngIf="question.category == 'custom'")
               a([routerLink]="['/questions', question.id]")
                 .icon-edit.icon-sm.icon-holder
-              a
+              a((click)="remove(question.id, idx)")
                 .icon-remove.icon-sm.icon-holder

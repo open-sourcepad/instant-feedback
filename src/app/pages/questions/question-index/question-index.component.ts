@@ -9,6 +9,8 @@ import { QuestionService } from '../../../services/api'
 export class QuestionIndexComponent implements OnInit {
 
   questions = [];
+  loading = false;
+  errorMsg = '';
 
   constructor(
     private questionApi: QuestionService
@@ -25,4 +27,15 @@ export class QuestionIndexComponent implements OnInit {
       });
   }
 
+  remove(question_id, idx) {
+    this.loading = true;
+    this.questionApi.destroy(question_id)
+      .subscribe( res => {
+        this.loading = false;
+        this.questions.splice(idx, 1);
+      }, err => {
+        this.loading = false;
+        this.errorMsg = `Row ${idx + 1} question cannot be deleted`;
+      });
+  }
 }
