@@ -82,7 +82,7 @@ export class BaseService {
     return this.http.post(this.apiEndpoint, payload);
   }
 
-  destroy(id: number, payload: Object): any {
+  destroy(id: number): any {
    return this.http.delete(`${this.apiEndpoint}/${id}`);
   }
 
