@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 
 import { UserService, QuestionService } from '../../../services/api';
 import { Subject } from 'rxjs';
@@ -41,7 +41,7 @@ export class QuestionDetailsComponent implements OnInit {
   };
 
   form: FormGroup;
-  chosenDate = moment().format("D MMMM YYYY 00:00:00");
+  chosenDate = moment().format("YYYY-MM-DD 00:00:00");
   chosenDay = moment().format("D MMMM YYYY");
   recipientTypes = [
     { value: 'all', label: 'All' },
@@ -117,6 +117,7 @@ export class QuestionDetailsComponent implements OnInit {
       'message': ["", Validators.required],
       'occurence': [1, Validators.required],
       'trigger_schedule': ["once", Validators.required],
+      'trigger_action': ["scheduled", Validators.required],
       'category': ["custom", Validators.required],
       'chosenHour': [0, Validators.required],
       'chosenMinute': [0, Validators.required],
@@ -137,14 +138,14 @@ export class QuestionDetailsComponent implements OnInit {
   selectedDate(value, datepicker=null){
     let hour = this.form.get('chosenHour').value;
     let minute = this.form.get('chosenMinute').value;
-    this.chosenDate = value.start.format(`D MMMM YYYY ${hour}:${minute}:00`);
+    this.chosenDate = value.start.format(`YYYY-MM-DD ${hour}:${minute}:00`);
     this.form.get('chosenDay').setValue(value.start.format('D MMMM YYYY'));
   }
 
   selectedTime(){
     let hour = this.form.get('chosenHour').value;
     let minute = this.form.get('chosenMinute').value;
-    this.chosenDate = moment(this.chosenDate).format(`D MMMM YYYY ${hour}:${minute}:00`);
+    this.chosenDate = moment(this.chosenDate).format(`YYYY-MM-DD ${hour}:${minute}:00`);
   }
 
   selectUser(user) {
@@ -178,7 +179,6 @@ export class QuestionDetailsComponent implements OnInit {
         user_ids: this.recipients.map( recipient => recipient.id)
       }
     };
-
     if(this.isUpdate) {
       this.questionService.update(this.slug_id, params).subscribe( res => {
         this.loading = false;
@@ -204,7 +204,7 @@ export class QuestionDetailsComponent implements OnInit {
           this.currentObj = res['data'];
           this.form.get('message').setValue(this.currentObj['message']);
           this.form.get('recipient_type').setValue(this.currentObj['recipient_type']);
-          let momentDate= moment(this.currentObj['asking_time']).utc();
+          let momentDate= moment(this.currentObj['asking_time']).tz('EST');
           this.chosenDate = momentDate.format(`D MMMM YYYY hh:mm:00`);
           this.chosenDay = momentDate.format(`D MMMM YYYY`);
           this.form.get('chosenDay').setValue(this.chosenDay);  
