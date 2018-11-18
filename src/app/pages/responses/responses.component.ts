@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AnswerService, QuestionService } from '../../services/api'
+import { AnswerService, QuestionService, UserService } from '../../services/api'
 
 @Component({
   selector: 'app-responses',
@@ -10,7 +10,7 @@ export class ResponsesComponent implements OnInit {
 
   questions: any;
   answers = ['All', 'Happy', 'Sad', 'X', 'Idle'];
-  users = ['All', 'Yana V'];
+  users: any;
   loading = false;
   collection = [];
   recordCount = 0;
@@ -22,11 +22,13 @@ export class ResponsesComponent implements OnInit {
 
   constructor(
     private answerApi: AnswerService,
-    private questionApi: QuestionService
+    private questionApi: QuestionService,
+    private userApi: UserService
   ) { }
 
   ngOnInit() {
     this.loadQuestions();
+    this.loadUsers();
   }
 
   search(queryParams) {
@@ -44,6 +46,16 @@ export class ResponsesComponent implements OnInit {
         this.loading = false;
       }, err => {
         this.loading = false;
+      });
+  }
+
+  loadUsers() {
+    this.userApi.query({})
+      .subscribe(res => {
+        this.users = res['collection']['data'].map(user => {
+          return user.display_name;
+        });
+        this.users.unshift('All');
       });
   }
 
