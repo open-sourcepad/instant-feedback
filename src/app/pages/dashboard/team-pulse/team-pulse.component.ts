@@ -22,8 +22,8 @@ export class TeamPulseComponent implements OnInit {
   form: FormGroup;
   selectedDateFilter = 1;
   daterange = {
-    start: moment().startOf('week').format('YYYY/MM/DD 00:00:00'),
-    end: moment().endOf('week').format('YYYY/MM/DD 23:59:59')
+    start: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
+    end: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59')
   };
   //daterangepicker options
   options: any = {
@@ -119,8 +119,8 @@ export class TeamPulseComponent implements OnInit {
         this.filter = 'week'
         this.form.get('filter').setValue(this.filter);
         this.daterange = {
-          start: moment().startOf('week').format('YYYY/MM/DD 00:00:00'),
-          end: moment().endOf('week').format('YYYY/MM/DD 23:59:59')
+          start: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
+          end: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59')
         };
 
         this.selectedDate(this.daterange);
