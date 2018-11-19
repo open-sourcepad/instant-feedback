@@ -1,15 +1,11 @@
 nav.navbar.navbar-expand-lg.bg-dark-custom
-
-  //- a.navbar-menu.mr-2.font-bold((click)="toggleHamburger()")
-  //-   i.ti-menu
-  
   .img-container
     .logo.icon-feedback.icon-sm
   #navbarsExample09.collapse.navbar-collapse
     ul.navbar-nav.mr-auto
-      li.nav-item.active
-        a.nav-link(href='#') Dashboard
-      li.nav-item
-        a.nav-link([routerLink]="['/responses']") Responses
-      li.nav-item
-        a.nav-link([routerLink]="['/questions']") Questions
+      li.nav-item.has-active
+        a.nav-link([routerLink]="['/dashboard']" routerLinkActive="active") Dashboard
+      li.nav-item.has-active
+        a.nav-link([routerLink]="['/responses']" routerLinkActive="active") Responses
+      li.nav-item.has-active
+        a.nav-link([routerLink]="['/questions']" routerLinkActive="active") Questions
