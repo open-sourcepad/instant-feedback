@@ -150,6 +150,7 @@ export class QuestionDetailsComponent implements OnInit {
 
   selectUser(user) {
     this.searchName = user;
+    this.showSuggestion = false;
     this.users = [];
   }
 

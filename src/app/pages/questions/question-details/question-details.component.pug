@@ -54,10 +54,14 @@
                 input.form-control(type="text", placeholder="Search for a name", [ngModel]="searchName", (keyup)="searchUserTerm$.next($event.target.value)")
                 button.btn.btn-instant-feedback((click)="addUser(searchName)") Add
             .row
-              .col-md-6
-                ul#search-suggestion-list
-                  li(*ngFor="let user of users")
-                    a((click)="selectUser(user.display_name)") {{ user.display_name }}
+              .col-md-6.p-0.relative
+                ul#search-suggestion-list(*ngIf="showSuggestion")
+                  ng-container(*ngIf="users.length > 0")
+                    li(*ngFor="let user of users")
+                      a((click)="selectUser(user.display_name)") {{ user.display_name }}
+                  ng-container(*ngIf="users.length <= 0")
+                    li
+                      span No user match
             .row
               .col-md-2(*ngFor="let recipient of recipients; let i = index")
                 .user-container.text-center

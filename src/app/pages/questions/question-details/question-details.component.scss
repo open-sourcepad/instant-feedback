@@ -157,3 +157,29 @@
     cursor: pointer;
   }
 }
+
+#search-suggestion-list {
+  border: 1px solid #E9EFF4;
+  background-color: #f9f9f9;
+  list-style: none;
+  padding: 0;
+  min-height: 47px;
+  max-height: 200px;
+  overflow-y: auto;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  > li {
+    border-bottom: 1px solid #E9EFF4;
+    font-size: 14px;
+    font-weight: bold;
+    color: #323C47;
+    letter-spacing: -0.17px;
+    line-height: 27px;
+    padding: 10px 21px;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
