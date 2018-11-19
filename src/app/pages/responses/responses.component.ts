@@ -60,7 +60,7 @@ export class ResponsesComponent implements OnInit {
   }
 
   loadQuestions() {
-    this.questionApi.query({})
+    this.questionApi.getMainQuestions()
       .subscribe(res => {
         this.questions = res['collection']['data'].map(question => {
           return question.category;

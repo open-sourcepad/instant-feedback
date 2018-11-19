@@ -14,4 +14,8 @@ export class QuestionService extends BaseService {
   ) {
     super(http, ENDPOINT);
   }
+
+  getMainQuestions() {
+    return this.http.get(`${ENDPOINT}/main_questions`);
+  }
 }
