@@ -19,6 +19,10 @@ export const routes: Routes = [
       {
         path: 'questions',
         loadChildren: "./questions/questions.module#QuestionsModule"
+      },
+      {
+        path: 'one-on-ones',
+        loadChildren: "./meetings/meetings.module#MeetingsModule"
       }
     ]
   },
