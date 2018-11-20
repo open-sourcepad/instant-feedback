@@ -1,0 +1,53 @@
+.row
+  .col-md-12
+    h2.title 1-on-1s
+  .col-md-12
+    //- .alert.alert-danger(*ngIf="errorMsg") {{ errorMsg }}
+    table.table.table-instant-feedback([ng2-loading]="loading")
+      thead
+        tr
+          th
+            span Employee
+          th
+            span Manager
+          th
+            span Schedule
+          th
+            span Actual
+          th
+            span Status
+          th
+            span
+      tbody
+        tr
+          td
+            span Leanne Simpson
+          td
+            span Ekene Obasey
+          td
+            span.schedule.due October 3
+          td.text-center
+            span -
+          td
+            span Due
+          td.actions
+              a()
+                .icon-edit.icon-sm.icon-holder
+              a()
+                .icon-remove.icon-sm.icon-holder
+        tr
+          td
+            span Erin Green
+          td
+            span Georges Embolo
+          td
+            span.schedule November 5
+          td.text-center
+            span -
+          td
+            span Upcoming
+          td.actions
+              a()
+                .icon-edit.icon-sm.icon-holder
+              a()
+                .icon-remove.icon-sm.icon-holder

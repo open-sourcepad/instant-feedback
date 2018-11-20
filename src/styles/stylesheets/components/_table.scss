@@ -16,6 +16,15 @@
   line-height: 3rem !important;
   border-top: 0;
   border-bottom: 1px solid #c3baaa5c;
+
+  span.schedule {
+    padding: 4px 18px;
+    border-radius: 4px;
+
+    &.due {
+      background-color: $darkRed;
+    }
+  }
 }
 
 .table-instant-feedback td.actions {
