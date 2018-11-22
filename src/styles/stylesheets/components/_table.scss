@@ -7,6 +7,18 @@
   border-bottom: 2px solid #3333335c !important;
   color: #33333380 !important;
   font-size: 14px;
+
+  > button {
+    outline: 0;
+    background-color: transparent;
+    border: 0;
+    color: inherit;
+    font-weight: inherit;
+
+    > .icon-holder {
+      margin-left: 3px;
+    }
+  }
 }
 
 .table-instant-feedback td {
@@ -17,9 +29,16 @@
   border-top: 0;
   border-bottom: 1px solid #c3baaa5c;
 
+  &.schedule {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    text-align: center;
+  }
+
   span.schedule {
     padding: 4px 18px;
     border-radius: 4px;
+    width: 125px;
 
     &.due {
       background-color: $darkRed;
@@ -29,6 +48,8 @@
 
 .table-instant-feedback td.actions {
   text-align: center;
+  padding-right: 0;
+  padding-left: 0;
 
   a {
     margin-right: 17px;

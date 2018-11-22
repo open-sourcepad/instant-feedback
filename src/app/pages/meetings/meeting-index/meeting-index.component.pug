@@ -7,46 +7,68 @@
       thead
         tr
           th
-            span Employee
+            ng-container(*ngIf="!sort_by['employee']")
+              button((click)="changeOrder('employee', 'asc')")
+                span Employee
+            ng-container(*ngIf="sort_by['employee']")
+              ng-container(*ngIf="sort_by['employee'] == 'asc'")
+                button((click)="changeOrder('employee', 'desc')")
+                  span Employee
+                  span.icon-holder.ti-arrow-up
+              ng-container(*ngIf="sort_by['employee'] == 'desc'")
+                button((click)="changeOrder('employee', 'asc')")
+                  span Employee
+                  span.icon-holder.ti-arrow-down
           th
             span Manager
           th
-            span Schedule
+            ng-container(*ngIf="!sort_by['set_schedule']")
+              button((click)="changeOrder('set_schedule', 'asc')")
+                span Schedule
+            ng-container(*ngIf="sort_by['set_schedule']")
+              ng-container(*ngIf="sort_by['set_schedule'] == 'asc'")
+                button((click)="changeOrder('set_schedule', 'desc')")
+                  span Schedule
+                  span.icon-holder.ti-arrow-up
+              ng-container(*ngIf="sort_by['set_schedule'] == 'desc'")
+                button((click)="changeOrder('set_schedule', 'asc')")
+                  span Schedule
+                  span.icon-holder.ti-arrow-down
           th
             span Actual
           th
-            span Status
+            ng-container(*ngIf="!sort_by['status']")
+              button((click)="changeOrder('status', 'asc')")
+                span Status
+            ng-container(*ngIf="sort_by['status']")
+              ng-container(*ngIf="sort_by['status'] == 'asc'")
+                button((click)="changeOrder('status', 'desc')")
+                  span Status
+                  span.icon-holder.ti-arrow-up
+              ng-container(*ngIf="sort_by['status'] == 'desc'")
+                button((click)="changeOrder('status', 'asc')")
+                  span Status
+                  span.icon-holder.ti-arrow-down
           th
             span
       tbody
-        tr
-          td
-            span Leanne Simpson
-          td
-            span Ekene Obasey
-          td
-            span.schedule.due October 3
-          td.text-center
-            span -
-          td
-            span Due
-          td.actions
-              a()
-                .icon-edit.icon-sm.icon-holder
-              a()
-                .icon-remove.icon-sm.icon-holder
-        tr
-          td
-            span Erin Green
-          td
-            span Georges Embolo
-          td
-            span.schedule November 5
-          td.text-center
-            span -
-          td
-            span Upcoming
-          td.actions
+        ng-container(*ngIf="!loading && collection.length <= 0")
+            tr
+              td.text-center(colspan="6")
+                span No results found
+        ng-container(*ngIf="!loading && collection.length > 0")
+          tr(*ngFor="let obj of collection")
+            td
+              span {{ obj.employee.display_name }}
+            td
+              span {{ obj.manager.display_name }}
+            td.schedule
+              span.schedule([class.due]="obj.status == 'due'") {{ obj.set_schedule | date: 'MMMM d' }}
+            td.text-center
+              span([innerHTML]="!!obj.actual_schedule ? obj.actual_schedule : '-'")
+            td
+              span.text-capitalize {{ obj.status }}
+            td.actions
               a()
                 .icon-edit.icon-sm.icon-holder
               a()
