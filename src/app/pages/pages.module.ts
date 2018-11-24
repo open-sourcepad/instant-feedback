@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Ng2LoadingSpinnerModule } from 'ng2-loading-spinner';
 
 import { PagesComponent } from './pages.component';
 import { routing } from './pages.routes';
@@ -22,6 +23,7 @@ const PAGES_MODULE = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    Ng2LoadingSpinnerModule,
     routing,
     ...PAGES_MODULE
   ],

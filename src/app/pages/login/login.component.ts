@@ -30,7 +30,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(values) {
-    console.log("submit");
     this.loading = true;
     this.sessionApi.login({resource: values})
       .subscribe(
