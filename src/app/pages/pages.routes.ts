@@ -1,12 +1,15 @@
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { PagesComponent } from './pages.component';
+import { LoginComponent } from './login/login.component';
+import { PagesGuard } from './pages.guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: PagesComponent,
     children: [
+      { path: 'login', component: LoginComponent, canActivate: [PagesGuard]},
       { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
       {
         path: 'dashboard',

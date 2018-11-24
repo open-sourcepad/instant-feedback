@@ -1,0 +1,28 @@
+.row
+  .col-md-12.mr-auto.ml-auto
+    .row
+      .mr-auto.ml-auto.full-height.height-100
+        .vertical-align.full-height
+          .table-cell
+            
+            .icon-feedback.icon-md.inline-block.mrg-btm-15
+              h1.font-size-65 Instant Feedback
+            .card
+              .card-body
+                .pdd-horizon-30.pdd-vertical-30
+                  h3 Welcome back!
+                  p.mrg-btm-15 Log in to continue.
+                  .alert.alert-danger(*ngIf="hasError") {{errorMsg}}
+                  form(novalidate, autocomplete="off", [formGroup]="form", (ngSubmit)="onSubmit(form.value)")
+                    .form-group
+                      label
+                        span Email Address
+                      input.form-control(type="email", formControlName="email")
+                    .form-group
+                      label
+                        span Password
+                      input.form-control(type="password", formControlName="password")
+                    .row
+                      .col-md-12
+                        button.btn.btn-instant-feedback.btn-instant-feedback-primary.btn-block(type="submit")
+                          span Log In
