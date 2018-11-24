@@ -10,6 +10,7 @@ import {
   AnswerService,
   MeetingService,
   QuestionService,
+  SessionService,
   UserService
 } from './services/api';
 import { HttpService, LocalStorage, CommonService } from './services/utils';
@@ -21,6 +22,7 @@ const APP_SERVICES = [
   AnswerService,
   MeetingService,
   QuestionService,
+  SessionService,
   UserService,
   LocalStorage
 ]
