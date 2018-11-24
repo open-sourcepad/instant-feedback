@@ -19,7 +19,18 @@ export class HttpService {
 
   createAuthorizationHeader(skipAuth? :boolean): any {
     let headerParams = {}
-    headerParams['Content-Type'] =  'application/json';
+    if(!!skipAuth) {
+      headerParams['Content-Type'] =  'application/json';
+    } else {
+      headerParams['Content-Type'] =  'application/json';
+      let currentUser = this.storage.getObject('currentUser');
+      if (!currentUser) {
+        this.router.navigateByUrl('/login');
+      } else {
+        headerParams['Content-Type'] = 'application/json';
+        headerParams['AccessToken'] = currentUser.current_token;
+      }
+    }
     return headerParams;
   }
 

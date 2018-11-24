@@ -2,7 +2,7 @@ nav.navbar.navbar-expand-lg.bg-dark-custom
   .img-container
     .logo.icon-feedback.icon-sm
   #navbarsExample09.collapse.navbar-collapse
-    ul.navbar-nav.mr-auto
+    ul.navbar-nav.mr-auto(*ngIf="userLogged && isManager")
       li.nav-item.has-active
         a.nav-link([routerLink]="['/dashboard']" routerLinkActive="active") Dashboard
       li.nav-item.has-active
@@ -11,3 +11,6 @@ nav.navbar.navbar-expand-lg.bg-dark-custom
         a.nav-link([routerLink]="['/questions']" routerLinkActive="active") Questions
       li.nav-item.has-active
         a.nav-link([routerLink]="['/one-on-ones']" routerLinkActive="active") 1-on-1s
+    ul.navbar-nav.mr-auto(*ngIf="userLogged && !isManager")
+      li.nav-item.has-active
+        a.nav-link([routerLink]="['/dashboard']" routerLinkActive="active") Profile
