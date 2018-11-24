@@ -14,3 +14,6 @@ nav.navbar.navbar-expand-lg.bg-dark-custom
     ul.navbar-nav.mr-auto(*ngIf="userLogged && !isManager")
       li.nav-item.has-active
         a.nav-link([routerLink]="['/dashboard']" routerLinkActive="active") Profile
+    ul.navbar-nav.ml-auto(*ngIf="userLogged")
+      li.nav-item
+        a.nav-link.active((click)="logout()") Log Out

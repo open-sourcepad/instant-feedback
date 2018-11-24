@@ -25,6 +25,13 @@ export class NavbarComponent {
     }
   }
 
-  toggleHamburger(){
+  logout(){
+    this.sessionApi.logout().subscribe(
+      (data) => {
+        this.sessionApi.clearSession();
+        this.userLogged = false;
+        this.isManager = false;
+      }
+    );
   }
 }
