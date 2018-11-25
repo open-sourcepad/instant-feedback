@@ -26,6 +26,12 @@ export class NavbarComponent {
         this.isManager = setting['isManager'];
       }
     );
+
+    this.userLogged = !!this.sessionApi.getCurrentUser();
+    if(this.userLogged) {
+      var currentUser = this.sessionApi.getCurrentUser();
+      this.isManager = currentUser['is_manager'];
+    }
   }
 
   logout(){
