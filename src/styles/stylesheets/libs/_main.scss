@@ -8,6 +8,7 @@ html, html a, body {
 }
 
 body {
+  background-color: $linkColor;
   font-family: 'Avenir', "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
   color: $default;
@@ -15,7 +16,7 @@ body {
 
 body {
   .main-container {
-    background-color: #FBFBFB;
+    background-color: $linkColor;
   }
 }
 
