@@ -13,7 +13,7 @@ import {
   SessionService,
   UserService
 } from './services/api';
-import { HttpService, LocalStorage, CommonService } from './services/utils';
+import { HttpService, LocalStorage, CommonService, AppSettings } from './services/utils';
 import { HttpClientModule } from '@angular/common/http';
 
 
@@ -24,7 +24,8 @@ const APP_SERVICES = [
   QuestionService,
   SessionService,
   UserService,
-  LocalStorage
+  LocalStorage,
+  AppSettings
 ]
 const APP_PROVIDERS = [
   HttpService,

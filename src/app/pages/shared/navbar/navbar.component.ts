@@ -1,6 +1,7 @@
 import { Component, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { SessionService } from '../../../services/api';
+import { AppSettings } from '../../../services/utils';
 
 @Component({
   selector: 'app-navbar',
@@ -14,23 +15,26 @@ export class NavbarComponent {
 
   constructor(
     private router: Router,
-    private sessionApi: SessionService
+    private sessionApi: SessionService,
+    private appSetting: AppSettings
   ) { }
 
   ngOnInit() {
-    this.userLogged = !!this.sessionApi.getCurrentUser();
-    if(this.userLogged) {
-      var currentUser = this.sessionApi.getCurrentUser();
-      this.isManager = currentUser['is_manager'];
-    }
+    this.appSetting.currentSettings.subscribe(
+      (setting) => {
+        this.userLogged = setting['loggedIn'];
+        this.isManager = setting['isManager'];
+      }
+    );
   }
 
   logout(){
     this.sessionApi.logout().subscribe(
       (data) => {
-        this.sessionApi.clearSession();
+        this.appSetting.set({loggedIn: false, isManager: false});
         this.userLogged = false;
         this.isManager = false;
+        this.sessionApi.clearSession();
       }
     );
   }

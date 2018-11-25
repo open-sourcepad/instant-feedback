@@ -3,6 +3,7 @@ import { ReactiveFormsModule,FormBuilder,
   FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SessionService } from '../../services/api';
+import { AppSettings } from '../../services/utils';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private sessionApi: SessionService,
-    private router: Router
+    private router: Router,
+    private appSetting: AppSettings
   ) { }
 
   ngOnInit() {
@@ -35,6 +37,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         res => {
           this.sessionApi.setSession(res['data']);
+          this.appSetting.set({loggedIn: true, isManager: res['data']['is_manager']});
           this.router.navigateByUrl('/dashboard');
           this.loading = false;
         },
