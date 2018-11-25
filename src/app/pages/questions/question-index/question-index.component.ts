@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { QuestionService } from '../../../services/api'
+import * as moment from 'moment-timezone';
 
 @Component({
   selector: 'app-question-index',
@@ -29,6 +30,10 @@ export class QuestionIndexComponent implements OnInit {
       }, err => {
         this.loading = false;
       });
+  }
+
+  formatTime(val){
+    return moment(val).tz('EST').format('hh:mm A');
   }
 
   remove(question_id, idx) {
