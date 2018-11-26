@@ -10,7 +10,7 @@ export const routes: Routes = [
     component: MeetingsComponent,
     children: [
       {path: '', component: MeetingIndexComponent},
-      {path: 'add', component: MeetingDetailsComponent}
+      {path: ':id', component: MeetingDetailsComponent}
     ]
   },
 ];

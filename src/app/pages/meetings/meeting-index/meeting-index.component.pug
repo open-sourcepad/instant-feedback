@@ -69,7 +69,7 @@
             td
               span.text-capitalize {{ obj.status }}
             td.actions
-              a()
+              a([routerLink]="['/one-on-ones', obj.id]")
                 .icon-edit.icon-sm.icon-holder
               a()
                 .icon-remove.icon-sm.icon-holder

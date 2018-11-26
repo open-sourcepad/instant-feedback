@@ -4,12 +4,16 @@
       .col-md-1
         .users-avatar
           .avatar-user
-            .avatar-name YV
+            .avatar-name
+              | {{ obj?.employee?.display_name.split(" ")[0].charAt(0) }}
+              | {{ obj?.employee?.display_name.split(" ")[1].charAt(0) }}
           .avatar-user
-            .avatar-name VA
+            .avatar-name
+              | {{ obj?.manager?.display_name.split(" ")[0].charAt(0) }}
+              | {{ obj?.manager?.display_name.split(" ")[1].charAt(0) }}
       .col-md-11
-        h1.title 1-on-1 with Yana
-        h3 December 3, 4:00 PM EST
+        h1.title 1-on-1 with {{ obj?.employee?.display_name }}
+        h3 {{ obj?.set_schedule | date: 'MMMM d' }}
         .user-actions
           button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Reschedule
           button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark Mark as Ready
