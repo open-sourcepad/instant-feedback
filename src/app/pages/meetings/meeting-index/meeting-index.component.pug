@@ -57,7 +57,7 @@
               td.text-center(colspan="6")
                 span No results found
         ng-container(*ngIf="!loading && collection.length > 0")
-          tr(*ngFor="let obj of collection")
+          tr(*ngFor="let obj of collection | paginate: { id: 'meetingCollection', itemsPerPage: page['size'], currentPage: page['number'], totalItems: recordCount}")
             td
               span {{ obj.employee.display_name }}
             td
@@ -73,3 +73,11 @@
                 .icon-edit.icon-sm.icon-holder
               a()
                 .icon-remove.icon-sm.icon-holder
+  .col-md-12.text-right
+    pagination-controls#meetingCollection(
+      (pageChange)="changePage($event)",
+      maxSize="5",
+      autoHide="true",
+      responsive="true",
+      directionLinks="true",
+      screenReaderPageLabel="page")

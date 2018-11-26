@@ -4,6 +4,7 @@ import { routing } from './meetings.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { Ng2LoadingSpinnerModule } from 'ng2-loading-spinner';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 import { MeetingsComponent } from './meetings.component';
 import { MeetingIndexComponent } from './meeting-index/meeting-index.component';
@@ -22,7 +23,8 @@ const MODULE_COMPONENTS = [
     FormsModule,
     ReactiveFormsModule,
     Daterangepicker,
-    Ng2LoadingSpinnerModule
+    Ng2LoadingSpinnerModule,
+    NgxPaginationModule
   ],
   declarations: [
     ...MODULE_COMPONENTS,
