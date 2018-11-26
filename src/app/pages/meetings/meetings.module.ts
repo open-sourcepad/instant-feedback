@@ -8,12 +8,14 @@ import {NgxPaginationModule} from 'ngx-pagination';
 
 import { MeetingsComponent } from './meetings.component';
 import { MeetingIndexComponent } from './meeting-index/meeting-index.component';
+import { MeetingDetailsComponent } from './meeting-details/meeting-details.component';
 
 
 
 const MODULE_COMPONENTS = [
   MeetingsComponent,
-  MeetingIndexComponent
+  MeetingIndexComponent,
+  MeetingDetailsComponent
 ]
 
 @NgModule({
