@@ -1,0 +1,36 @@
+#talkingPoints-container
+  .container
+    .row
+      .col-md-10.mr-auto.ml-auto
+        .row
+          .mr-auto.ml-auto
+            .vertical-align.almost-full-height
+              .table-cell
+                h2.font-bold Choose an existing Talking Point or enter your own
+                br
+                form(novalidate, autocomplete="off", [formGroup]="form")
+                  ul
+                    li.talking-point-types
+                      label Add your own&nbsp;
+                        input(type="radio", value="custom", formControlName="point_type", (change)="updateForm('custom')")
+                      hr
+                      ng-container(*ngIf="form.get('point_type').value == 'custom'")
+                        .custom-question
+                          h5.font-bold Your Talking Point
+                          textarea.form-control(type="text", formControlName="question")
+                    li.talking-point-types
+                      label Choose an existing talking point&nbsp;
+                        input(type="radio", value="default", formControlName="point_type", (change)="updateForm('default')")
+                      hr
+                      ng-container(*ngIf="form.get('point_type').value == 'default'")
+                        ul.talking-point-options
+                          li(*ngFor="let talkingPoint of talkingPoints")
+                            button((click)="selectTalkingPoint(talkingPoint)")
+                              span {{ talkingPoint.question }}
+  .talking-point-actions
+    .m-auto.text-center
+      button.btn.btn-round.btn-instant-feedback-cancel
+        u Cancel
+      button.btn.btn-round.btn-instant-feedback-brown
+        span Continue
+

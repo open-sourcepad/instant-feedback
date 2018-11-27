@@ -1,0 +1,76 @@
+:host {
+  background: #fff;
+  box-shadow: 0 0 16px 0 rgba(0,0,0,0.24);
+  // color: #fff;
+  position: fixed;
+  left: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20%;
+  min-width: 500px;
+  z-index: 9999;
+  // font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+ 
+ul {
+  font-size: 18px;
+  line-height: 1.8;
+  padding: 0;
+  list-style: none;
+
+  li.talking-point-types {
+    color: #C3BAAA;
+    font-size: 15px;
+
+    hr {
+      border-color: #C3BAAA;
+      border-width: 2px;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      opacity: 0.36;
+    }
+  }
+}
+
+.almost-full-height {
+  height: 75vh;
+}
+
+.custom-question, .talking-point-options {
+  padding-top: 0.5em;
+  padding-bottom: 1.8rem;
+}
+
+.talking-point-options {
+  height: 370px;
+  overflow-y: auto;
+
+  li > button {
+    background-color: transparent;
+    border: 0;
+    border-radius: 6px;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 0.7rem;
+    padding: 6px 12px;
+    text-align: justify;
+    outline: none;
+    width: 100%;
+
+    &:hover, &:active, &.selected {
+      background-color: #C3BAAA;
+    }
+  }
+}
+
+.talking-point-actions {
+  background-color: #333333;
+  padding: 25px;
+
+  .btn-round {
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}

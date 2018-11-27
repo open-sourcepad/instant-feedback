@@ -24,4 +24,5 @@
           .col-md-12.m-auto.text-center
             .mt-5
               h4.font-semi-bold.text-idle You currently do not have any talking points set.
-              button.btn.btn-instant-feedback.btn-instant-feedback-muted Add Talking Points
+              button.btn.btn-instant-feedback.btn-instant-feedback-muted((click)="addTalkingPoints()") Add Talking Points
+talking-point-menu([@slideInOut]="menuState")

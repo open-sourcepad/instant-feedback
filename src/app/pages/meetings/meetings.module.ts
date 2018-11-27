@@ -9,6 +9,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import { MeetingsComponent } from './meetings.component';
 import { MeetingIndexComponent } from './meeting-index/meeting-index.component';
 import { MeetingDetailsComponent } from './meeting-details/meeting-details.component';
+import { TalkingPointMenuComponent } from './talking-point-menu/talking-point-menu.component';
 
 
 
@@ -30,6 +31,7 @@ const MODULE_COMPONENTS = [
   ],
   declarations: [
     ...MODULE_COMPONENTS,
+    TalkingPointMenuComponent,
   ],
 })
 

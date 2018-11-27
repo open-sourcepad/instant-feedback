@@ -1,18 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { trigger, state, style, transition, animate} from '@angular/animations';
 
 import { MeetingService } from '../../../services/api';
 
 @Component({
   selector: 'app-meeting-details',
   templateUrl: './meeting-details.component.pug',
-  styleUrls: ['./meeting-details.component.scss']
+  styleUrls: ['./meeting-details.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('out', style({
+        transform: 'translate3d(100%, 0, 0)'
+      })),
+      transition('in => out', animate('400ms ease-in-out')),
+      transition('out => in', animate('400ms ease-in-out'))
+    ]),
+  ]
 })
 export class MeetingDetailsComponent implements OnInit {
 
   slug_id = null;
   loading = false;
   obj = null;
+  menuState: string = 'out';
 
   constructor(
     private router: Router,
@@ -40,6 +54,10 @@ export class MeetingDetailsComponent implements OnInit {
       }, err => {
         this.loading = false;
       });
+  }
+
+  addTalkingPoints() {
+    this.menuState = this.menuState === 'out' ? 'in' : 'out';
   }
 
 }
