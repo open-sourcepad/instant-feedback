@@ -1,5 +1,6 @@
 export { PulseService } from './pulse.service';
 export { AnswerService } from './answer.service';
+export { DiscussionService } from './discussion.service';
 export { QuestionService } from './question.service';
 export { UserService } from './user.service';
 export { MeetingService } from './meeting.service';
