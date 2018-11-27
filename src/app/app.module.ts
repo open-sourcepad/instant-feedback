@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PagesModule } from './pages/pages.module';
@@ -11,6 +12,7 @@ import {
   MeetingService,
   QuestionService,
   SessionService,
+  TalkingPointService,
   UserService
 } from './services/api';
 import { HttpService, LocalStorage, CommonService, AppSettings } from './services/utils';
@@ -23,6 +25,7 @@ const APP_SERVICES = [
   MeetingService,
   QuestionService,
   SessionService,
+  TalkingPointService,
   UserService,
   LocalStorage,
   AppSettings
@@ -40,6 +43,7 @@ const APP_PROVIDERS = [
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     RouterModule,
     PagesModule,
     AppRoutingModule,
