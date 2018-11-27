@@ -29,7 +29,7 @@
                               span {{ talkingPoint.question }}
   .talking-point-actions
     .m-auto.text-center
-      button.btn.btn-round.btn-instant-feedback-cancel
+      button.btn.btn-round.btn-instant-feedback-cancel((click)="onCancel()")
         u Cancel
       button.btn.btn-round.btn-instant-feedback-brown
         span Continue

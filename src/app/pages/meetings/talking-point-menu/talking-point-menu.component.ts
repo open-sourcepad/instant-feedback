@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup,  FormBuilder, FormControl, Validators } from '@angular/forms';
 import { TalkingPointService } from '../../../services/api';
 
@@ -8,6 +8,8 @@ import { TalkingPointService } from '../../../services/api';
   styleUrls: ['./talking-point-menu.component.scss']
 })
 export class TalkingPointMenuComponent implements OnInit {
+
+  @Output() cancel = new EventEmitter<object>();
 
   form: FormGroup;
   loading: boolean = false;
@@ -48,6 +50,10 @@ export class TalkingPointMenuComponent implements OnInit {
 
   selectTalkingPoint(value) {
     this.form.get('talking_point').setValue(value);
+  }
+
+  onCancel(){
+    this.cancel.emit();
   }
 
 }
