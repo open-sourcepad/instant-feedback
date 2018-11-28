@@ -1,7 +1,8 @@
 .row
   .col-md-10.m-auto
     .row
-      .col-md-1
+        
+      .col-md-12
         .users-avatar
           .avatar-user
             .avatar-name
@@ -11,12 +12,12 @@
             .avatar-name
               | {{ obj?.manager?.display_name.split(" ")[0].charAt(0) }}
               | {{ obj?.manager?.display_name.split(" ")[1].charAt(0) }}
-      .col-md-11
-        h1.title 1-on-1 with {{ obj?.employee?.display_name }}
-        h3 {{ obj?.set_schedule | date: 'MMMM d' }}
-        .user-actions
-          button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Reschedule
-          button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark Mark as Ready
+        .user-header
+          h1.title 1-on-1 with {{ obj?.employee?.display_name }}
+          h3 {{ obj?.set_schedule | date: 'MMMM d' }}
+          .user-actions
+            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Reschedule
+            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark Mark as Ready
     .row
       #talkingPoints.col-md-12
         h4.font-bold.text-brown.inline-block Talking Points
@@ -31,7 +32,7 @@
               button.btn.btn-instant-feedback.btn-instant-feedback-muted((click)="addTalkingPoints()") Add Talking Points
         ng-container(*ngIf="discussions.length > 0")
           .row
-            .col-md-12([ng2-loading]="loading")
+            .col-md-12([ng2-loading]="loading", [@listAnimation]="discussions.length")
               .card(*ngFor="let discuss of discussions; let idx = index")
                 .card-body
                   .card-actions
@@ -47,11 +48,18 @@
                     li
                       span.font-semi-bold {{ discuss.question }}
                       br
-                  ul
-                    li
-                      span.font-bold {{ obj?.employee?.display_name }}'s Note
-                    li
-                      .text-justify lorem ipsum
+                  ng-container(*ngIf="!discuss.employee_notes")
+                    .user-notes.mr-auto.ml-auto.w-50.text-center
+                      .vertical-align.qrtr-height
+                        .table-cell
+                          p.text-muted.opacity-75 {{ obj?.employee?.display_name }} has no notes yet.
+                  ng-container(*ngIf="discuss.employee_notes")
+                    .user-notes
+                      ul.no-list-style
+                        li
+                          p.font-bold.mb-1 {{ obj?.employee?.display_name }}'s Note
+                        li
+                          p.text-justify {{ discuss.employee_notes }}
 
 talking-point-menu(
   [@slideInOut]="menuState",

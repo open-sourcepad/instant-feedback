@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { trigger, state, style, transition, animate} from '@angular/animations';
+import { trigger, state, style, transition, animate, query, stagger, keyframes} from '@angular/animations';
 
 import { MeetingService, DiscussionService } from '../../../services/api';
 
@@ -19,6 +19,19 @@ import { MeetingService, DiscussionService } from '../../../services/api';
       transition('in => out', animate('400ms ease-in-out')),
       transition('out => in', animate('400ms ease-in-out'))
     ]),
+    trigger('listAnimation', [
+      transition('* => *', [
+
+        query(':enter', style({ opacity: 0 }), {optional: true}),
+
+        query(':enter', stagger('300ms', [
+          animate('1s ease-in', keyframes([
+            style({opacity: 0, transform: 'translateY(-75%)', offset: 0}),
+            style({opacity: .5, transform: 'translateY(35px)',  offset: 0.3}),
+            style({opacity: 1, transform: 'translateY(0)',     offset: 1.0}),
+          ]))]), {optional: true})
+      ])
+    ])
   ]
 })
 export class MeetingDetailsComponent implements OnInit {
@@ -109,7 +122,7 @@ export class MeetingDetailsComponent implements OnInit {
   moveUp(item, idx) {
     item.point_order -= 1;
     let adjItem = this.discussions[idx - 1];
-    adjItem.point_order += 1
+    adjItem.point_order += 1;
 
     this.discussions.splice(idx, 1);
     this.discussions.splice(idx - 1, 0, item);
@@ -121,7 +134,7 @@ export class MeetingDetailsComponent implements OnInit {
   moveDown(item, idx) {
     item.point_order += 1;
     let adjItem = this.discussions[idx + 1];
-    adjItem.point_order -= 1
+    adjItem.point_order -= 1;
 
     this.discussions.splice(idx, 1);
     this.discussions.splice(idx + 1, 0, item);
@@ -131,13 +144,13 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   updateOrder(values) {
-    this.loading = true;
+    // this.loading = true;
     let params = Object.assign(values, {meeting_id: this.slug_id});
     this.discussionApi.update(params.id, params)
       .subscribe( res => {
-        this.loading = false;
+        // this.loading = false;
       }, err => {
-        this.loading = false;
+        // this.loading = false;
       });
   }
 

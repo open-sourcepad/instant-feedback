@@ -1,6 +1,14 @@
 .users-avatar {
   position: relative;
+  display: inline-block;
+  vertical-align: top;
 }
+
+.user-header {
+  display: inline-block;
+  margin-left: calc(18% - 116px);
+}
+
 .avatar-user {
 width: 58px;
 height: 56px;
@@ -47,8 +55,8 @@ display: inline-block;
   .card-body .listStyle {
     color: #c3baaa;
 
-    > span {
-      color: inherit;
+    li > span {
+      color: #4a4a4a;
     }
   }
 
@@ -64,4 +72,21 @@ display: inline-block;
       padding-right: 5px;
     }
   }
+
+  .qrtr-height {
+    height: 25vh;
+  }
+
+  .user-notes {
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+    .table-cell > .opacity-75 {
+      opacity: 0.75;
+    }
+  }
+}
+
+.no-list-style {
+  list-style: none;
 }
