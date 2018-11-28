@@ -38,4 +38,30 @@ display: inline-block;
     font-size: 16px;
     padding: 6px 12px;
   }
+
+  .card-body {
+    background-color: #fffbf9;
+    font-size: 18px;
+  }
+
+  .card-body .listStyle {
+    color: #c3baaa;
+
+    > span {
+      color: inherit;
+    }
+  }
+
+  .card-actions {
+    text-align: right;
+
+    > button {
+      background-color: transparent;
+      border: 0;
+      font-size: 18px;
+      outline: none;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
 }

@@ -34,7 +34,7 @@ ul {
 }
 
 .almost-full-height {
-  height: 75vh;
+  height: calc(100vh - 106px);
 }
 
 .custom-question, .talking-point-options {

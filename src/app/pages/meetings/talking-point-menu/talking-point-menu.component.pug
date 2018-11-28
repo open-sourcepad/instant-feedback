@@ -1,4 +1,4 @@
-#talkingPoints-container
+#talkingPoints-container([ng2-loading]="loading")
   .container
     .row
       .col-md-10.mr-auto.ml-auto
@@ -12,25 +12,29 @@
                   ul
                     li.talking-point-types
                       label Add your own&nbsp;
-                        input(type="radio", value="custom", formControlName="point_type", (change)="updateForm('custom')")
+                        input(type="radio", value="custom", formControlName="talking_point_type", (change)="updateForm('custom')")
                       hr
-                      ng-container(*ngIf="form.get('point_type').value == 'custom'")
+                      ng-container(*ngIf="form.get('talking_point_type').value == 'custom'")
                         .custom-question
                           h5.font-bold Your Talking Point
-                          textarea.form-control(type="text", formControlName="question")
+                          textarea.form-control(type="text", formControlName="custom_question")
                     li.talking-point-types
                       label Choose an existing talking point&nbsp;
-                        input(type="radio", value="default", formControlName="point_type", (change)="updateForm('default')")
+                        input(type="radio", value="default", formControlName="talking_point_type", (change)="updateForm('default')")
                       hr
-                      ng-container(*ngIf="form.get('point_type').value == 'default'")
+                      ng-container(*ngIf="form.get('talking_point_type').value == 'default'")
                         ul.talking-point-options
                           li(*ngFor="let talkingPoint of talkingPoints")
-                            button((click)="selectTalkingPoint(talkingPoint)")
+                            button([class.selected]="form.get('talking_point_id').value == talkingPoint.id", (click)="selectTalkingPoint(talkingPoint)")
                               span {{ talkingPoint.question }}
   .talking-point-actions
     .m-auto.text-center
       button.btn.btn-round.btn-instant-feedback-cancel((click)="onCancel()")
         u Cancel
-      button.btn.btn-round.btn-instant-feedback-brown
-        span Continue
+      ng-container(*ngIf="!discussionObj")
+        button.btn.btn-round.btn-instant-feedback-brown((click)="onSubmit(form.value, 'create')")
+          span Save
+      ng-container(*ngIf="discussionObj")
+        button.btn.btn-round.btn-instant-feedback-brown((click)="onSubmit(form.value, 'edit')")
+          span Save
 

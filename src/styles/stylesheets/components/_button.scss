@@ -50,3 +50,16 @@
   background-color: transparent;
   border-color: transparent;
 }
+
+.btn-circle-add {
+  background-color: transparent;
+  border-radius: 50%;
+  border: 1px solid $lightBrown;
+
+  > span {
+    color: $lightBrown;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 24px;
+  }
+}

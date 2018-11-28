@@ -19,10 +19,43 @@
           button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark Mark as Ready
     .row
       #talkingPoints.col-md-12
-        h4.font-bold.text-brown Talking Points
-        .row
+        h4.font-bold.text-brown.inline-block Talking Points
+        button.inline-block.ml-3.btn-circle-add((click)="addTalkingPoints()")
+          span.ti-plus
+        br
+        br
+        .row(*ngIf="discussions.length <= 0", [ng2-loading]="loading")
           .col-md-12.m-auto.text-center
             .mt-5
               h4.font-semi-bold.text-idle You currently do not have any talking points set.
               button.btn.btn-instant-feedback.btn-instant-feedback-muted((click)="addTalkingPoints()") Add Talking Points
-talking-point-menu([@slideInOut]="menuState", (cancel)="addTalkingPoints()")
+        ng-container(*ngIf="discussions.length > 0")
+        .row
+          .col-md-12([ng2-loading]="loading")
+            .card(*ngFor="let discuss of discussions; let idx = index")
+              .card-body
+                .card-actions
+                  button
+                    span.ti-arrow-down
+                  button
+                    span.ti-arrow-up
+                  button((click)="editDiscussion(discuss)")
+                    span.ti-pencil
+                  button((click)="removeDiscussion(discuss, idx)")
+                    span.ti-trash
+                ul.listStyle
+                  li
+                    span.font-semi-bold {{ discuss.question }}
+                    br
+                ul
+                  li
+                    span.font-bold {{ obj?.employee?.display_name }}'s Note
+                  li
+                    .text-justify lorem ipsum
+
+talking-point-menu(
+  [@slideInOut]="menuState",
+  [(discussionObj)]="discussionObj",
+  (cancel)="addTalkingPoints()",
+  (save)="saveDiscussion($event)"
+)
