@@ -106,6 +106,39 @@ export class MeetingDetailsComponent implements OnInit {
       });
   }
 
+  moveUp(item, idx) {
+    item.point_order -= 1;
+    let adjItem = this.discussions[idx - 1];
+    adjItem.point_order += 1
 
+    this.discussions.splice(idx, 1);
+    this.discussions.splice(idx - 1, 0, item);
+
+    this.updateOrder(item);
+    this.updateOrder(adjItem);
+  }
+
+  moveDown(item, idx) {
+    item.point_order += 1;
+    let adjItem = this.discussions[idx + 1];
+    adjItem.point_order -= 1
+
+    this.discussions.splice(idx, 1);
+    this.discussions.splice(idx + 1, 0, item);
+
+    this.updateOrder(item);
+    this.updateOrder(adjItem);
+  }
+
+  updateOrder(values) {
+    this.loading = true;
+    let params = Object.assign(values, {meeting_id: this.slug_id});
+    this.discussionApi.update(params.id, params)
+      .subscribe( res => {
+        this.loading = false;
+      }, err => {
+        this.loading = false;
+      });
+  }
 
 }
