@@ -50,6 +50,7 @@ display: inline-block;
   .card-body {
     background-color: #fffbf9;
     font-size: 18px;
+    min-height: 236px;
   }
 
   .card-body .listStyle {
@@ -62,8 +63,9 @@ display: inline-block;
 
   .card-actions {
     text-align: right;
+    min-height: 30px;
 
-    > button {
+    > div > button {
       background-color: transparent;
       border: 0;
       font-size: 18px;

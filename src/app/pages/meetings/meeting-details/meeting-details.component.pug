@@ -33,26 +33,27 @@
         ng-container(*ngIf="discussions.length > 0")
           .row
             .col-md-12([ng2-loading]="loading", [@listAnimation]="discussions.length")
-              .card(*ngFor="let discuss of discussions; let idx = index")
+              .card(*ngFor="let discuss of discussions; let idx = index", (mouseover)="showActions=true", (mouseout)="showActions=false")
                 .card-body
                   .card-actions
-                    button((click)="moveDown(discuss, idx)", [disabled]="idx === (discussions.length - 1)")
-                      span.ti-arrow-down
-                    button((click)="moveUp(discuss, idx)", , [disabled]="idx === 0")
-                      span.ti-arrow-up
-                    button((click)="editDiscussion(discuss)")
-                      span.ti-pencil
-                    button((click)="removeDiscussion(discuss, idx)")
-                      span.ti-trash
+                    div([hidden]="!showActions")
+                      button((click)="moveDown(discuss, idx)", [disabled]="idx === (discussions.length - 1)")
+                        span.ti-arrow-down
+                      button((click)="moveUp(discuss, idx)", [disabled]="idx === 0")
+                        span.ti-arrow-up
+                      button((click)="editDiscussion(discuss)")
+                        span.ti-pencil
+                      button((click)="removeDiscussion(discuss, idx)")
+                        span.ti-trash
                   ul.listStyle
                     li
-                      span.font-semi-bold {{ discuss.question }}
+                      span.font-semi-bold((mouseover)="showActions=true", (mouseout)="showActions=false") {{ discuss.question }}
                       br
                   ng-container(*ngIf="!discuss.employee_notes")
                     .user-notes.mr-auto.ml-auto.w-50.text-center
                       .vertical-align.qrtr-height
                         .table-cell
-                          p.text-muted.opacity-75 {{ obj?.employee?.display_name }} has no notes yet.
+                          p.text-muted.opacity-75((mouseover)="showActions=true", (mouseout)="showActions=false") {{ obj?.employee?.display_name }} has no notes yet.
                   ng-container(*ngIf="discuss.employee_notes")
                     .user-notes
                       ul.no-list-style

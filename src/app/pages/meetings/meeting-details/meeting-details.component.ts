@@ -42,6 +42,7 @@ export class MeetingDetailsComponent implements OnInit {
   discussions: any = [];
   discussionObj: any = null;
   menuState: string = 'out';
+  showActions: boolean = false;
 
   constructor(
     private router: Router,
