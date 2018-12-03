@@ -4,22 +4,30 @@
       h1.font-bold {{ discussions[idx]?.question }}
 
       .employee-notes
-        ul.reset
-          li
-            p.font-bold.mb-1 {{ discussions[idx]?.employee_name }}'s Note
-          li
-            p.text-justify {{ discussions[idx]?.employee_notes }}
+        ng-container(*ngIf="!discussions[idx]?.employee_notes")
+          br
+          p.text-justify {{ discussions[idx]?.employee_name }} didn't add any notes.
+        ng-container(*ngIf="discussions[idx]?.employee_notes")
+          ul.reset
+            li
+              p.font-bold.mb-1 {{ discussions[idx]?.employee_name }}'s Note
+            li
+              p.text-justify {{ discussions[idx]?.employee_notes }}
 #listItems
   h1 hello
 #discuss-multi-form-footer
   .row
     .col-md-6
       ul.reset
-        li.inline-block.point-page(*ngFor="let discuss of discussions; let idx = index")
-          span {{ idx + 1}}
+        li.inline-block.point-page(*ngFor="let discuss of discussions; let i = index", [class.active]=" i == idx")
+          span {{ i + 1}}
     .col-md-6
       .btn-actions.text-right
-        button.btn-instant-feedback.btn-instant-feedback-cancel
+        button.btn-instant-feedback.btn-instant-feedback-cancel(*ngIf="idx == 0", (click)="cancel()")
           span Cancel
-        button.btn-instant-feedback.btn-instant-feedback-brown
+        button.btn-instant-feedback.btn-instant-feedback-cancel(*ngIf="idx != 0", (click)="prevPoint()")
+          span Previous
+        button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="idx != (discussions.length-1)", (click)="nextPoint()")
           span Next
+        button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="idx == (discussions.length-1)", (click)="nextPoint()")
+          span Review Summary
