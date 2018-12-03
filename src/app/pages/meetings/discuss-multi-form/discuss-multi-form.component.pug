@@ -1,0 +1,25 @@
+#talking-point-container.mr-auto.wrapper
+  .vertical-align.set-height
+    .table-cell
+      h1.font-bold {{ discussions[idx]?.question }}
+
+      .employee-notes
+        ul.reset
+          li
+            p.font-bold.mb-1 {{ discussions[idx]?.employee_name }}'s Note
+          li
+            p.text-justify {{ discussions[idx]?.employee_notes }}
+#listItems
+  h1 hello
+#discuss-multi-form-footer
+  .row
+    .col-md-6
+      ul.reset
+        li.inline-block.point-page(*ngFor="let discuss of discussions; let idx = index")
+          span {{ idx + 1}}
+    .col-md-6
+      .btn-actions.text-right
+        button.btn-instant-feedback.btn-instant-feedback-cancel
+          span Cancel
+        button.btn-instant-feedback.btn-instant-feedback-brown
+          span Next

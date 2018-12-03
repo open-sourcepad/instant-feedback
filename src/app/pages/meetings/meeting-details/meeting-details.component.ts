@@ -155,4 +155,8 @@ export class MeetingDetailsComponent implements OnInit {
       });
   }
 
+  startDiscussion(){
+    this.router.navigateByUrl(`/one-on-ones/${this.slug_id}/discussion?action=start`);
+  }
+
 }

@@ -10,13 +10,18 @@ import { MeetingsComponent } from './meetings.component';
 import { MeetingIndexComponent } from './meeting-index/meeting-index.component';
 import { MeetingDetailsComponent } from './meeting-details/meeting-details.component';
 import { TalkingPointMenuComponent } from './talking-point-menu/talking-point-menu.component';
+import { MeetingDiscussionComponent } from './meeting-discussion/meeting-discussion.component';
+import { DiscussMultiFormComponent } from './discuss-multi-form/discuss-multi-form.component';
 
 
 
 const MODULE_COMPONENTS = [
   MeetingsComponent,
   MeetingIndexComponent,
-  MeetingDetailsComponent
+  MeetingDetailsComponent,
+  TalkingPointMenuComponent,
+  MeetingDiscussionComponent,
+  DiscussMultiFormComponent
 ]
 
 @NgModule({
@@ -31,7 +36,6 @@ const MODULE_COMPONENTS = [
   ],
   declarations: [
     ...MODULE_COMPONENTS,
-    TalkingPointMenuComponent,
   ],
 })
 

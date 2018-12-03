@@ -17,7 +17,9 @@
           h3 {{ obj?.set_schedule | date: 'MMMM d' }}
           .user-actions
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Reschedule
-            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark Mark as Ready
+            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready
+            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-brown((click)="startDiscussion()") Start
+            //- button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-brown([routerLink]="['/one-on-ones', this.slug_id, '/discussion']") Start
     .row
       #talkingPoints.col-md-12
         h4.font-bold.text-brown.inline-block Talking Points
