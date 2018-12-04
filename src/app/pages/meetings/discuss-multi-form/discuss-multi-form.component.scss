@@ -50,7 +50,49 @@
   top: 0;
   right: 0;
   bottom: 0;
+  padding: 10rem 3rem 3rem 5rem;
+}
 
+#listItems .item-options {
+  border-bottom: 1px solid #ebebeb;
+
+  .btn-customize {
+    font-size: 1.1rem;
+    font-weight: 300;
+    margin-right: 5px;
+  }
+
+  .btn-customize.active {
+    font-weight: bold;
+    color: #C3BAAA;
+  }
+}
+
+#listItems .user-item-container {
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+#listItems .user-item-container > .item-list {
+  color: #C3BAAA;
+  font-size: xx-large;
+  font-weight: bold;
+  line-height: 1.3;
+  margin-top: 1.5rem;
+}
+
+#listItems .user-item-container > .item-list  span {
+  color: initial;
+  font-size: medium;
+  display: inline-block;
+  vertical-align: middle;
+  width: calc(100% - 14%);
+}
+
+#listItems .user-item-container > .item-list .item-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 #discuss-multi-form-footer {
