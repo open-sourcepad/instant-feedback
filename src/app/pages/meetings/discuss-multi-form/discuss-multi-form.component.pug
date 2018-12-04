@@ -16,35 +16,52 @@
 #listItems
   ul.item-options.reset
     li.inline-block
-      button.btn-instant-feedback.btn-instant-feedback-cancel.btn-customize.active
+      button.btn-instant-feedback.btn-instant-feedback-cancel.btn-customize([class.active]="currentTab == 'action'", (click)="changeTab('action')")
         span Action Items
     li.inline-block
-      button.btn-instant-feedback.btn-instant-feedback-cancel.btn-customize
+      button.btn-instant-feedback.btn-instant-feedback-cancel.btn-customize([class.active]="currentTab == 'general'", (click)="changeTab('general')")
         span General Notes
-  .user-item-container
-    h5.font-bold.text-idle Chan's Items
-    form.mt-3(automcoplete="off", novalidate)
-      input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add an action item here")
-    ul.item-list
-      li.relative
-        span spend 4h on fridays on personal project
-        .item-actions
-          button.btn-action()
-            span.ti-pencil
-          button.btn-action()
-            span.ti-trash
-      li
-        span learn new technology
-      li
-        span YAKSA presentation
-  br
-  .user-item-container
-    h5.font-bold.text-idle Myles' Items
-    form.mt-3(automcoplete="off", novalidate)
-      input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add an action item here")
-    ul.item-list
-      li
-        span help Chan with YAKSA presentation
+  ng-container(*ngIf="currentTab == 'action'")
+    .user-item-container
+      h5.font-bold.text-idle Chan's Items
+      form.mt-3(automcoplete="off", novalidate)
+        input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add an action item here")
+      ul.item-list
+        li.relative
+          span spend 4h on fridays on personal project
+          .item-actions
+            button.btn-action()
+              span.ti-pencil
+            button.btn-action()
+              span.ti-trash
+        li
+          span learn new technology
+        li
+          span YAKSA presentation
+    br
+    .user-item-container
+      h5.font-bold.text-idle Myles' Items
+      form.mt-3(automcoplete="off", novalidate)
+        input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add an action item here")
+      ul.item-list
+        li
+          span help Chan with YAKSA presentation
+  ng-container(*ngIf="currentTab == 'general'")
+    .user-item-container
+      form.mt-3(automcoplete="off", novalidate)
+        input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add a note")
+      ul.item-list
+        li.relative
+          span spend 4h on fridays on personal project
+          .item-actions
+            button.btn-action()
+              span.ti-pencil
+            button.btn-action()
+              span.ti-trash
+        li
+          span learn new technology
+        li
+          span YAKSA presentation
 #discuss-multi-form-footer
   .row
     .col-md-6

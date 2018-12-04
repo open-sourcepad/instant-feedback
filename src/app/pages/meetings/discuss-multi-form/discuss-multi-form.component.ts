@@ -13,6 +13,7 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
 
   idx: number = 0;
   action: string = '';
+  currentTab: string = 'action';
 
   constructor(
     private router: Router,
@@ -66,6 +67,10 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
 
   cancel(){
     this.router.navigateByUrl(`/one-on-ones/${this.slug_id}`);
+  }
+
+  changeTab(tab_name) {
+    this.currentTab = tab_name;
   }
 
   changeQuery(action) {
