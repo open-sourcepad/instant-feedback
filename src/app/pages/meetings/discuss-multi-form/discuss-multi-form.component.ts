@@ -24,6 +24,12 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
   employeeItems = [];
   loadingManagerItems: boolean = false;
   managerItems = [];
+  editNote: string = '';
+  editActionIdx: any = {employee: null, manager: null};
+  newEdit: any = {employee: false, manager: false};
+  editGeneralIdx: number = null;
+  newEditGeneral: boolean = false;
+
 
   generalItemForm: FormGroup;
   employeeItemForm: FormGroup;
@@ -147,11 +153,105 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
   }
 
   editGeneralItem(obj, idx) {
-
+    if(this.editNote){
+      this.newEditGeneral = true;
+      let params = {note: this.editNote};
+      this.saveGeneralItem(this.generalItems[this.editGeneralIdx], params);
+    }
+    this.editNote = obj.note;
+    this.editGeneralIdx = idx;
   }
 
-  editActionItem(obj, idx){
+  saveGeneralItem(obj, values) {
+    this.loadingGeneralItems = true;
+    this.generalItemApi.update(obj.id, values)
+      .subscribe(res => {
+        this.loadingGeneralItems = false;
+        obj.note = values.note;
+        if(!this.newEditGeneral) {
+          this.editNote = null;
+          this.editGeneralIdx = null;
+        }
+        this.newEditGeneral = false;
+      }, err => {
+        this.loadingGeneralItems = false;
+      });
+  }
 
+  removeGeneralItem(obj, idx) {
+    this.loadingGeneralItems = true;
+    this.generalItemApi.destroy(obj.id)
+    .subscribe(res => {
+        this.loadingGeneralItems = false;
+        this.generalItems.splice(idx, 1);
+      }, err => {
+        this.loadingGeneralItems = false;
+      });
+  }
+
+  editActionItem(obj, idx, user){
+    if(this.editNote){
+      this.newEdit[user] = true;
+      let params = {note: this.editNote};
+      this.saveActionItem(user, params, this.actionItems[user].items.data[this.editActionIdx[user]]);
+    }
+    this.editNote = obj.note;
+    this.editActionIdx[user] = idx;
+  }
+
+  saveActionItem(user, values, obj) {
+    if(user == 'employee') {
+      this.loadingEmployeeItems = true;
+      this.actionItemApi.update(obj.id, values)
+        .subscribe(res => {
+          this.loadingEmployeeItems = false;
+          obj.note = values.note;
+          if(!this.newEdit[user]) {
+            this.editNote = null;
+            this.editActionIdx[user] = null;
+          }
+          this.newEdit = false;
+        }, err => {
+          this.loadingEmployeeItems = false;
+        });
+    }else {
+      this.loadingManagerItems = true;
+      this.actionItemApi.update(obj.id, values)
+        .subscribe(res => {
+          this.loadingManagerItems = false;
+          obj.note = values.note;
+          if(!this.newEdit[user]) {
+            this.newEdit = false;
+            this.editNote = null;
+            this.editActionIdx[user] = null;
+          }
+        }, err => {
+          this.loadingManagerItems = false;
+        });
+    }
+  }
+
+  removeActionItem(obj, idx, user) {
+    if(user == 'employee') {
+      this.loadingEmployeeItems = true;
+    }else {
+      this.loadingManagerItems = true;
+    }
+    this.actionItemApi.destroy(obj.id)
+    .subscribe(res => {
+        if(user == 'employee') {
+          this.loadingEmployeeItems = false;
+        }else {
+          this.loadingManagerItems = false;
+        }
+        this.actionItems[user].items.data.splice(idx, 1);
+      }, err => {
+        if(user == 'employee') {
+          this.loadingEmployeeItems = false;
+        }else {
+          this.loadingManagerItems = false;
+        }
+      });
   }
 
   nextPoint(){
@@ -172,6 +272,11 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
 
   changeTab(tab_name) {
     this.currentTab = tab_name;
+    this.editNote = '';
+    this.editActionIdx = {employee: null, manager: null};
+    this.newEdit = {employee: false, manager: false};
+    this.editGeneralIdx = null;
+    this.newEditGeneral = null;
   }
 
   changeQuery(action) {

@@ -30,12 +30,13 @@
         ng-container(*ngIf="actionItems?.employee?.items?.data.length < 1")
           li.text-center
             span.text-muted.font-light {{ actionItems?.employee?.name?.split(' ')[0] }} has no action items yet
-        li.relative(*ngFor="let item of actionItems?.employee?.items?.data; let i = index")
-          span {{ item.note }}
-          .item-actions
-            button.btn-action()
+        li.relative.mb-4(*ngFor="let item of actionItems?.employee?.items?.data; let i = index")
+          span(*ngIf="i != editActionIdx['employee']") {{ item.note }}
+          input.form-control(*ngIf="i == editActionIdx['employee']", [(ngModel)]="editNote", (keydown.enter)="saveActionItem('employee', {note: editNote}, item)")
+          .item-actions(*ngIf="i != editActionIdx['employee']")
+            button.btn-action((click)="editActionItem(item, i, 'employee')")
               span.ti-pencil
-            button.btn-action()
+            button.btn-action((click)="removeActionItem(item, i, 'employee')")
               span.ti-trash
     br
     .user-item-container
@@ -46,25 +47,26 @@
         ng-container(*ngIf="actionItems?.manager?.items?.data.length < 1")
           li.text-center
             span.text-muted.font-light {{ actionItems?.manager?.name?.split(' ')[0] }} has no action items yet
-        li.relative(*ngFor="let item of actionItems?.manager?.items?.data")
-          span {{ item.note }}
-          .item-actions
-            button.btn-action()
+        li.relative.mb-4(*ngFor="let item of actionItems?.manager?.items?.data; let i = index")
+          span(*ngIf="i != editActionIdx['manager']") {{ item.note }}
+          input.form-control(*ngIf="i == editActionIdx['manager']", [(ngModel)]="editNote", (keydown.enter)="saveActionItem('manager', {note: editNote}, item)")
+          .item-actions(*ngIf="i != editActionIdx['manager']")
+            button.btn-action((click)="editActionItem(item, i, 'manager')")
               span.ti-pencil
-            button.btn-action()
+            button.btn-action((click)="removeActionItem(item, i, 'manager')")
               span.ti-trash
   ng-container(*ngIf="currentTab == 'general'")
     .user-item-container
       form.mt-3(automcoplete="off", novalidate, [formGroup]="generalItemForm", (ngSubmit)="addGeneralItem(generalItemForm.value)", [ng2-loading]="loadingGeneralItems")
         input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add a note", formControlName="note")
       ul.item-list(, [ng2-loading]="loadingGeneralItems")
-        li.relative(*ngFor="let item of generalItems; let i = index")
-          span {{ item.note }}
-          //- input.form-control([(ngModel)]="generalNote")
-          .item-actions
-            button.btn-action()
+        li.relative.mb-4(*ngFor="let item of generalItems; let i = index")
+          span.font-light(*ngIf="i != editGeneralIdx") {{ item.note }}
+          input.form-control(*ngIf="i == editGeneralIdx", [(ngModel)]="editNote", (keydown.enter)="saveGeneralItem(item, {note: editNote})")
+          .item-actions(*ngIf="i != editGeneralIdx")
+            button.btn-action((click)="editGeneralItem(item, i)")
               span.ti-pencil
-            button.btn-action()
+            button.btn-action((click)="removeGeneralItem(item, i)")
               span.ti-trash
 #discuss-multi-form-footer
   .row

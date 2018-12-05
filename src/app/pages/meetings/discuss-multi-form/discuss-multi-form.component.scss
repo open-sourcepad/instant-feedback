@@ -81,18 +81,32 @@
   margin-top: 1.5rem;
 }
 
-#listItems .user-item-container > .item-list  span {
+#listItems .user-item-container > .item-list  span, #listItems .user-item-container > .item-list  input {
   color: initial;
-  font-size: medium;
+  font-size: 18px;
   display: inline-block;
-  vertical-align: middle;
   width: calc(100% - 15%);
+}
+
+#listItems .user-item-container > .item-list  span {
+  vertical-align: middle;
+}
+
+#listItems .user-item-container > .item-list  input {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid #ebebeb;
+  height: auto;
 }
 
 #listItems .user-item-container > .item-list .item-actions {
   position: absolute;
   top: 0;
   right: 0;
+
+  > button > span {
+    font-size: 14px;
+  }
 }
 
 #discuss-multi-form-footer {
