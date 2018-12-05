@@ -23,45 +23,49 @@
         span General Notes
   ng-container(*ngIf="currentTab == 'action'")
     .user-item-container
-      h5.font-bold.text-idle Chan's Items
-      form.mt-3(automcoplete="off", novalidate)
-        input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add an action item here")
-      ul.item-list
-        li.relative
-          span spend 4h on fridays on personal project
+      h5.font-bold.text-idle {{ actionItems?.employee?.name?.split(' ')[0] }}'s Items
+      form.mt-3(automcoplete="off", novalidate, [formGroup]="employeeItemForm", (ngSubmit)="addActionItem('employee', employeeItemForm.value)", [ng2-loading]="loadingEmployeeItems")
+        input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add an action item here", formControlName="note")
+      ul.item-list([class.reset]="actionItems?.employee?.items?.data.length < 1", [ng2-loading]="loadingEmployeeItems")
+        ng-container(*ngIf="actionItems?.employee?.items?.data.length < 1")
+          li.text-center
+            span.text-muted.font-light {{ actionItems?.employee?.name?.split(' ')[0] }} has no action items yet
+        li.relative(*ngFor="let item of actionItems?.employee?.items?.data; let i = index")
+          span {{ item.note }}
           .item-actions
             button.btn-action()
               span.ti-pencil
             button.btn-action()
               span.ti-trash
-        li
-          span learn new technology
-        li
-          span YAKSA presentation
     br
     .user-item-container
-      h5.font-bold.text-idle Myles' Items
-      form.mt-3(automcoplete="off", novalidate)
-        input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add an action item here")
-      ul.item-list
-        li
-          span help Chan with YAKSA presentation
-  ng-container(*ngIf="currentTab == 'general'")
-    .user-item-container
-      form.mt-3(automcoplete="off", novalidate)
-        input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add a note")
-      ul.item-list
-        li.relative
-          span spend 4h on fridays on personal project
+      h5.font-bold.text-idle {{ actionItems?.manager?.name?.split(' ')[0] }}'s Items
+      form.mt-3(automcoplete="off", novalidate, [formGroup]="managerItemForm", (ngSubmit)="addActionItem('manager', managerItemForm.value)", [ng2-loading]="loadingManagerItems")
+        input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add an action item here", formControlName="note")
+      ul.item-list([class.reset]="actionItems?.manager?.items?.data.length < 1", [ng2-loading]="loadingManagerItems")
+        ng-container(*ngIf="actionItems?.manager?.items?.data.length < 1")
+          li.text-center
+            span.text-muted.font-light {{ actionItems?.manager?.name?.split(' ')[0] }} has no action items yet
+        li.relative(*ngFor="let item of actionItems?.manager?.items?.data")
+          span {{ item.note }}
           .item-actions
             button.btn-action()
               span.ti-pencil
             button.btn-action()
               span.ti-trash
-        li
-          span learn new technology
-        li
-          span YAKSA presentation
+  ng-container(*ngIf="currentTab == 'general'")
+    .user-item-container
+      form.mt-3(automcoplete="off", novalidate, [formGroup]="generalItemForm", (ngSubmit)="addGeneralItem(generalItemForm.value)", [ng2-loading]="loadingGeneralItems")
+        input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add a note", formControlName="note")
+      ul.item-list(, [ng2-loading]="loadingGeneralItems")
+        li.relative(*ngFor="let item of generalItems; let i = index")
+          span {{ item.note }}
+          //- input.form-control([(ngModel)]="generalNote")
+          .item-actions
+            button.btn-action()
+              span.ti-pencil
+            button.btn-action()
+              span.ti-trash
 #discuss-multi-form-footer
   .row
     .col-md-6

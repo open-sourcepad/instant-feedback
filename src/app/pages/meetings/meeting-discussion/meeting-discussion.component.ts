@@ -15,6 +15,7 @@ export class MeetingDiscussionComponent implements OnInit {
   loading = false;
   obj: any = null;
   discussions: any = [];
+  actionItems: any = [];
 
   constructor(
     private meetingApi: MeetingService,
@@ -39,6 +40,7 @@ export class MeetingDiscussionComponent implements OnInit {
         this.loading = false;
         this.obj = res['data'];
         this.discussions = res['data']['discussions']['data'];
+        this.actionItems = res['data']['action_items'];
       }, err => {
         this.loading = false;
       });

@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+import { ActionItemService, GeneralItemService } from '../../../services/api';
 
 @Component({
   selector: 'discuss-multi-form',
@@ -8,16 +11,30 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class DiscussMultiFormComponent implements OnInit, OnChanges {
 
+  @Input() actionItems;
   @Input() discussions;
   @Input() slug_id;
 
   idx: number = 0;
   action: string = '';
   currentTab: string = 'action';
+  loadingGeneralItems: boolean = false;
+  generalItems = [];
+  loadingEmployeeItems: boolean = false;
+  employeeItems = [];
+  loadingManagerItems: boolean = false;
+  managerItems = [];
+
+  generalItemForm: FormGroup;
+  employeeItemForm: FormGroup;
+  managerItemForm: FormGroup;
 
   constructor(
     private router: Router,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private generalItemApi: GeneralItemService,
+    private actionItemApi: ActionItemService,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit() {
@@ -35,6 +52,25 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
           this.idx = 0;
         }
       });
+
+    this.generalItemForm = this.fb.group({
+      'note': [''],
+      'meeting_id': [this.slug_id, Validators.required]
+    });
+
+    this.employeeItemForm = this.fb.group({
+      'note': [''],
+      'employee_id': ['', Validators.required],
+      'meeting_id': [this.slug_id, Validators.required]
+    });
+
+    this.managerItemForm = this.fb.group({
+      'note': [''],
+      'manager_id': ['', Validators.required],
+      'meeting_id': [this.slug_id, Validators.required]
+    });
+
+    this.loadGeneralItems();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -51,6 +87,71 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
         this.changeQuery('start');
       }
     }
+
+    if(changes.actionItems && !changes.actionItems.isFirstChange()){
+      this.employeeItemForm.get('employee_id').setValue(this.actionItems.employee.id);
+      this.managerItemForm.get('manager_id').setValue(this.actionItems.manager.id);
+      this.employeeItemForm.updateValueAndValidity();
+      this.managerItemForm.updateValueAndValidity();
+    }
+  }
+
+  loadGeneralItems() {
+    this.loadingGeneralItems = true;
+    this.generalItemApi.query({meeting_id: this.slug_id})
+      .subscribe(res => {
+        this.loadingGeneralItems = false;
+        this.generalItems = res['collection']['data'];
+      }, err => {
+        this.loadingGeneralItems = false;
+      });
+  }
+
+  addGeneralItem(values){
+    this.loadingGeneralItems = true;
+    this.generalItemApi.create(values)
+      .subscribe(res => {
+        this.loadingGeneralItems = false;
+        this.generalItems.push(res['data']);
+        this.generalItemForm.get('note').setValue('');
+        this.generalItemForm.get('note').updateValueAndValidity();
+      }, err => {
+        this.loadingGeneralItems = false;
+      });
+  }
+
+  addActionItem(user, values) {
+    if(user == 'employee') {
+      this.loadingEmployeeItems = true;
+      this.actionItemApi.create(values)
+        .subscribe(res => {
+          this.loadingEmployeeItems = false;
+          this.actionItems.employee.items.data.push(res['data']);
+          this.employeeItemForm.get('note').setValue('');
+          this.employeeItemForm.get('note').updateValueAndValidity();
+        }, err => {
+          this.loadingEmployeeItems = false;
+        });
+    }else {
+      this.loadingManagerItems = true;
+      this.actionItemApi.create(values)
+        .subscribe(res => {
+          this.loadingManagerItems = false;
+          this.actionItems.manager.items.data.push(res['data']);
+          this.managerItemForm.get('note').setValue('');
+          this.managerItemForm.get('note').updateValueAndValidity();
+        }, err => {
+          this.loadingManagerItems = false;
+        });
+    }
+  }
+
+  editGeneralItem(obj, idx) {
+
+  }
+
+  editActionItem(obj, idx){
+
   }
 
   nextPoint(){
