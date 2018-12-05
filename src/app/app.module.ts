@@ -9,6 +9,7 @@ import { SharedModule } from './pages/shared/shared.module';
 import {
   PulseService,
   AnswerService,
+  ActionItemService,
   DiscussionService,
   GeneralItemService,
   MeetingService,
@@ -24,6 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
 const APP_SERVICES = [
   PulseService,
   AnswerService,
+  ActionItemService,
   DiscussionService,
   GeneralItemService,
   MeetingService,
