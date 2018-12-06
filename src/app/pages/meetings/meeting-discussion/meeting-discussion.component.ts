@@ -16,6 +16,7 @@ export class MeetingDiscussionComponent implements OnInit {
   obj: any = null;
   discussions: any = [];
   actionItems: any = [];
+  action: string = '';
 
   constructor(
     private meetingApi: MeetingService,
@@ -31,6 +32,11 @@ export class MeetingDiscussionComponent implements OnInit {
         this.loadData(this.slug_id);
       }
     });
+
+    this.activeRoute.queryParams
+      .subscribe(params => {
+        this.action = params['action'];
+       });
   }
 
   loadData(slug_id: number) {

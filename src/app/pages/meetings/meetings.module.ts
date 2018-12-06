@@ -12,6 +12,7 @@ import { MeetingDetailsComponent } from './meeting-details/meeting-details.compo
 import { TalkingPointMenuComponent } from './talking-point-menu/talking-point-menu.component';
 import { MeetingDiscussionComponent } from './meeting-discussion/meeting-discussion.component';
 import { DiscussMultiFormComponent } from './discuss-multi-form/discuss-multi-form.component';
+import { ReviewSummaryComponent } from './review-summary/review-summary.component';
 
 
 
@@ -36,6 +37,7 @@ const MODULE_COMPONENTS = [
   ],
   declarations: [
     ...MODULE_COMPONENTS,
+    ReviewSummaryComponent,
   ],
 })
 

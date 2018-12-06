@@ -48,12 +48,16 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
       .subscribe(params => {
         this.action = params['action'];
         var cur_position = (+this.action);
+        debugger;
+
         if(this.action != 'start' && cur_position) {
           if(cur_position >= this.discussions.length){
             this.idx = (this.discussions.length - 1);
           }else {
             this.idx = cur_position - 1;
           }
+        }else if(this.action == 'review' || this.action == 'schedule') {
+          this.idx = this.discussions.length;
         }else {
           this.idx = 0;
         }
@@ -80,6 +84,7 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log('multi-form');
     if(changes.discussions && !changes.discussions.isFirstChange()){
       var cur_position = +this.action;
       if(cur_position){
@@ -90,7 +95,11 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
           this.idx = cur_position - 1;
         }
       }else {
-        this.changeQuery('start');
+        if(this.action == 'start' || this.action == 'review' || this.action == 'schedule'){
+          this.changeQuery(this.action);
+        }else {
+          this.changeQuery('start');
+        }
       }
     }
 
@@ -255,14 +264,25 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
   }
 
   nextPoint(){
-    if(this.idx < this.discussions.length){
+    var arr_length = this.discussions.length - 1;
+    if(this.idx <= this.discussions.length){
       this.idx += 1;
-     }
+      if(this.idx > arr_length) {
+        this.changeQuery('review');
+      }else{
+       this.changeQuery(this.idx+1);
+      }
+    }
   }
 
   prevPoint(){
     if(this.idx > 0){
       this.idx -= 1;
+      if(this.idx <= 0) {
+        this.changeQuery('start');
+      }else{
+       this.changeQuery(this.idx+1);
+      }
     }
   }
 
