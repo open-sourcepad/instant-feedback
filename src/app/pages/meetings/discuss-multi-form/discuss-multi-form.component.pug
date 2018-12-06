@@ -16,12 +16,9 @@
 #listItems.wrapper
   ul.item-options.reset
     li.inline-block
-      button.btn-instant-feedback.btn-instant-feedback-cancel.btn-customize([class.active]="currentTab == 'action'", (click)="changeTab('action')")
+      button.btn-instant-feedback.btn-instant-feedback-cancel.btn-customize.active
         span Action Items
-    li.inline-block
-      button.btn-instant-feedback.btn-instant-feedback-cancel.btn-customize([class.active]="currentTab == 'general'", (click)="changeTab('general')")
-        span General Notes
-  ng-container(*ngIf="currentTab == 'action'")
+  div
     .user-item-container
       h5.font-bold.text-idle {{ actionItems?.employee?.name?.split(' ')[0] }}'s Items
       form.mt-3(automcoplete="off", novalidate, [formGroup]="employeeItemForm", (ngSubmit)="addActionItem('employee', employeeItemForm.value)", [ng2-loading]="loadingEmployeeItems")
@@ -55,29 +52,12 @@
               span.ti-pencil
             button.btn-action((click)="removeActionItem(item, i, 'manager')")
               span.ti-trash
-  ng-container(*ngIf="currentTab == 'general'")
-    .user-item-container
-      form.mt-3(automcoplete="off", novalidate, [formGroup]="generalItemForm", (ngSubmit)="addGeneralItem(generalItemForm.value)", [ng2-loading]="loadingGeneralItems")
-        input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add a note", formControlName="note")
-      ul.item-list(, [ng2-loading]="loadingGeneralItems")
-        li.relative.mb-4(*ngFor="let item of generalItems; let i = index")
-          span.font-light(*ngIf="i != editGeneralIdx") {{ item.note }}
-          input.form-control(*ngIf="i == editGeneralIdx", [(ngModel)]="editNote", (keydown.enter)="saveGeneralItem(item, {note: editNote})")
-          .item-actions(*ngIf="i != editGeneralIdx")
-            button.btn-action((click)="editGeneralItem(item, i)")
-              span.ti-pencil
-            button.btn-action((click)="removeGeneralItem(item, i)")
-              span.ti-trash
 #discuss-multi-form-footer
   .row
     .col-md-8
       ul.reset
         li.inline-block.point-page(*ngFor="let discuss of discussions; let i = index", [class.active]=" i == idx")
           span {{ i + 1}}
-        li.inline-block.review
-          span.font-bold.text-brown Review Summary {{idx}}
-        li.inline-block.review
-          span.font-bold Schedule Next 1-on-1
     .col-md-4
       .btn-actions.text-right
         button.btn-instant-feedback.btn-instant-feedback-cancel(*ngIf="idx == 0", (click)="cancel()")

@@ -18,8 +18,6 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
   idx: number = 0;
   action: string = '';
   currentTab: string = 'action';
-  loadingGeneralItems: boolean = false;
-  generalItems = [];
   loadingEmployeeItems: boolean = false;
   employeeItems = [];
   loadingManagerItems: boolean = false;
@@ -27,18 +25,14 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
   editNote: string = '';
   editActionIdx: any = {employee: null, manager: null};
   newEdit: any = {employee: false, manager: false};
-  editGeneralIdx: number = null;
-  newEditGeneral: boolean = false;
 
 
-  generalItemForm: FormGroup;
   employeeItemForm: FormGroup;
   managerItemForm: FormGroup;
 
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private generalItemApi: GeneralItemService,
     private actionItemApi: ActionItemService,
     private fb: FormBuilder
   ) { }
@@ -48,7 +42,6 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
       .subscribe(params => {
         this.action = params['action'];
         var cur_position = (+this.action);
-        debugger;
 
         if(this.action != 'start' && cur_position) {
           if(cur_position >= this.discussions.length){
@@ -63,11 +56,6 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
         }
       });
 
-    this.generalItemForm = this.fb.group({
-      'note': [''],
-      'meeting_id': [this.slug_id, Validators.required]
-    });
-
     this.employeeItemForm = this.fb.group({
       'note': [''],
       'employee_id': ['', Validators.required],
@@ -79,12 +67,9 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
       'manager_id': ['', Validators.required],
       'meeting_id': [this.slug_id, Validators.required]
     });
-
-    this.loadGeneralItems();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('multi-form');
     if(changes.discussions && !changes.discussions.isFirstChange()){
       var cur_position = +this.action;
       if(cur_position){
@@ -109,30 +94,6 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
       this.employeeItemForm.updateValueAndValidity();
       this.managerItemForm.updateValueAndValidity();
     }
-  }
-
-  loadGeneralItems() {
-    this.loadingGeneralItems = true;
-    this.generalItemApi.query({meeting_id: this.slug_id})
-      .subscribe(res => {
-        this.loadingGeneralItems = false;
-        this.generalItems = res['collection']['data'];
-      }, err => {
-        this.loadingGeneralItems = false;
-      });
-  }
-
-  addGeneralItem(values){
-    this.loadingGeneralItems = true;
-    this.generalItemApi.create(values)
-      .subscribe(res => {
-        this.loadingGeneralItems = false;
-        this.generalItems.push(res['data']);
-        this.generalItemForm.get('note').setValue('');
-        this.generalItemForm.get('note').updateValueAndValidity();
-      }, err => {
-        this.loadingGeneralItems = false;
-      });
   }
 
   addActionItem(user, values) {
@@ -161,42 +122,6 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
     }
   }
 
-  editGeneralItem(obj, idx) {
-    if(this.editNote){
-      this.newEditGeneral = true;
-      let params = {note: this.editNote};
-      this.saveGeneralItem(this.generalItems[this.editGeneralIdx], params);
-    }
-    this.editNote = obj.note;
-    this.editGeneralIdx = idx;
-  }
-
-  saveGeneralItem(obj, values) {
-    this.loadingGeneralItems = true;
-    this.generalItemApi.update(obj.id, values)
-      .subscribe(res => {
-        this.loadingGeneralItems = false;
-        obj.note = values.note;
-        if(!this.newEditGeneral) {
-          this.editNote = null;
-          this.editGeneralIdx = null;
-        }
-        this.newEditGeneral = false;
-      }, err => {
-        this.loadingGeneralItems = false;
-      });
-  }
-
-  removeGeneralItem(obj, idx) {
-    this.loadingGeneralItems = true;
-    this.generalItemApi.destroy(obj.id)
-    .subscribe(res => {
-        this.loadingGeneralItems = false;
-        this.generalItems.splice(idx, 1);
-      }, err => {
-        this.loadingGeneralItems = false;
-      });
-  }
 
   editActionItem(obj, idx, user){
     if(this.editNote){
@@ -288,15 +213,6 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
 
   cancel(){
     this.router.navigateByUrl(`/one-on-ones/${this.slug_id}`);
-  }
-
-  changeTab(tab_name) {
-    this.currentTab = tab_name;
-    this.editNote = '';
-    this.editActionIdx = {employee: null, manager: null};
-    this.newEdit = {employee: false, manager: false};
-    this.editGeneralIdx = null;
-    this.newEditGeneral = null;
   }
 
   changeQuery(action) {
