@@ -1,2 +1,7 @@
 discuss-multi-form(*ngIf="action != 'review' && action != 'schedule'", [(actionItems)]="actionItems", [(discussions)]="discussions", [(slug_id)]="slug_id")
-review-summary(*ngIf="action == 'review' || action == 'schedule'", [(actionItems)]="actionItems", [(discussions)]="discussions", [(slug_id)]="slug_id")
+review-summary(*ngIf="action == 'review' || action == 'schedule'",
+  [(actionItems)]="actionItems",
+  [(discussions)]="discussions",
+  [(slug_id)]="slug_id",
+  [(meeting)]="obj"
+)

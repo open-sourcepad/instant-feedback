@@ -45,6 +45,7 @@ export class MeetingDiscussionComponent implements OnInit {
       .subscribe( res => {
         this.loading = false;
         this.obj = res['data'];
+        console.log(this.obj);
         this.discussions = res['data']['discussions']['data'];
         this.actionItems = res['data']['action_items'];
       }, err => {

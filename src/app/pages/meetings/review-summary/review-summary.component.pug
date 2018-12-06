@@ -2,8 +2,16 @@
   .vertical-align.full-height.container
     .table-cell
       .text-center(*ngIf="action == 'schedule'")
-        h2.font-bold All done! Your next 1-on-1 with Chan is scheduled on
-        h1.font-bold.text-brown February 3, 2019
+        h2.font-bold All done! Your next 1-on-1 with {{ meeting?.employee?.display_name?.split(' ')[0] }} is scheduled on
+        h1.font-bold.text-brown {{ this.meetingForm.get('set_schedule').value | date: 'MMMM d, yyyy'}}
+        .input-group(daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
+          input.form-control(type="text" name="dateRangeInput", [(ngModel)]="new_schedule")
+          .input-group-append
+            button.btn
+              span.icon-holder.ti-calendar
+        button.inline-block.btn-instant-feedback.btn-instant-feedback-cancel((click)="setSchedule(new_schedule)")
+          span CHANGE
+
       #listItems(*ngIf="action == 'review'")
         .row
           .col-md-6.mr-auto
@@ -56,5 +64,5 @@
           span Previous
         button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="action == 'review'", (click)="nextAction('schedule')")
           span Schedule Next 1on1
-        button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="action == 'schedule'")
+        button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="action == 'schedule'", (click)="finishMeeting(meetingForm.value)")
           span Finish

@@ -35,3 +35,7 @@
   border-bottom-color: $main-color !important;
 }
 
+.daterangepicker.dropdown-menu {
+  z-index: 9999 !important;
+}
+
