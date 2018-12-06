@@ -43,6 +43,7 @@ export class MeetingDetailsComponent implements OnInit {
   discussionObj: any = null;
   menuState: string = 'out';
   showActions: boolean = false;
+  meetingStatus: string = 'upcoming';
 
   constructor(
     private router: Router,
@@ -67,6 +68,7 @@ export class MeetingDetailsComponent implements OnInit {
       .subscribe( res => {
         this.loading = false;
         this.obj = res['data'];
+        this.meetingStatus = this.obj.status;
         this.discussions = res['data']['discussions']['data'];
       }, err => {
         this.loading = false;

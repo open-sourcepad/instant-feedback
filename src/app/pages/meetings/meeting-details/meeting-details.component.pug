@@ -14,16 +14,16 @@
               | {{ obj?.manager?.display_name.split(" ")[1].charAt(0) }}
         .user-header
           h1.title 1-on-1 with {{ obj?.employee?.display_name }}
-          h3 {{ obj?.set_schedule | date: 'MMMM d' }}
-          .user-actions
+          h3 {{ obj?.set_schedule | date: 'MMMM d, y' }}
+          h3.font-bold(*ngIf="meetingStatus == 'done'") Actual 1-on-1 date: {{ obj?.actual_schedule | date: 'MMMM d, y' }}
+          .user-actions(*ngIf="meetingStatus != 'done'")
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Reschedule
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-brown((click)="startDiscussion()") Start
-            //- button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-brown([routerLink]="['/one-on-ones', this.slug_id, '/discussion']") Start
     .row
       #talkingPoints.col-md-12
         h4.font-bold.text-brown.inline-block Talking Points
-        button.inline-block.ml-3.btn-circle-add((click)="addTalkingPoints()")
+        button.inline-block.ml-3.btn-circle-add(*ngIf="meetingStatus != 'done'", (click)="addTalkingPoints()")
           span.ti-plus
         br
         br
@@ -37,7 +37,7 @@
             .col-md-12([ng2-loading]="loading", [@listAnimation]="discussions.length")
               .card(*ngFor="let discuss of discussions; let idx = index", (mouseover)="showActions=true", (mouseout)="showActions=false")
                 .card-body
-                  .card-actions
+                  .card-actions(*ngIf="meetingStatus != 'done'")
                     div([hidden]="!showActions")
                       button((click)="moveDown(discuss, idx)", [disabled]="idx === (discussions.length - 1)")
                         span.ti-arrow-down
@@ -51,7 +51,7 @@
                     li
                       span.font-semi-bold((mouseover)="showActions=true", (mouseout)="showActions=false") {{ discuss.question }}
                       br
-                  ng-container(*ngIf="!discuss.employee_notes")
+                  ng-container(*ngIf="!discuss.employee_notes && meetingStatus != 'done'")
                     .user-notes.mr-auto.ml-auto.w-50.text-center
                       .vertical-align.qrtr-height
                         .table-cell
