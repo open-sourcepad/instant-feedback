@@ -1,0 +1,55 @@
+.action-items-container .item-options {
+  border-bottom: 1px solid #ebebeb;
+
+  .btn-customize {
+    font-size: 1.1rem;
+    font-weight: 300;
+    margin-right: 5px;
+  }
+
+  .btn-customize.active {
+    font-weight: bold;
+    color: #C3BAAA;
+  }
+}
+
+.action-items-container .user-item-container {
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.action-items-container .user-item-container > .item-list {
+  color: #C3BAAA;
+  font-size: xx-large;
+  line-height: 1.3;
+  margin-top: 1.5rem;
+}
+
+.action-items-container .user-item-container > .item-list  span, .action-items-container .user-item-container > .item-list  input {
+  color: initial;
+  font-size: 18px;
+  display: inline-block;
+  width: calc(100% - 15%);
+}
+
+.action-items-container .user-item-container > .item-list  span {
+  position: relative;
+  top: -5px;
+}
+
+.action-items-container .user-item-container > .item-list  input {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid #ebebeb;
+  height: auto;
+}
+
+.action-items-container .user-item-container > .item-list .item-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  > button > span {
+    font-size: 14px;
+  }
+}
