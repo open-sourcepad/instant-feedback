@@ -20,6 +20,12 @@
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Reschedule
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-brown((click)="startDiscussion()") Start
+    ng-container(*ngIf="meetingStatus == 'done'")
+      .row
+        .col-md-12
+          br
+          br
+          meeting-action-items([(actionItems)]="actionItems" , [(slug_id)]="slug_id", [(allowEdit)]="actionEditable")
     .row
       #talkingPoints.col-md-12
         h4.font-bold.text-brown.inline-block Talking Points
@@ -49,7 +55,7 @@
                         span.ti-trash
                   ul.listStyle
                     li
-                      span.font-semi-bold((mouseover)="showActions=true", (mouseout)="showActions=false") {{ discuss.question }}
+                      span((mouseover)="showActions=true", (mouseout)="showActions=false") {{ discuss.question }}
                       br
                   ng-container(*ngIf="!discuss.employee_notes && meetingStatus != 'done'")
                     .user-notes.mr-auto.ml-auto.w-50.text-center

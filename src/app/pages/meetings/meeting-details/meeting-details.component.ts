@@ -40,9 +40,11 @@ export class MeetingDetailsComponent implements OnInit {
   loading = false;
   obj = null;
   discussions: any = [];
+  actionItems: any = [];
   discussionObj: any = null;
   menuState: string = 'out';
   showActions: boolean = false;
+  actionEditable: boolean = false;
   meetingStatus: string = 'upcoming';
 
   constructor(
@@ -69,7 +71,9 @@ export class MeetingDetailsComponent implements OnInit {
         this.loading = false;
         this.obj = res['data'];
         this.meetingStatus = this.obj.status;
+        this.actionEditable = this.meetingStatus != 'done';
         this.discussions = res['data']['discussions']['data'];
+        this.actionItems = res['data']['action_items'];
       }, err => {
         this.loading = false;
       });
