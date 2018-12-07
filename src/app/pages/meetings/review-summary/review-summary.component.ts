@@ -19,18 +19,10 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
 
 
   action: string = '';
-  loadingEmployeeItems: boolean = false;
-  employeeItems = [];
-  loadingManagerItems: boolean = false;
-  managerItems = [];
-  editNote: string = '';
-  editActionIdx: any = {employee: null, manager: null};
-  newEdit: any = {employee: false, manager: false};
+  actionItemEditable: boolean = true;
   new_schedule: string = moment().format('D MMMM YYYY');
   loading: boolean = false;
 
-  employeeItemForm: FormGroup;
-  managerItemForm: FormGroup;
   meetingForm: FormGroup;
 
   daterange: any;
@@ -81,18 +73,6 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.employeeItemForm = this.fb.group({
-      'note': [''],
-      'employee_id': ['', Validators.required],
-      'meeting_id': [this.slug_id, Validators.required]
-    });
-
-    this.managerItemForm = this.fb.group({
-      'note': [''],
-      'manager_id': ['', Validators.required],
-      'meeting_id': [this.slug_id, Validators.required]
-    });
-
     this.meetingForm = this.fb.group({
       'employee_id': [''],
       'manager_id': [''],

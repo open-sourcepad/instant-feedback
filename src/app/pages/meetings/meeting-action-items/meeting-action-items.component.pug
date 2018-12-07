@@ -1,19 +1,19 @@
 .action-items-container
-  ul.item-options.reset(*ngIf="allowEdit")
+  ul.item-options.reset(*ngIf="allowEdit && !allowReviewEdit")
     li.inline-block
       button.btn-instant-feedback.btn-instant-feedback-cancel.btn-customize.active
         span Action Items
   .row
-    .col-md-6.mr-auto([class.col-md-12]="allowEdit")
+    .col-md-6.mr-auto([class.col-md-12]="allowEdit && !allowReviewEdit")
       .user-item-container
-        h1.font-bold([class.text-idle]="allowEdit", [class.font-size-16]="allowEdit") {{ actionItems?.employee?.name?.split(' ')[0] }}'s Items
+        h1.font-bold([class.text-idle]="allowEdit && !allowReviewEdit", [class.font-size-16]="allowEdit && !allowReviewEdit") {{ actionItems?.employee?.name?.split(' ')[0] }}'s Items
         ng-container(*ngIf="allowEdit")
           form.mt-3(automcoplete="off", novalidate, [formGroup]="employeeItemForm", (ngSubmit)="addActionItem('employee', employeeItemForm.value)", [ng2-loading]="loadingEmployeeItems")
             input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add an action item here", formControlName="note")
         ul.item-list([class.reset]="actionItems?.employee?.items?.data.length < 1", [ng2-loading]="loadingEmployeeItems")
           ng-container(*ngIf="actionItems?.employee?.items?.data.length < 1")
             li.text-center
-              span.text-muted.font-light([class.font-size-16]="allowEdit") {{ actionItems?.employee?.name?.split(' ')[0] }} has no action items yet
+              span.text-muted.font-light([class.font-size-16]="allowEdit && !allowReviewEdit") {{ actionItems?.employee?.name?.split(' ')[0] }} has no action items yet
           li.relative(*ngFor="let item of actionItems?.employee?.items?.data; let i = index")
             span(*ngIf="i != editActionIdx['employee']", [class.font-bold]="allowEdit") {{ item.note }}
             input.form-control(*ngIf="i == editActionIdx['employee']", [(ngModel)]="editNote", (keydown.enter)="saveActionItem('employee', {note: editNote}, item)")
@@ -23,9 +23,9 @@
                   span.ti-pencil
                 button.btn-action((click)="removeActionItem(item, i, 'employee')")
                   span.ti-trash
-    .col-md-6.ml-auto([class.col-md-12]="allowEdit")
+    .col-md-6.ml-auto([class.col-md-12]="allowEdit && !allowReviewEdit")
       .user-item-container
-        h1.font-bold([class.text-idle]="allowEdit", [class.font-size-16]="allowEdit") {{ actionItems?.manager?.name?.split(' ')[0] }}'s Items
+        h1.font-bold([class.text-idle]="allowEdit && !allowReviewEdit", [class.font-size-16]="allowEdit && !allowReviewEdit") {{ actionItems?.manager?.name?.split(' ')[0] }}'s Items
         ng-container(*ngIf="allowEdit")
           form.mt-3(automcoplete="off", novalidate, [formGroup]="managerItemForm", (ngSubmit)="addActionItem('manager', managerItemForm.value)", [ng2-loading]="loadingManagerItems")
             input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add an action item here", formControlName="note")

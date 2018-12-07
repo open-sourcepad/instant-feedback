@@ -14,6 +14,7 @@ export class MeetingActionItemsComponent implements OnInit, OnChanges {
   @Input() actionItems;
   @Input() slug_id;
   @Input() allowEdit;
+  @Input() allowReviewEdit;
 
   loadingEmployeeItems: boolean = false;
   employeeItems = [];
@@ -22,6 +23,7 @@ export class MeetingActionItemsComponent implements OnInit, OnChanges {
   editNote: string = '';
   editActionIdx: any = {employee: null, manager: null};
   newEdit: any = {employee: false, manager: false};
+  reviewEdit: boolean = false;
 
   employeeItemForm: FormGroup;
   managerItemForm: FormGroup;
@@ -31,7 +33,9 @@ export class MeetingActionItemsComponent implements OnInit, OnChanges {
     private activeRoute: ActivatedRoute,
     private actionItemApi: ActionItemService,
     private fb: FormBuilder
-   ) { }
+   ) {
+    // this.reviewEdit = this.allowReviewEdit;
+  }
 
   ngOnInit() {
     this.employeeItemForm = this.fb.group({
