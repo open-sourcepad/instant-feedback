@@ -66,43 +66,42 @@
   }
 }
 
-#listItems .user-item-container {
-  margin-bottom: 1.5rem;
-  margin-top: 1.5rem;
+.form-control {
+  border: 1px solid #E9EFF4;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #323C47;
+  letter-spacing: -0.17px;
+  line-height: 27px;
+  padding: 10px 21px;
+  font-weight: 300;
+  height: 47px;
 }
 
-#listItems .user-item-container > .item-list {
-  color: #C3BAAA;
-  font-size: xx-large;
-  font-weight: bold;
-  line-height: 1.3;
-  margin-top: 1.5rem;
-}
-
-#listItems .user-item-container > .item-list  span, #listItems .user-item-container > .item-list  input {
-  color: initial;
-  font-size: 18px;
+.input-group {
+  width: 25%;
   display: inline-block;
-  width: calc(100% - 15%);
-}
 
-#listItems .user-item-container > .item-list  span {
-  vertical-align: middle;
-}
-
-#listItems .user-item-container > .item-list  input {
-  padding: 0;
-  border: 0;
-  border-bottom: 1px solid #ebebeb;
-  height: auto;
-}
-
-#listItems .user-item-container > .item-list .item-actions {
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  > button > span {
-    font-size: 14px;
+  > .form-control {
+    height: 35px;
+    width: auto;
+    display: inline-block;
   }
+
+  .icon-holder {
+    height: 21px;
+    width: 21px;
+  }
+
+  .input-group-text {
+    background: rgba(244,247,249,0.40);
+    border: 1px solid #E9EFF4;
+  }
+}
+
+.btn-change {
+  font-size: large;
+  font-weight: 300;
+  text-decoration: underline;
+  color: #000;
 }

@@ -6,10 +6,11 @@
         h1.font-bold.text-brown {{ this.meetingForm.get('set_schedule').value | date: 'MMMM d, yyyy'}}
         .input-group(daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
           input.form-control(type="text" name="dateRangeInput", [(ngModel)]="new_schedule")
-          .input-group-append
-            button.btn
-              span.icon-holder.ti-calendar
-        button.inline-block.btn-instant-feedback.btn-instant-feedback-cancel((click)="setSchedule(new_schedule)")
+          .input-group-append.inline-block
+            .input-group-text
+              button.btn
+                span.icon-holder.ti-calendar.text-brown
+        button.inline-block.btn-instant-feedback.btn-instant-feedback-cancel.btn-change((click)="setSchedule(new_schedule)")
           span CHANGE
 
       ng-container(*ngIf="action == 'review'")
