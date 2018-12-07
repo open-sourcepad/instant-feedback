@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -9,7 +9,7 @@ import { ActionItemService } from '../../../services/api';
   templateUrl: './meeting-action-items.component.pug',
   styleUrls: ['./meeting-action-items.component.scss']
 })
-export class MeetingActionItemsComponent implements OnInit {
+export class MeetingActionItemsComponent implements OnInit, OnChanges {
 
   @Input() actionItems;
   @Input() slug_id;
@@ -45,6 +45,15 @@ export class MeetingActionItemsComponent implements OnInit {
       'manager_id': ['', Validators.required],
       'meeting_id': [this.slug_id, Validators.required]
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.actionItems && !changes.actionItems.isFirstChange()){
+      this.employeeItemForm.get('employee_id').setValue(this.actionItems.employee.id);
+      this.managerItemForm.get('manager_id').setValue(this.actionItems.manager.id);
+      this.employeeItemForm.updateValueAndValidity();
+      this.managerItemForm.updateValueAndValidity();
+    }
   }
 
   addActionItem(user, values) {
