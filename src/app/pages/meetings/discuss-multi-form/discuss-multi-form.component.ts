@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { ActionItemService, GeneralItemService } from '../../../services/api';
+import { ActionItemService } from '../../../services/api';
 
 @Component({
   selector: 'discuss-multi-form',
