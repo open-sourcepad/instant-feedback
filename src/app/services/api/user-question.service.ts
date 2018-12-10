@@ -14,4 +14,8 @@ export class UserQuestionService extends BaseService {
   ) {
     super(http, ENDPOINT);
   }
+
+  searchByUser(query) {
+    return this.http.get(`${ENDPOINT}/search?${this.buildParams(query)}`);
+  }
 }

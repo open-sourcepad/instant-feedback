@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { LoginComponent } from './login/login.component';
+import { UserQuestionsComponent } from './user-questions/user-questions.component';
 import { PagesGuard } from './pages.guard';
 
 export const routes: Routes = [
@@ -26,7 +27,8 @@ export const routes: Routes = [
       {
         path: 'one-on-ones',
         loadChildren: "./meetings/meetings.module#MeetingsModule"
-      }
+      },
+      { path: 'assigned-questions', component: UserQuestionsComponent}
     ]
   },
 ];

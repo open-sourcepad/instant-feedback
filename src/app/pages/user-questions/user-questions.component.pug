@@ -1,0 +1,59 @@
+.page-data-content
+  .row
+    .col-md-12
+      h2.title Assigned Questions
+    .col-md([ng2-loading]="loading")
+      h5.inline-block.mr-2 Search by user
+      form.inline-block(novalidate, autocomplete="off", [formGroup]="form")
+        select.form-control.dropdown(formControlName="user_id", (change)="loadCollection(form.value)")
+          option(*ngFor="let user of users", [ngValue]="user.id") {{ user.name }}
+    .col-md-12
+      table.table.table-instant-feedback([ng2-loading]="loading")
+        thead
+          tr
+            th
+              span Employee
+            th
+              span Question
+            th
+              span Schedule on
+            th
+              span Is already asked?
+            th
+              span
+        tbody
+          tr(*ngFor="let item of collection | paginate: { id: 'userQuestionCollection', itemsPerPage: page['size'], currentPage: page['number'], totalItems: recordCount}; let idx = index")
+            td
+              span {{ item.user }}
+            td
+              span {{ item.question }}
+            td
+              ng-container(*ngIf="editIdx != idx")
+                span {{ item.asking_date }}
+              ng-container(*ngIf="editIdx == idx")
+                .input-group(daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
+                  input.form-control(type="text" name="dateRangeInput", [(ngModel)]="new_schedule")
+                  .input-group-append.inline-block
+                    .input-group-text
+                      button.btn
+                        span.icon-holder.ti-calendar.text-brown
+            td
+              span {{ item.is_already_asked && item.seen }}
+            td.actions
+              ng-container(*ngIf="!(item.is_already_asked && item.seen)")
+                ng-container(*ngIf="editIdx != idx")
+                  button((click)="edit(item, idx)")
+                    span.icon-holder.ti-pencil
+                ng-container(*ngIf="editIdx == idx")
+                  button((click)="update(item, idx)")
+                    span.icon-holder.ti-save
+                  button((click)="cancel()")
+                    span.icon-holder.ti-close
+    .col-md-12.text-right
+      pagination-controls#userQuestionCollection(
+        (pageChange)="changePage($event, form.value)",
+        maxSize="5",
+        autoHide="true",
+        responsive="true",
+        directionLinks="true",
+        screenReaderPageLabel="page")

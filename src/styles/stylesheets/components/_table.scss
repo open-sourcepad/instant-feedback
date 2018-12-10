@@ -51,9 +51,11 @@
   padding-right: 0;
   padding-left: 0;
 
-  a {
+  a, button {
     margin-right: 17px;
     cursor: pointer;
+    background-color: transparent;
+    border: 0;
     .icon-holder {
       width: 13px;
       height: 17px;
