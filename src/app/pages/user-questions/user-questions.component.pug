@@ -2,11 +2,16 @@
   .row
     .col-md-12
       h2.title Assigned Questions
-    .col-md([ng2-loading]="loading")
-      h5.inline-block.mr-2 Search by user
-      form.inline-block(novalidate, autocomplete="off", [formGroup]="form")
-        select.form-control.dropdown(formControlName="user_id", (change)="loadCollection(form.value)")
-          option(*ngFor="let user of users", [ngValue]="user.id") {{ user.name }}
+    .col-md-6([ng2-loading]="loading")
+      form(novalidate, autocomplete="off", [formGroup]="form")
+        .form-row.align-items-center
+          .col-auto
+            label User
+            select.form-control.dropdown(formControlName="user_id", (change)="loadCollection(form.value)")
+              option(*ngFor="let user of users", [ngValue]="user.id") {{ user.name }}
+          .col-md-3
+            label Date Range
+            input.form-control(type="text" name="dateRangeInput" daterangepicker, [options]="rangeOpts", (selected)="selectedRange($event, daterange)")
     .col-md-12
       table.table.table-instant-feedback([ng2-loading]="loading")
         thead

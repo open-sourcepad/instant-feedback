@@ -45,6 +45,35 @@ export class UserQuestionsComponent implements OnInit {
     singleDatePicker: true
   };
 
+  daterange = {
+    start: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
+    end: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59')
+  };
+  rangeOpts: any = {
+    locale: {
+      format: 'YYYY-MM-DD',
+      monthNames: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ]
+    },
+    autoApply: true,
+    autoUpdateInput: true,
+    opens: 'right',
+    startDate: this.daterange.start,
+    endDate: this.daterange.end
+  };
+
   form: FormGroup;
 
   constructor(
@@ -62,7 +91,9 @@ export class UserQuestionsComponent implements OnInit {
         this.users.unshift({id:'', name: 'All'});
       });
     this.form = this.fb.group({
-      'user_id': ['']
+      user_id: [''],
+      date_since: [this.daterange.start, Validators.required],
+      date_until: [this.daterange.end, Validators.required],
     });
 
     this.loadCollection(this.form.value);
@@ -107,12 +138,26 @@ export class UserQuestionsComponent implements OnInit {
     this.userQuestonApi.update(obj.id, {asking_date: this.new_schedule})
       .subscribe(res => {
         this.loading = false;
-        this.collection[idx] = res['data'];
         this.currentObj = null;
         this.editIdx = null;
+        this.loadCollection(this.form.value);
       }, err => {
         this.loading = false;
       });
+  }
+
+  selectedRange(value: any, datepicker?: any) {
+    if(datepicker){
+      datepicker.start = value.start;
+      datepicker.end = value.end;
+    }
+
+    this.daterange.start = value.start;
+    this.daterange.end = value.end;
+    this.form.get('date_since').setValue(moment(value.start).format('YYYY/MM/DD 00:00:00'));
+    this.form.get('date_until').setValue(moment(value.end).format('YYYY/MM/DD 23:59:59'));
+  
+    this.loadCollection(this.form.value);
   }
 
 }
