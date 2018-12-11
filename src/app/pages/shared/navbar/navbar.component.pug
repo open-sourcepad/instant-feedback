@@ -15,7 +15,7 @@ nav.navbar.navbar-expand-lg.bg-dark-custom
         a.nav-link([routerLink]="['/assigned-questions']" routerLinkActive="active") Assigned Questions
     ul.navbar-nav.mr-auto(*ngIf="userLogged && !isManager")
       li.nav-item.has-active
-        a.nav-link([routerLink]="['/dashboard']" routerLinkActive="active") Profile
+        a.nav-link([routerLink]="['/employee/overview']" routerLinkActive="active") Overview
     ul.navbar-nav.ml-auto(*ngIf="userLogged")
       li.nav-item
         a.nav-link.active((click)="logout()") Log Out

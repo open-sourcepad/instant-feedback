@@ -27,4 +27,8 @@ export class UserService extends BaseService {
   getSpecificUser(params) {
     return this.http.get(`${ENDPOINT}/get_specific_user?${this.buildParams(params)}`);
   }
+
+  meetings() {
+    return this.http.get(`${ENDPOINT}/meetings`);
+  }
 }

@@ -1,0 +1,73 @@
+.bg-white {
+  background-color: #fff;
+}
+
+.font-poppin {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+#user-overview {
+  margin-top: 5rem;
+}
+
+#user-overview .details {
+  vertical-align: middle;
+  margin-left: 1rem;
+
+  h1 {
+    @extend .font-poppin;
+    font-size: 2.25rem;
+  }
+}
+
+#user-overview .avatar-user {
+  width: 93px;
+  height: 94px;
+
+  .avatar-name {
+    font-size: xx-large;
+    line-height: 94px;
+  }
+}
+
+#user-overview-options {
+  margin: 0.75rem 0;
+  font-size: 1rem;
+}
+
+#upcoming-meetings .avatar-user {
+  width: 58px;
+  height: 56px;
+
+  .avatar-name {
+    font-size: initial;
+    line-height: 56px;
+  }
+
+  &:last-child {
+    right: 7%;
+  }
+}
+
+#upcoming-meetings .upcoming-meeting-item > button > .details {
+  vertical-align: middle;
+
+  span.date {
+    font-size: initial;
+    font-weight: 300;
+  }
+}
+
+#past-meetings .past-meeting-item > .list button, 
+#upcoming-meetings > .upcoming-meeting-item button {
+  background-color: transparent;
+  border: 0;
+  font-size: initial;
+  outline: none;
+  padding: 0;
+}
+
+span.underline {
+  text-decoration: underline;
+  font-size: 1.15rem;
+}

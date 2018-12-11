@@ -28,7 +28,11 @@ export const routes: Routes = [
         path: 'one-on-ones',
         loadChildren: "./meetings/meetings.module#MeetingsModule"
       },
-      { path: 'assigned-questions', component: UserQuestionsComponent}
+      { path: 'assigned-questions', component: UserQuestionsComponent},
+      {
+        path: 'employee',
+        loadChildren: "./employee/employee.module#EmployeeModule"
+      }
     ]
   },
 ];

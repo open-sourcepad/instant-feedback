@@ -1,0 +1,63 @@
+.row.m-0
+  .col-md-12.p-0.bg-white
+    .row
+      .col-md-9.m-auto
+        #user-overview
+          .avatar-user
+              .avatar-name
+                | {{ currentUser.initials() }}
+          .inline-block.details
+            h1.text-brown.font-bold {{ currentUser.display_name }}
+            h4.text-capitalize {{ currentUser.role }} Team
+      .col-md-9.m-auto
+        br
+        ul.reset#user-overview-options
+          li
+            span.font-bold Overview
+  .col-md-12.p-0
+    .row
+      .col-md-9.m-auto
+        .row
+          .col-md-6
+            .mt-5
+              h4.font-bold.text-brown.font-poppin.mb-5 Action Items
+
+              .action-items-scroll
+                .action-items-box(*ngFor="let obj of past_meetings")
+                  h4.font-bold {{ obj.actual_schedule | date: 'MMMM d, y'}}
+
+                  ul.action-item-list
+                    li(*ngFor="let action of obj.action_items.employee.items.data")
+                      span {{ action.note }}
+
+          .col-md-6
+            .mt-5
+              h4.font-bold.text-brown.font-poppin.mb-5 1-on-1s
+
+              #upcoming-meetings.mb-5
+                h4.font-bold Upcoming
+
+                .upcoming-meeting-item(*ngFor="let obj of upcoming_meetings")
+                  button
+                    .mr-1.inline-block
+                      .avatar-user
+                        .avatar-name {{ currentUser.initials() }}
+                      .avatar-user
+                        .avatar-name
+                          | {{ obj?.manager?.display_name.split(" ")[0].charAt(0) }}
+                          | {{ obj?.manager?.display_name.split(" ")[1].charAt(0) }}
+                    .inline-block.details
+                      span.text-brown.font-bold.underline {{ past_meeting_text(obj) }}
+                      br
+                      span.date {{ obj.set_schedule | date: 'MMMM d, y' }}
+              #past-meetings
+                h4.font-bold Past
+
+                .past-meeting-item(*ngFor="let obj of past_meetings")
+                  ul.reset.list
+                    li
+                      button
+                        span.mr-3.underline.font-bold.text-brown {{ past_meeting_text(obj) }}
+                        span {{ obj.actual_schedule | date: 'MMMM d, y' }}
+
+
