@@ -74,8 +74,8 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.meetingForm = this.fb.group({
-      'employee_id': [''],
-      'manager_id': [''],
+      'employee_id': [this.meeting.employee.id],
+      'manager_id': [this.meeting.manager.id],
       'set_schedule': [this.options.startDate, Validators.required],
     });
   }
