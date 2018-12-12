@@ -42,15 +42,21 @@ display: inline-block;
   margin-top: 5rem;
 
   .btn-instant-feedback-muted {
+    background-color: transparent;
     border: 1px solid #C3BAAA;
     font-size: 16px;
     padding: 6px 12px;
+  }
+
+  .card {
+    border-color: #fffbf9;
   }
 
   .card-body {
     background-color: #fffbf9;
     font-size: 18px;
     padding: 3rem;
+    padding-top: 1rem;
   }
 
   .card-body .listStyle {
@@ -95,4 +101,10 @@ display: inline-block;
 
 .no-list-style {
   list-style: none;
+}
+
+.form-add-talking-point {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid #C3BAAA;
 }

@@ -1,7 +1,6 @@
 .row
   .col-md-10.m-auto
     .row
-        
       .col-md-12
         .users-avatar
           .avatar-user
@@ -17,9 +16,9 @@
           h3 {{ obj?.set_schedule | date: 'MMMM d, y' }}
           h3.font-bold(*ngIf="meetingStatus == 'done'") Actual 1-on-1 date: {{ obj?.actual_schedule | date: 'MMMM d, y' }}
           .user-actions(*ngIf="meetingStatus != 'done'")
-            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Reschedule
+            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3(*ngIf="userIsManager") Reschedule
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready
-            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-brown((click)="startDiscussion()") Start
+            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-brown(*ngIf="userIsManager", (click)="startDiscussion()") Start
     ng-container(*ngIf="meetingStatus == 'done'")
       .row
         .col-md-12
@@ -29,11 +28,11 @@
     .row
       #talkingPoints.col-md-12
         h4.font-bold.text-brown.inline-block Talking Points
-        button.inline-block.ml-3.btn-circle-add(*ngIf="meetingStatus != 'done'", (click)="addTalkingPoints()")
+        button.inline-block.ml-3.btn-circle-add(*ngIf="meetingStatus != 'done' && userIsManager", (click)="addTalkingPoints()")
           span.ti-plus
         br
         br
-        .row(*ngIf="discussions.length <= 0", [ng2-loading]="loading")
+        .row(*ngIf="discussions.length <= 0 && userIsManager", [ng2-loading]="loading")
           .col-md-12.m-auto.text-center
             .mt-5
               h4.font-semi-bold.text-idle You currently do not have any talking points set.
@@ -41,10 +40,10 @@
         ng-container(*ngIf="discussions.length > 0")
           .row
             .col-md-12([ng2-loading]="loading", [@listAnimation]="discussions.length")
-              .card(*ngFor="let discuss of discussions; let idx = index", (mouseover)="showActions=true", (mouseout)="showActions=false")
+              .card(*ngFor="let discuss of discussions; let idx = index", (mouseover)="showActions=idx", (mouseout)="showActions=null")
                 .card-body
                   .card-actions(*ngIf="meetingStatus != 'done'")
-                    div([hidden]="!showActions")
+                    div(*ngIf="userIsManager", [hidden]="showActions == null")
                       button((click)="moveDown(discuss, idx)", [disabled]="idx === (discussions.length - 1)")
                         span.ti-arrow-down
                       button((click)="moveUp(discuss, idx)", [disabled]="idx === 0")
@@ -55,20 +54,27 @@
                         span.ti-trash
                   ul.listStyle
                     li
-                      span((mouseover)="showActions=true", (mouseout)="showActions=false") {{ discuss.question }}
+                      span {{ discuss.question }}
                       br
                   ng-container(*ngIf="!discuss.employee_notes && meetingStatus != 'done'")
                     .user-notes.mr-auto.ml-auto.w-50.text-center
                       .vertical-align.qrtr-height
                         .table-cell
-                          p.text-muted.opacity-75((mouseover)="showActions=true", (mouseout)="showActions=false") {{ obj?.employee?.display_name }} has no notes yet.
+                          p.text-muted.opacity-75(*ngIf="userIsManager") {{ obj?.employee?.display_name }} has no notes yet.
+                          button.btn.btn-instant-feedback.btn-instant-feedback-muted(*ngIf="!userIsManager", (click)="addTalkingPoints()") Add Notes
                   ng-container(*ngIf="discuss.employee_notes")
                     .user-notes
                       ul.no-list-style
                         li
-                          p.font-bold.mb-1 {{ obj?.employee?.display_name }}'s Note
+                          p.font-bold.mb-1(*ngIf="userIsManager") {{ obj?.employee?.display_name }}'s Note
+                          p.font-bold.mb-1(*ngIf="!userIsManager") Your Notes
                         li
                           p.text-justify {{ discuss.employee_notes }}
+        ng-container(*ngIf="!userIsManager && meetingStatus != 'done'")
+          .row
+            .col-md-12
+              p.font-bold.font-size-18 Add any additional topic to this meeting, if you have any.
+              input.form-control.form-add-talking-point(type="text")
 
 talking-point-menu(
   [@slideInOut]="menuState",

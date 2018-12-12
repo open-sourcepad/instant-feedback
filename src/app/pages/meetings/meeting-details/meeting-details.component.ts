@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { trigger, state, style, transition, animate, query, stagger, keyframes} from '@angular/animations';
 
-import { MeetingService, DiscussionService } from '../../../services/api';
+import { MeetingService, DiscussionService, SessionService } from '../../../services/api';
 
 @Component({
   selector: 'app-meeting-details',
@@ -43,16 +43,21 @@ export class MeetingDetailsComponent implements OnInit {
   actionItems: any = [];
   discussionObj: any = null;
   menuState: string = 'out';
-  showActions: boolean = false;
+  showActionsIdx: number = null;
   actionEditable: boolean = false;
   meetingStatus: string = 'upcoming';
+  userIsManager: boolean = false;
 
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
     private meetingApi: MeetingService,
-    private discussionApi: DiscussionService
-  ) { }
+    private discussionApi: DiscussionService,
+    private session: SessionService
+  ) {
+    let currentUser = this.session.getCurrentUser();
+    this.userIsManager = currentUser.is_manager;
+  }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(params => {

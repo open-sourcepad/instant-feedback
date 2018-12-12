@@ -40,8 +40,8 @@
               #upcoming-meetings.mb-5
                 h4.font-bold Upcoming
 
-                .upcoming-meeting-item(*ngFor="let obj of upcoming_meetings")
-                  button
+                .upcoming-meeting-item.mb-3(*ngFor="let obj of upcoming_meetings")
+                  button([routerLink]="['/one-on-ones', obj.id]")
                     .mr-1.inline-block
                       .avatar-user
                         .avatar-name {{ currentUser.initials() }}
@@ -57,10 +57,11 @@
                 h4.font-bold Past
 
                 .past-meeting-item(*ngFor="let obj of past_meetings")
-                  ul.reset.list
-                    li
-                      button
-                        span.mr-3.underline.font-bold.text-brown {{ past_meeting_text(obj) }}
-                        span {{ obj.actual_schedule | date: 'MMMM d, y' }}
+                  button([routerLink]="['/one-on-ones', obj.id]")
+                    ul.reset.list
+                      li
+                        button
+                          span.mr-3.underline.font-bold.text-brown {{ past_meeting_text(obj) }}
+                          span {{ obj.actual_schedule | date: 'MMMM d, y' }}
 
 
