@@ -13,6 +13,7 @@ export class EmployeeOverviewComponent implements OnInit {
   upcoming_meetings: any = [];
   past_meetings: any = [];
   loading: boolean = false;
+  hoverActionItemIdx = null;
 
   constructor(
     private session: SessionService,

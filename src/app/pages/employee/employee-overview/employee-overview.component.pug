@@ -23,12 +23,15 @@
               h4.font-bold.text-brown.font-poppin.mb-5 Action Items
 
               .action-items-scroll
-                .action-items-box(*ngFor="let obj of past_meetings")
-                  h4.font-bold {{ obj.actual_schedule | date: 'MMMM d, y'}}
+                .action-items-box(*ngFor="let obj of past_meetings; let idx = index")
+                  div((mouseover)="hoverActionItemIdx=idx", (mouseout)="hoverActionItemIdx=null")
+                    h4.font-bold.inline-block {{ obj.actual_schedule | date: 'MMMM d, y'}}
+                    .inline-block.ml-2
+                      button.btn-instant-feedback.btn-instant-feedback-cancel.btn-action.font-weight-light([class.hidden]="hoverActionItemIdx != idx") Clear Action Items
 
-                  ul.action-item-list
-                    li(*ngFor="let action of obj.action_items.employee.items.data")
-                      span {{ action.note }}
+                    ul.action-item-list
+                      li(*ngFor="let action of obj.action_items.employee.items.data")
+                        span {{ action.note }}
 
           .col-md-6
             .mt-5
