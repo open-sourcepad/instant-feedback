@@ -13,6 +13,7 @@ export class EmployeeOverviewComponent implements OnInit {
   currentUser: User;
   upcoming_meetings: any = [];
   past_meetings: any = [];
+  past_meeting_action_items: any = [];
   loading: boolean = false;
   hoverActionItemIdx: number = null;
   currentSession: any = {data: null, idx: null};
@@ -35,8 +36,9 @@ export class EmployeeOverviewComponent implements OnInit {
     this.loading = true;
     this.userApi.meetings().subscribe(res => {
       this.loading = false;
-      this.upcoming_meetings = res['upcoming']['data'];
-      this.past_meetings = res['past']['data'];
+      this.upcoming_meetings = res['data']['upcoming']['data'];
+      this.past_meetings = res['data']['past']['data'];
+      this.past_meeting_action_items = res['data']['action_items'];
     }, err => {
       this.loading = false;
     });
