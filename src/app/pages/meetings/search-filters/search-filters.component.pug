@@ -1,0 +1,78 @@
+#sidenav-search_filter.sidenav([@slideInOut]="filterState")
+  form(novalidate, autocomplete="off", [formGroup]="form")
+    .row
+      .col-md-12
+        .row
+          .col-auto
+            h1.filter-title.m-0 Edit Filters
+          .col-auto
+            button.btn-filter.btn-border-none.m-0((click)="resetFilter()")
+              span Clear all filters
+      .col-md-12
+        br
+        #daterange-filters
+          ng-container(*ngFor="let opt of dateOpts")
+            button.btn-filter.btn-terms.mr-2([class.active]="selectedDateFilter == opt.id", (click)="chooseDateRange(opt.id)")
+              span {{opt.label}}
+        ng-container(*ngIf="selectedDateFilter == 4")
+          .opts-group-filter
+            h5.filter-title.sub Date Range
+            input.form-control(type="text" name="dateRangeInput" daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
+
+      .col-md-12
+        .opts-group-filter
+          h5.filter-title.sub Status
+          div
+            ng-container(*ngFor="let status of statuses")
+              button.btn-filter.btn-terms.mr-2([class.active]="selectedStatusesFilter.indexOf(status) > -1", (click)="addFilter(selectedStatusesFilter, status, 'status')")
+                span {{ status }}
+
+      .col-md-12
+        .opts-group-filter
+          h5.filter-title.sub Manager / Facilitator
+          select.form-control.dropdown(formControlName="manager_id", (change)="addFilter2('selectedManagerFilter', 'manager_id')")
+            option(*ngFor="let user of managers", [value]="user.id") {{ user.display_name }}
+
+      .col-md-12
+        .opts-group-filter
+          h5.filter-title.sub Employee
+          select.form-control.dropdown(formControlName="employee_id", (change)="addFilter2('selectedUserFilter', 'employee_id')")
+            option(*ngFor="let user of users", [value]="user.id") {{ user.display_name }}
+
+#response-search-filter
+  .mt-md-1
+    .row
+      .col-md-2
+        button.btn-filter([disabled]="openSearchFilter", (click)="toggleSearchFilter()")
+          span Add Filter&nbsp;
+          span.icon-holder.ti-plus
+      .col-md-9
+        .search-terms
+          button.btn-filter.btn-terms
+            span {{ daterange.start | date: 'MM/dd/yyyy' }} - {{ daterange.end | date: 'MM/dd/yyyy' }}
+
+          ng-container(*ngIf="selectedStatusesFilter.length > 0")
+            ng-container(*ngFor="let q of selectedStatusesFilter; let idx = index")
+              ng-container(*ngIf="q == 'All'")
+                button.btn-filter.btn-terms
+                  span S: {{ q }}
+              ng-container(*ngIf="q != 'All'")
+                button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter(selectedStatusesFilter, idx, 'status')")
+                  span S: {{ q }}
+                  span.icon-holder.ti-close
+
+          ng-container(*ngIf="selectedManagerFilter.display_name == 'All'")
+            button.btn-filter.btn-terms
+              span M: All
+          ng-container(*ngIf="selectedManagerFilter.display_name != 'All'")
+            button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter2('selectedManagerFilter', 'manager_id')")
+              span M: {{ selectedManagerFilter.display_name }}
+              span.icon-holder.ti-close
+
+          ng-container(*ngIf="selectedUserFilter.display_name == 'All'")
+            button.btn-filter.btn-terms
+              span E: All
+          ng-container(*ngIf="selectedUserFilter.display_name != 'All'")
+            button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter2('selectedUserFilter', 'employee_id')")
+              span E: {{ selectedUserFilter.display_name }}
+              span.icon-holder.ti-close

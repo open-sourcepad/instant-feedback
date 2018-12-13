@@ -14,4 +14,8 @@ export class MeetingService extends BaseService {
   ) {
     super(http, ENDPOINT);
   }
+
+  search(query) {
+    return this.http.get(`${ENDPOINT}/search?${this.buildParams(query)}`);
+  }
 }

@@ -2,6 +2,14 @@
   .col-md-12
     h2.title 1-on-1s
   .col-md-12
+    search-filters(
+      [managers]="managers",
+      [statuses]="statuses",
+      [users]="users",
+      [loading]="loading",
+      (submit)="search($event)"
+    )
+  .col-md-12
     //- .alert.alert-danger(*ngIf="errorMsg") {{ errorMsg }}
     table.table.table-instant-feedback([ng2-loading]="loading")
       thead
