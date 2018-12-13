@@ -57,11 +57,13 @@
                       span {{ discuss.question }}
                       br
                   ng-container(*ngIf="!discuss.employee_notes && meetingStatus != 'done'")
-                    .user-notes.mr-auto.ml-auto.w-50.text-center
+                    .user-notes.mr-auto.ml-auto.w-50.text-center([hidden]="addNoteIdx != null && addNoteIdx == idx")
                       .vertical-align.qrtr-height
                         .table-cell
                           p.text-muted.opacity-75(*ngIf="userIsManager") {{ obj?.employee?.display_name }} has no notes yet.
-                          button.btn.btn-instant-feedback.btn-instant-feedback-muted(*ngIf="!userIsManager", (click)="addTalkingPoints()") Add Notes
+                          button.btn.btn-instant-feedback.btn-instant-feedback-muted(*ngIf="!userIsManager", (click)="addNotes(idx)") Add Notes
+                    .user-notes(*ngIf="!userIsManager && addNoteIdx == idx")
+                      textarea.form-control.form-add-talking-point(type="text")
                   ng-container(*ngIf="discuss.employee_notes")
                     .user-notes
                       ul.no-list-style
@@ -74,7 +76,8 @@
           .row
             .col-md-12
               p.font-bold.font-size-18 Add any additional topic to this meeting, if you have any.
-              input.form-control.form-add-talking-point(type="text")
+              textarea.form-control.form-add-talking-point.inline-block.w-75(type="text")
+              button.ml-2.vertical-align-super.font-size-12.text-brown press enter
 
 talking-point-menu(
   [@slideInOut]="menuState",

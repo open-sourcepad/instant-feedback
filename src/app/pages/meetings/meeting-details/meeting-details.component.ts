@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { trigger, state, style, transition, animate, query, stagger, keyframes} from '@angular/animations';
-
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { MeetingService, DiscussionService, SessionService } from '../../../services/api';
 
 @Component({
@@ -47,6 +47,7 @@ export class MeetingDetailsComponent implements OnInit {
   actionEditable: boolean = false;
   meetingStatus: string = 'upcoming';
   userIsManager: boolean = false;
+  addNoteIdx: number = null;
 
   constructor(
     private router: Router,
@@ -168,6 +169,10 @@ export class MeetingDetailsComponent implements OnInit {
 
   startDiscussion(){
     this.router.navigateByUrl(`/one-on-ones/${this.slug_id}/discussion?action=start`);
+  }
+
+  addNotes(idx) {
+    this.addNoteIdx = idx;
   }
 
 }
