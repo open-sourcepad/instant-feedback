@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalComponent } from './modal/modal.component';
 
 const SHARED_COMPONENTS = [
-  NavbarComponent
+  NavbarComponent,
+  ModalComponent
 ]
 
 @NgModule({

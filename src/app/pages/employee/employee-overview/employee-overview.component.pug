@@ -23,15 +23,19 @@
               h4.font-bold.text-brown.font-poppin.mb-5 Action Items
 
               .action-items-scroll
-                .action-items-box(*ngFor="let obj of past_meetings; let idx = index")
+                .action-items-box(*ngFor="let obj of past_meetings; let idx = index", [ng2-loading]="loading")
                   div((mouseover)="hoverActionItemIdx=idx", (mouseout)="hoverActionItemIdx=null")
                     h4.font-bold.inline-block {{ obj.actual_schedule | date: 'MMMM d, y'}}
-                    .inline-block.ml-2
-                      button.btn-instant-feedback.btn-instant-feedback-cancel.btn-action.font-weight-light([class.hidden]="hoverActionItemIdx != idx") Clear Action Items
-
-                    ul.action-item-list
-                      li(*ngFor="let action of obj.action_items.employee.items.data")
-                        span {{ action.note }}
+                    .inline-block.ml-2(*ngIf="obj.action_items.employee.items.data.length > 0")
+                      button.btn-instant-feedback.btn-instant-feedback-cancel.btn-action.font-weight-light([class.hidden]="hoverActionItemIdx != idx", (click)="clearItem(obj, idx)") Clear Action Items
+                    ng-container(*ngIf="obj.action_items.employee.items.data.length <= 0")
+                      ul.action-item-list.reset
+                        li
+                          span.text-muted No action items
+                    ng-container(*ngIf="obj.action_items.employee.items.data.length > 0")
+                      ul.action-item-list
+                        li(*ngFor="let action of obj.action_items.employee.items.data")
+                          span {{ action.note }}
 
           .col-md-6
             .mt-5
@@ -49,7 +53,7 @@
                         .avatar-name
                           | {{ obj?.manager?.display_name.split(" ")[0].charAt(0) }}
                           | {{ obj?.manager?.display_name.split(" ")[1].charAt(0) }}
-                    .inline-block.details
+                    .inline-block.details.text-justify
                       span.text-brown.font-bold.underline {{ past_meeting_text(obj) }}
                       br
                       span.date {{ obj.set_schedule | date: 'MMMM d, y' }}
@@ -64,4 +68,11 @@
                           span.mr-3.underline.font-bold.text-brown {{ past_meeting_text(obj) }}
                           span {{ obj.actual_schedule | date: 'MMMM d, y' }}
 
-
+modal(
+  [(visible)]="showModal",
+  [(currentSession)]="currentSession",
+  [(modalText)]="modalText",
+  [(buttons)]="modalButtons",
+  (modalStateChange)="modalStateChange($event)",
+  (removeItems)="removeItems($event)"
+)

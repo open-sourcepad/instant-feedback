@@ -18,4 +18,8 @@ export class MeetingService extends BaseService {
   search(query) {
     return this.http.get(`${ENDPOINT}/search?${this.buildParams(query)}`);
   }
+
+  removeEmployeeActionItems(id) {
+    return this.http.delete(`${this.apiEndpoint}/${id}/remove_employee_action_items`);
+  }
 }

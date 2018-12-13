@@ -1,0 +1,9 @@
+//- .modal-overlay
+.instant-feedback-modal([@openModal] *ngIf="visible")
+  .instant-feedback-modal-content
+    .instant-feedback-modal-body
+      p([innerHtml]="modalText.body")
+
+      .text-center
+        button.btn-instant-feedback-modal-cancel((click)="onCancel()") {{ buttons.cancel.text }}
+        button.btn-instant-feedback-modal-confirm((click)="onConfirm()") {{ buttons.confirm.text }}
