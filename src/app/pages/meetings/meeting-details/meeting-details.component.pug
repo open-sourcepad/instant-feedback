@@ -40,10 +40,10 @@
         ng-container(*ngIf="discussions.length > 0")
           .row
             .col-md-12([ng2-loading]="loading", [@listAnimation]="discussions.length")
-              .card(*ngFor="let discuss of discussions; let idx = index", (mouseover)="showActions=idx", (mouseout)="showActions=null")
-                .card-body
+              .card(*ngFor="let discuss of discussions; let idx = index")
+                .card-body((mouseover)="showActionsIdx=idx", (mouseout)="showActionsIdx=null")
                   .card-actions(*ngIf="meetingStatus != 'done'")
-                    div(*ngIf="userIsManager", [hidden]="showActions == null")
+                    div(*ngIf="userIsManager", [hidden]="showActionsIdx != idx")
                       button((click)="moveDown(discuss, idx)", [disabled]="idx === (discussions.length - 1)")
                         span.ti-arrow-down
                       button((click)="moveUp(discuss, idx)", [disabled]="idx === 0")
@@ -74,7 +74,7 @@
                           p.text-justify {{ discuss.employee_notes }}
         ng-container(*ngIf="!userIsManager && meetingStatus != 'done'")
           .row
-            .col-md-12
+            .col-md-12#user-add-topic
               p.font-bold.font-size-18 Add any additional topic to this meeting, if you have any.
               textarea.form-control.form-add-talking-point.inline-block.w-75(type="text")
               button.ml-2.vertical-align-super.font-size-12.text-brown press enter

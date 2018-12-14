@@ -76,6 +76,8 @@ display: inline-block;
     min-height: 30px;
 
     > div > button {
+      background-color: transparent;
+      border: 0;
       font-size: 18px;
       outline: none;
       padding-left: 5px;
@@ -124,7 +126,7 @@ display: inline-block;
   outline: none;
 }
 
-button {
+#user-add-topic button {
   background: transparent;
   border: 0;
 }
