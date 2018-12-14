@@ -3,15 +3,17 @@
     .table-cell
       .text-center(*ngIf="action == 'schedule'")
         h2.font-bold All done! Your next 1-on-1 with {{ meeting?.employee?.display_name?.split(' ')[0] }} is scheduled on
-        h1.font-bold.text-brown {{ this.meetingForm.get('set_schedule').value | date: 'MMMM d, yyyy'}}
-        .input-group(daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
+        h1.font-bold.text-brown(*ngIf="!editSchedule")
+          span {{ this.meetingForm.get('set_schedule').value | date: 'MMMM d, yyyy'}}
+          button#edit-date-icon.btn((click)="editSchedule = true")
+            span.icon-holder.ti-pencil.text-brown
+
+        .input-group(*ngIf="editSchedule", daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
           input.form-control(type="text" name="dateRangeInput", [(ngModel)]="new_schedule")
           .input-group-append.inline-block
             .input-group-text
               button.btn
                 span.icon-holder.ti-calendar.text-brown
-        button.inline-block.btn-instant-feedback.btn-instant-feedback-cancel.btn-change((click)="setSchedule(new_schedule)")
-          span CHANGE
 
       ng-container(*ngIf="action == 'review'")
         meeting-action-items([(actionItems)]="actionItems", [(slug_id)]="slug_id", [(allowEdit)]="actionItemEditable", [(allowReviewEdit)]="actionItemEditable")

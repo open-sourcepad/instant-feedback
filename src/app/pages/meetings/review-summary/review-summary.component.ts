@@ -22,6 +22,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   actionItemEditable: boolean = true;
   new_schedule: string = moment().format('D MMMM YYYY');
   loading: boolean = false;
+  editSchedule: boolean = false;
 
   meetingForm: FormGroup;
 
@@ -112,11 +113,9 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
 
   selectedDate(value: any, datepicker?: any) {
     this.new_schedule = moment(value.start).format('D MMMM YYYY');
-  }
-
-  setSchedule(value){
-    this.meetingForm.get('set_schedule').setValue(value);
+    this.meetingForm.get('set_schedule').setValue(this.new_schedule);
     this.meetingForm.get('set_schedule').updateValueAndValidity();
+    this.editSchedule = false;
   }
 
   createMeeting(values){
