@@ -90,6 +90,7 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
     this.form.get('custom_question').updateValueAndValidity();
     this.form.get('talking_point_id').updateValueAndValidity();
     this.loading = false;
+    this.cancel.emit();
 
   }
 

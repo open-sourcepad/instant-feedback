@@ -63,7 +63,10 @@
                           p.text-muted.opacity-75(*ngIf="userIsManager") {{ obj?.employee?.display_name }} has no notes yet.
                           button.btn.btn-instant-feedback.btn-instant-feedback-muted(*ngIf="!userIsManager", (click)="addNotes(idx)") Add Notes
                     .user-notes(*ngIf="!userIsManager && addNoteIdx == idx")
-                      textarea.form-control.form-add-talking-point(type="text")
+                      textarea.form-control.form-add-talking-point.inline-block.w-75(type="text", [(ngModel)]="employeeInputNote", [class.is-invalid]="submittedNoteForm && employeeInputNote == ''", (keydown.enter)="submitNote(employeeInputNote, discuss)")
+                      .inline-block.ml-2.font-size-12.text-brown(*ngIf="employeeInputNote != ''") press enter
+                      .invalid-feedback(*ngIf="submittedNoteForm && employeeInputNote == ''")
+                        span Please add your notes
                   ng-container(*ngIf="discuss.employee_notes")
                     .user-notes
                       ul.no-list-style
@@ -74,10 +77,13 @@
                           p.text-justify {{ discuss.employee_notes }}
         ng-container(*ngIf="!userIsManager && meetingStatus != 'done'")
           .row
-            .col-md-12#user-add-topic
-              p.font-bold.font-size-18 Add any additional topic to this meeting, if you have any.
-              textarea.form-control.form-add-talking-point.inline-block.w-75(type="text")
-              button.ml-2.vertical-align-super.font-size-12.text-brown press enter
+            .col-md-12
+              form#user-add-topic(novalidate, autocomplete="off", [formGroup]="talkingPointForm", (ngSubmit)="submitTopic(talkingPointForm.value)")
+                p.font-bold.font-size-18 Add any additional topic to this meeting, if you have any.
+                input.form-control.form-add-talking-point.inline-block.w-75(type="text", formControlName="custom_question", [class.is-invalid]="submittedPointForm && tp.custom_question.errors")
+                .inline-block.ml-2.font-size-12.text-brown(*ngIf="tp.custom_question.valid") press enter
+                .invalid-feedback(*ngIf="submittedPointForm && tp.custom_question.errors")
+                  span Please enter a topic
 
 talking-point-menu(
   [@slideInOut]="menuState",

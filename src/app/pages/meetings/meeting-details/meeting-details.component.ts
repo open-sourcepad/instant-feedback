@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { trigger, state, style, transition, animate, query, stagger, keyframes} from '@angular/animations';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { MeetingService, DiscussionService, SessionService } from '../../../services/api';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MeetingService, DiscussionService,
+  SessionService, TalkingPointService } from '../../../services/api';
 
 @Component({
   selector: 'app-meeting-details',
@@ -48,17 +49,27 @@ export class MeetingDetailsComponent implements OnInit {
   meetingStatus: string = 'upcoming';
   userIsManager: boolean = false;
   addNoteIdx: number = null;
+  employeeInputNote: string = '';
+
+  talkingPointForm: FormGroup;
+  submittedPointForm: boolean = false;
+  submittedNoteForm: boolean = false;
 
   constructor(
+    private fb: FormBuilder,
     private router: Router,
     private activeRoute: ActivatedRoute,
     private meetingApi: MeetingService,
     private discussionApi: DiscussionService,
-    private session: SessionService
+    private session: SessionService,
+    private talkingPointApi: TalkingPointService
   ) {
     let currentUser = this.session.getCurrentUser();
     this.userIsManager = currentUser.is_manager;
   }
+
+  // convenience getter for easy access to form fields
+  get tp() { return this.talkingPointForm.controls; }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(params => {
@@ -67,6 +78,11 @@ export class MeetingDetailsComponent implements OnInit {
       if(this.slug_id){
         this.loadData(this.slug_id);
       }
+    });
+
+    this.talkingPointForm = this.fb.group({
+      talking_point_type: ['custom', Validators.required],
+      custom_question: ['', Validators.required]
     });
   }
 
@@ -98,18 +114,14 @@ export class MeetingDetailsComponent implements OnInit {
     if(obj.action == "create") {
       this.discussionApi.create(params)
         .subscribe( res => {
-          this.loading = false;
           this.loadData(this.slug_id);
-          this.addTalkingPoints();
         }, err => {
           this.loading = false;
         });
     }else {
       this.discussionApi.update(this.discussionObj.id, params)
         .subscribe( res => {
-          this.loading = false;
           this.loadData(this.slug_id);
-          this.addTalkingPoints();
         }, err => {
           this.loading = false;
         });
@@ -173,6 +185,31 @@ export class MeetingDetailsComponent implements OnInit {
 
   addNotes(idx) {
     this.addNoteIdx = idx;
+    this.employeeInputNote = '';
+  }
+
+  submitTopic(values) {
+    this.submittedPointForm = true;
+
+    if (this.talkingPointForm.valid) {
+      this.saveDiscussion({action: 'create', values: values});
+      this.tp.custom_question.setValue('');
+      this.tp.custom_question.updateValueAndValidity();
+      this.submittedPointForm = false;
+    }
+  }
+
+  submitNote(value, obj) {
+    this.submittedNoteForm = true;
+
+    if(value.trim() == '') {
+      this.employeeInputNote = value.trim();
+      return;
+    }
+    let params = {employee_notes: value};
+    this.discussionObj = obj;
+    this.saveDiscussion({action: 'update', values: params});
+    this.submittedNoteForm = false;
   }
 
 }
