@@ -35,14 +35,13 @@ import * as moment from 'moment';
 })
 export class SearchFiltersComponent implements OnInit {
 
-  @Input() loading;
   @Input() users;
   @Input() managers;
   @Input() statuses;
   @Output() submit = new EventEmitter<object>();
 
   openSearchFilter = false;
-  filterState = 'out';
+  filterState = 'in';
   skipToggle = true;
   form: FormGroup;
   daterange: any;
@@ -102,6 +101,7 @@ export class SearchFiltersComponent implements OnInit {
 
       this.form.get(attr).setValue(arr);
     }
+    this.skipToggle = false;
     this.onSubmit(this.form.value);
   }
 
@@ -109,6 +109,7 @@ export class SearchFiltersComponent implements OnInit {
     let userId = this.form.get(attr).value;
 
     this[selectedAttr] = this.users.find(user => user.id == userId);
+    this.skipToggle = false;
     this.onSubmit(this.form.value);
   }
 
@@ -120,11 +121,14 @@ export class SearchFiltersComponent implements OnInit {
       this.skipToggle = false;
     }
     this.form.get(attr).setValue(arr);
+    this.onSubmit(this.form.value);
   }
 
   removeFilter2(selectedAttr, attr) {
     this[selectedAttr] = this.allUser;
     this.form.get(attr).setValue(this.allUser.id);
+    this.skipToggle = true;
+    this.onSubmit(this.form.value);
   }
 
   resetFilter() {
@@ -205,8 +209,8 @@ export class SearchFiltersComponent implements OnInit {
   }
 
   onSubmit(values) {
-    this.loading = true;
-    if(!this.skipToggle) {
+    if (!this.skipToggle) {
+      this.skipToggle = false;
       this.toggleSearchFilter();
     }
     this.submit.emit(values);

@@ -29,7 +29,6 @@ export class MeetingIndexComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadCollection();
     this.loadUsers();
   }
 
@@ -46,17 +45,6 @@ export class MeetingIndexComponent implements OnInit {
     }[queryParams['status']];
 
     this.meetingApi.search(queryParams).subscribe(res => {
-      this.loading = false;
-      this.collection = res['collection']['data'];
-      this.recordCount = res['metadata']['record_count'];
-    }, err => {
-      this.loading = false;
-    });
-  }
-
-  loadCollection() {
-    this.loading = true;
-    this.meetingApi.query({page: this.page, order: this.sort_by}).subscribe(res => {
       this.loading = false;
       this.collection = res['collection']['data'];
       this.recordCount = res['metadata']['record_count'];
@@ -85,12 +73,12 @@ export class MeetingIndexComponent implements OnInit {
       this.sort_by = {};
       this.sort_by[key] = val;
     }
-    this.loadCollection();
+    this.search(this.queryParams);
   }
 
   changePage(evt) {
     this.page['number'] = evt;
-    this.loadCollection();
+    this.search(this.queryParams);
   }
 
   calculateShownCount(){
