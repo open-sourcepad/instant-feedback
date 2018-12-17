@@ -47,6 +47,7 @@ export class MeetingDetailsComponent implements OnInit {
   showActionsIdx: number = null;
   actionEditable: boolean = false;
   meetingStatus: string = 'upcoming';
+  currentUser: any = {};
   userIsManager: boolean = false;
   addNoteIdx: number = null;
   employeeInputNote: string = '';
@@ -64,8 +65,8 @@ export class MeetingDetailsComponent implements OnInit {
     private session: SessionService,
     private talkingPointApi: TalkingPointService
   ) {
-    let currentUser = this.session.getCurrentUser();
-    this.userIsManager = currentUser.is_manager;
+    this.currentUser = this.session.getCurrentUser();
+    this.userIsManager = this.currentUser['is_manager'];
   }
 
   // convenience getter for easy access to form fields
