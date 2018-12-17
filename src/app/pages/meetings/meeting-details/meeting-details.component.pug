@@ -50,9 +50,9 @@
                         span.ti-arrow-down
                       button((click)="moveUp(discuss, idx)", [disabled]="idx === 0")
                         span.ti-arrow-up
-                      button((click)="editDiscussion(discuss)")
+                      button((click)="editDiscussion(discuss)", [hidden]="discuss.default_question")
                         span.ti-pencil
-                      button((click)="removeDiscussion(discuss, idx)")
+                      button((click)="removeDiscussion(discuss, idx)", [hidden]="discuss.default_question")
                         span.ti-trash
                   ul.listStyle
                     li
