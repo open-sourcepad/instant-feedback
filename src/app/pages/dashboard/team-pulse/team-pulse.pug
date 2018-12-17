@@ -38,10 +38,10 @@
           .row
             .col-md-12.col-sm-6
               .card.card-avg-summary([ng2-loading]="loading", [style.height.px]="setHeight()")
-                .m-auto
+                .m-auto((mouseover)="onHover.happy=true", (mouseout)="onHover.happy=false")
                   .card-title Happy
                   a.data {{ happyUsers.length }}
-                  .hovered-box
+                  .hovered-box([hidden]="!onHover.happy")
                     .data-hovered
                       ng-container(*ngIf="happyUsers.length <= 0")
                         .user-details
@@ -49,17 +49,20 @@
                             span No users
                       ng-container(*ngIf="happyUsers.length > 0")
                         .user-details(*ngFor="let user of happyUsers")
-                          img(src="/styles/icons/feedback-white.png")
+                          .avatar-user
+                            .avatar-name
+                              | {{ user.user.display_name.split(" ")[0].charAt(0) }}
+                              | {{ user.user.display_name.split(" ")[1].charAt(0) }}
                           .user-info
-                            span {{ user.user.name }}
+                            span {{ user.user.display_name }}
                             br
                             span.percent {{ user.percentage }}%
             .col-md-12.col-sm-6
               .card.card-avg-summary([ng2-loading]="loading", [style.height.px]="setHeight()")
-                .m-auto
+                .m-auto((mouseover)="onHover.sad=true", (mouseout)="onHover.sad=false")
                   .card-title Sad
                   a.data {{ sadUsers.length }}
-                  .hovered-box
+                  .hovered-box([hidden]="!onHover.sad")
                     .data-hovered
                       ng-container(*ngIf="sadUsers.length <= 0")
                         .user-details
@@ -67,9 +70,12 @@
                             span No users
                       ng-container(*ngIf="sadUsers.length > 0")
                         .user-details(*ngFor="let user of sadUsers")
-                          img(src="/styles/icons/feedback-white.png")
+                          .avatar-user
+                            .avatar-name
+                              | {{ user.user.display_name.split(" ")[0].charAt(0) }}
+                              | {{ user.user.display_name.split(" ")[1].charAt(0) }}
                           .user-info
-                            span {{ user.user.name }}
+                            span {{ user.user.display_name }}
                             br
                             span.percent {{ user.percentage }}%
         .col-md-4

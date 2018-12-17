@@ -53,19 +53,13 @@ $darkGray: #323C47;
     color: #7D7C7A;
     letter-spacing: 0;
     line-height: 28px;
-
-    &:hover + .hovered-box {
-      display: block;
-    }
   }
 
   .hovered-box {
     position: absolute;
     z-index: 1;
-    bottom: -5px;
+    bottom: auto;
     left: 124px;
-    display: none;
-
   }
 
   .data-hovered {
@@ -89,12 +83,8 @@ $darkGray: #323C47;
       left: 15px;
     }
 
-    .user-details > img {
-      display: inline-block;
-      height: 49px;
-      vertical-align: top;
-      width: 51px;
-      margin-right: 12px;
+    .user-details {
+      margin-bottom: 12px;
     }
 
     .user-details > .user-info {
@@ -102,6 +92,8 @@ $darkGray: #323C47;
       font-size: 14px;
       color: #F9FBF2;
       letter-spacing: 0;
+      margin-left: 12px;
+      vertical-align: middle;
 
       > .percent {
         font-family: 'Poppins';

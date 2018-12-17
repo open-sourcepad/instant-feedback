@@ -51,6 +51,7 @@ export class TeamPulseComponent implements OnInit {
   };
 
   data: any;
+  onHover = {happy: false, sad: false};
 
   constructor(
     private pulseService: PulseService,
