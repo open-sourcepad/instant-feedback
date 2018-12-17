@@ -4,10 +4,12 @@ import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './modal/modal.component';
+import { BackButtonComponent } from './back-button/back-button.component';
 
 const SHARED_COMPONENTS = [
   NavbarComponent,
-  ModalComponent
+  ModalComponent,
+  BackButtonComponent  
 ]
 
 @NgModule({

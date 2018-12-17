@@ -1,0 +1,16 @@
+.back-button {
+  background-color: transparent;
+  border: 0;
+  color: #b0b0b0;
+  /*font-size: 14px;*/
+  font-weight: 300;
+
+  &:hover, &:focus {
+    font-weight: bold;
+  }
+
+  .icon-holder {
+    font-size: xx-small;
+    margin-right: 3px;
+  }
+}
