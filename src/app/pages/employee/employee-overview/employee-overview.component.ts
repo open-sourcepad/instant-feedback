@@ -69,7 +69,7 @@ export class EmployeeOverviewComponent implements OnInit {
     this.meetingApi.removeEmployeeActionItems(values.data.id)
       .subscribe(res => {
         this.loading = false;
-        this.past_meetings[values.idx]['action_items']['employee']['items']['data'] = [];
+        this.past_meeting_action_items[values.idx]['action_items']['data'] = [];
       }, err => {
         this.loading = false;
       });

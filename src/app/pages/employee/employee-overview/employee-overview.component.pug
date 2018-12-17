@@ -32,6 +32,7 @@
                       ul.action-item-list.reset
                         li
                           span.text-muted No action items
+                      br
                     ng-container(*ngIf="obj.action_items.data.length > 0")
                       ul.action-item-list
                         li(*ngFor="let action of obj.action_items.data")
@@ -48,7 +49,9 @@
                   button([routerLink]="['/one-on-ones', obj.id]")
                     .mr-1.inline-block
                       .avatar-user
-                        .avatar-name {{ currentUser.initials() }}
+                        .avatar-name
+                          | {{ obj?.employee?.display_name.split(" ")[0].charAt(0) }}
+                          | {{ obj?.employee?.display_name.split(" ")[1].charAt(0) }}
                       .avatar-user
                         .avatar-name
                           | {{ obj?.manager?.display_name.split(" ")[0].charAt(0) }}
