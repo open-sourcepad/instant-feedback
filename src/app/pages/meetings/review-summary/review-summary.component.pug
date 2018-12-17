@@ -1,10 +1,10 @@
-.wrapper
+.wrapper([ng2-loading]="loading")
   .vertical-align.full-height.container
     .table-cell
       .text-center(*ngIf="action == 'schedule'")
         h2.font-bold All done! Your next 1-on-1 with {{ meeting?.employee?.display_name?.split(' ')[0] }} is scheduled on
         h1.font-bold.text-brown(*ngIf="!editSchedule")
-          span {{ this.meetingForm.get('set_schedule').value | date: 'MMMM d, yyyy'}}
+          span {{ m.set_schedule.value | date: 'MMMM d, yyyy'}}
           button#edit-date-icon.btn((click)="editSchedule = true")
             span.icon-holder.ti-pencil.text-brown
 
@@ -17,7 +17,7 @@
 
       ng-container(*ngIf="action == 'review'")
         meeting-action-items([(actionItems)]="actionItems", [(slug_id)]="slug_id", [(allowEdit)]="actionItemEditable", [(allowReviewEdit)]="actionItemEditable")
-#discuss-multi-form-footer
+#discuss-multi-form-footer([ng2-loading]="loading")
   .row
     .col-md-8
       ul.reset

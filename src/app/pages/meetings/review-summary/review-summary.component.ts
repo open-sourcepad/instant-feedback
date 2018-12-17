@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ActionItemService, MeetingService } from '../../../services/api';
 import * as moment from 'moment';
@@ -20,7 +20,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
 
   action: string = '';
   actionItemEditable: boolean = true;
-  new_schedule: string = moment().format('D MMMM YYYY');
+  new_schedule: string = moment().add(2, 'w').format('D MMMM YYYY');
   loading: boolean = false;
   editSchedule: boolean = false;
 
@@ -53,6 +53,8 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
     singleDatePicker: true
   };
 
+  get m() { return this.meetingForm.controls; }
+
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
@@ -74,22 +76,23 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.meetingForm = this.fb.group({
-      'employee_id': [this.meeting.employee.id],
-      'manager_id': [this.meeting.manager.id],
-      'set_schedule': [this.options.startDate, Validators.required],
+      'set_schedule': [this.options.startDate, Validators.required]
     });
+    if(this.meeting) {
+      this.meetingForm.addControl('employee_id', new FormControl(this.meeting['employee']['id']));
+      this.meetingForm.addControl('managerid', new FormControl(this.meeting['manager']['id']));
+      this.loading = false;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.meeting && !changes.meeting.isFirstChange()){
-      var setSchedule = moment(this.meeting.set_schedule).add(2, 'M').format('D MMMM YYYY');
-      this.meetingForm = this.fb.group({
-        'employee_id': [this.meeting.employee.id],
-        'manager_id': [this.meeting.manager.id],
-        'set_schedule': [setSchedule, Validators.required],
-      });
+      this.meetingForm.addControl('employee_id', new FormControl(this.meeting['employee']['id']));
+      this.meetingForm.addControl('managerid', new FormControl(this.meeting['manager']['id']));
     }
+    this.loading = false;
   }
 
 
