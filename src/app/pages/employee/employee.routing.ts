@@ -10,7 +10,7 @@ export const routes: Routes = [
     component: EmployeeComponent,
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'overview'},
-      {path: 'overview', component: EmployeeOverviewComponent}
+      {path: 'overview', component: EmployeeOverviewComponent},
       {path: 'one-on-ones', component: EmployeeMeetingsComponent}
     ]
   },
