@@ -6,6 +6,7 @@ export class User {
   public email;
   public gender;
   public role;
+  public is_manager;
 
   constructor(
     fields?: {
@@ -14,7 +15,7 @@ export class User {
     email?: string,
     current_token? :string,
     role? :string,
-    web_api_keys? :any,
+    is_manager? :boolean,
     id? :number}) {
      if (fields) Object.assign(this, fields);
   }
