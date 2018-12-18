@@ -31,4 +31,8 @@ export class UserService extends BaseService {
   meetings() {
     return this.http.get(`${ENDPOINT}/meetings`);
   }
+
+  allMeetings(params) {
+    return this.http.get(`${ENDPOINT}/all_meetings?${this.buildParams(params)}`);
+  }
 }

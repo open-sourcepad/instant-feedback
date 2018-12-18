@@ -1,42 +1,9 @@
-.bg-white {
-  background-color: #fff;
-}
-
 .font-poppin {
   font-family: 'Poppins', sans-serif !important;
 }
 
 .hidden {
   display: none;
-}
-
-#user-overview {
-  margin-top: 5rem;
-}
-
-#user-overview .details {
-  vertical-align: middle;
-  margin-left: 1rem;
-
-  h1 {
-    @extend .font-poppin;
-    font-size: 2.25rem;
-  }
-}
-
-#user-overview .avatar-user {
-  width: 93px;
-  height: 94px;
-
-  .avatar-name {
-    font-size: xx-large;
-    line-height: 94px;
-  }
-}
-
-#user-overview-options {
-  margin: 0.75rem 0;
-  font-size: 1rem;
 }
 
 #upcoming-meetings .avatar-user {

@@ -9,6 +9,7 @@ import { Ng2LoadingSpinnerModule } from 'ng2-loading-spinner';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { EmployeeOverviewComponent } from './employee-overview/employee-overview.component';
+import { EmployeeMeetingsComponent } from './employee-meetings/employee-meetings.component';
 
 const MODULE_COMPONENTS = [
   EmployeeComponent
@@ -27,7 +28,8 @@ const MODULE_COMPONENTS = [
   ],
   declarations: [
     ...MODULE_COMPONENTS,
-    EmployeeOverviewComponent
+    EmployeeOverviewComponent,
+    EmployeeMeetingsComponent
   ],
 })
 

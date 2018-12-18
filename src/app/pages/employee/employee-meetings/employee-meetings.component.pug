@@ -1,0 +1,28 @@
+table.table.table-responsive-md
+  thead
+    tr
+      th
+        span Facilitator
+      th
+        span Employee
+      th
+        span Schedule
+      th
+        span Status
+      th
+        span
+  tbody
+    tr(*ngFor="let obj of collection")
+      td
+        span.text-brown.font-bold {{ obj.manager.display_name }}
+      td
+        span {{ obj.employee.display_name }}
+      td
+        ng-container(*ngIf="obj.status == 'done'")
+          span {{ obj.actual_schedule | date: 'MMMM d' }}
+        ng-container(*ngIf="obj.status != 'done'")
+          span {{ obj.set_schedule | date: 'MMMM d' }}
+      td
+        span.text-capitalize {{ obj.status }}
+      td.actions
+        a([routerLink]="['/one-on-ones', obj.id]") View

@@ -10,7 +10,6 @@ import * as moment from 'moment';
 })
 export class EmployeeOverviewComponent implements OnInit {
 
-  currentUser: User;
   upcoming_meetings: any = [];
   past_meetings: any = [];
   past_meeting_action_items: any = [];
@@ -28,7 +27,6 @@ export class EmployeeOverviewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.currentUser = new User(this.session.getCurrentUser());
     this.loadMeetings();
   }
 

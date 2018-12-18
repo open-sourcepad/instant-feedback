@@ -1,0 +1,28 @@
+.table th , .table td {
+  border: 0;
+  padding: 1.25rem;
+}
+
+.table > thead > tr > th {
+  border-bottom: 2px solid #000;
+  color: #4b6685;
+  font-size: 1.05rem;
+}
+
+.table > tbody > tr > td {
+  font-size: 1.05rem;
+}
+
+.table td.actions {
+  min-width: 136px;
+  text-align: center;
+}
+
+.table > tbody > tr > td.actions > a {
+  color: #C3BAAA;
+  text-decoration: underline;
+
+  &:focus, &:hover {
+    font-weight: bold;
+  }
+}

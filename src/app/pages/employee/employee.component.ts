@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MeetingService, SessionService, UserService } from '../../services/api';
+import { User } from '../../models';
 
 
 @Component({
@@ -8,9 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EmployeeComponent implements OnInit {
 
-  constructor() { }
+  currentUser: User;
+
+  constructor(
+    private session: SessionService
+  ) { }
 
   ngOnInit() {
+    this.currentUser = new User(this.session.getCurrentUser());
   }
 
 }

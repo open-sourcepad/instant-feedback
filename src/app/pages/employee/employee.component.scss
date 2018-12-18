@@ -1,0 +1,53 @@
+.bg-white {
+  background-color: #fff;
+}
+
+.font-poppin {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+#user-overview {
+  margin-top: 5rem;
+}
+
+#user-overview .details {
+  vertical-align: middle;
+  margin-left: 1rem;
+
+  h1 {
+    @extend .font-poppin;
+    font-size: 2.25rem;
+  }
+}
+
+#user-overview .avatar-user {
+  width: 93px;
+  height: 94px;
+
+  .avatar-name {
+    font-size: xx-large;
+    line-height: 94px;
+  }
+}
+
+#user-overview-options {
+  font-size: 1rem;
+
+  > li {
+    display: inline-block;
+    border-bottom: 8px solid transparent;
+  }
+
+  > li.is-active > a {
+    background-color: transparent;
+    border: 0;
+    
+    color: inherit;
+    padding: 0.75rem 1rem 0.25rem;
+
+    &.active {
+      border-bottom: 5px solid #7d7c7a;
+      font-weight: bold;
+    }
+  }
+}
