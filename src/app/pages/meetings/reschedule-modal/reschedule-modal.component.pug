@@ -1,0 +1,21 @@
+#reschedule-modal(*ngIf="visible")
+  form#reschedule-modal-content([formGroup]="meetingForm", (ngSubmit)="save(meetingForm.value)")
+    #reschedule-modal-body.text-center
+      .col-sm-12.heading
+        span Reschedule 1-on-1 meeting to:
+
+      .col-sm-12
+        br
+        .input-group(daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
+          input.form-control(type="text" name="dateRangeInput", formControlName="set_schedule", [class.is-invalid]="meetingForm.invalid")
+          .input-group-append.inline-block
+            .input-group-text
+              button.btn
+                span.icon-holder.ti-calendar.text-brown
+        br
+
+      .col-sm-12
+        button.btn-instant-feedback.btn-instant-feedback-cancel((click)="close.emit()")
+          span Cancel
+        button.btn-instant-feedback.btn-instant-feedback-brown(type="submit")
+          span Submit

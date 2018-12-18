@@ -16,6 +16,7 @@ import { DiscussMultiFormComponent } from './discuss-multi-form/discuss-multi-fo
 import { ReviewSummaryComponent } from './review-summary/review-summary.component';
 import { MeetingActionItemsComponent } from './meeting-action-items/meeting-action-items.component';
 import { SearchFiltersComponent } from './search-filters/search-filters.component';
+import { RescheduleModalComponent } from './reschedule-modal/reschedule-modal.component';
 
 
 
@@ -28,6 +29,7 @@ const MODULE_COMPONENTS = [
   DiscussMultiFormComponent,
   ReviewSummaryComponent,
   MeetingActionItemsComponent,
+  RescheduleModalComponent,
   SearchFiltersComponent,
 ]
 

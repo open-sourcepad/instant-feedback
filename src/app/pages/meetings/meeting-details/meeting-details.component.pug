@@ -18,7 +18,7 @@
           h3 {{ obj?.set_schedule | date: 'MMMM d, y' }}
           h3.font-bold(*ngIf="meetingStatus == 'done'") Actual 1-on-1 date: {{ obj?.actual_schedule | date: 'MMMM d, y' }}
           .user-actions(*ngIf="meetingStatus != 'done'")
-            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3(*ngIf="(userIsManager || currentUser.id == obj?.manager?.id)") Reschedule
+            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3(*ngIf="(userIsManager || currentUser.id == obj?.manager?.id)", (click)="showReschedModal=true") Reschedule
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-brown(*ngIf="(userIsManager || currentUser.id == obj?.manager?.id)", (click)="startDiscussion()") Start
     ng-container(*ngIf="meetingStatus == 'done'")
@@ -92,4 +92,11 @@ talking-point-menu(
   [(discussionObj)]="discussionObj",
   (cancel)="addTalkingPoints()",
   (save)="saveDiscussion($event)"
+)
+
+reschedule-modal(
+  [(meeting)]="obj",
+  [(visible)]="showReschedModal",
+  (updateMeeting)="updateMeeting($event)",
+  (close)="closeReschedModal()",
 )

@@ -55,6 +55,7 @@ export class MeetingDetailsComponent implements OnInit {
   talkingPointForm: FormGroup;
   submittedPointForm: boolean = false;
   submittedNoteForm: boolean = false;
+  showReschedModal: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -213,4 +214,11 @@ export class MeetingDetailsComponent implements OnInit {
     this.submittedNoteForm = false;
   }
 
+  closeReschedModal() {
+    this.showReschedModal = false;
+  }
+
+  updateMeeting(meeting) {
+    this.obj = meeting;
+  }
 }
