@@ -1,0 +1,21 @@
+pagination-template.float-right(#p="paginationApi",[id]="config.id", maxSize="5", (pageChange)="pageChange.emit($event)")
+  br
+  br
+  #pagination(*ngIf="p.getLastPage() > 1")
+    button.inline-block.btn-pagination([class.active]="p.isFirstPage()", [class.disabled]="p.isFirstPage()", (click)="p.setCurrent(1)")
+      span First
+    ul#pagination-pages.reset.inline-block
+      li
+        button.btn-pagination([class.active]="p.isFirstPage()", [class.disabled]="p.isFirstPage()", (click)="p.previous()")
+          span.ti-angle-left.icon-holder
+      li(*ngFor="let page of p.pages")
+        button.btn-pagination([class.active]="p.getCurrent() === page.value", [class.disabled]="p.getCurrent() === page.value", (click)="p.setCurrent(page.value)")
+          span {{ page.label }}
+      li
+        button.btn-pagination([class.active]="p.isLastPage()", [class.disabled]="p.isLastPage()", (click)="p.next()")
+          span.ti-angle-right.icon-holder
+    button.inline-block.btn-pagination([class.active]="p.isLastPage()", [class.disabled]="p.isLastPage()", (click)="p.setCurrent(p.getLastPage())")
+      span Last
+
+  br
+  br

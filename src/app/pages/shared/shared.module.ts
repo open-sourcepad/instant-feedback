@@ -3,13 +3,16 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { ModalComponent } from './modal/modal.component';
 import { BackButtonComponent } from './back-button/back-button.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 const SHARED_COMPONENTS = [
   NavbarComponent,
   ModalComponent,
-  BackButtonComponent  
+  BackButtonComponent,
+  PaginationComponent
 ]
 
 @NgModule({
@@ -17,10 +20,11 @@ const SHARED_COMPONENTS = [
     CommonModule,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule
+    NgxPaginationModule,
+    ReactiveFormsModule,
   ],
   declarations: [
-    ...SHARED_COMPONENTS
+    ...SHARED_COMPONENTS,
   ],
   exports: [
     ...SHARED_COMPONENTS
