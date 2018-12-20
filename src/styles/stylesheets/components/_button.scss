@@ -12,6 +12,12 @@
     padding: 8px 16px;
   }
 
+  &.btn-sm {
+    border-radius: 12px;
+    letter-spacing: 0;
+    padding: 7px 12px;
+  }
+
   > span.icon-holder {
     font-size: 10px;
     font-weight: 700;
@@ -43,6 +49,12 @@
   color: $black;
   background-color: $lightBrown;
   border-color: $lightBrown;
+}
+
+.btn-instant-feedback-semi-dark {
+  color: $lightBrown;
+  background-color: $lightBlack;
+  border-color: $lightBlack;
 }
 
 .btn-instant-feedback-cancel {

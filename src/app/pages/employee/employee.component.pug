@@ -25,10 +25,7 @@
           li.is-active
             a([routerLink]="['/employee/feedback']" routerLinkActive="active") Feedback
   .col-md-12.p-0
-    .row
-      .col-md-9.m-auto
-        .mt-5
-          router-outlet
+    router-outlet
 
 side-menu([(menuState)]="sideMenuState", [(feedbackState)]="feedbackState", (cancel)="toggleSideMenuState($event)")
   div(feedback="ask")

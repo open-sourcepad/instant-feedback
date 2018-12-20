@@ -1,0 +1,20 @@
+.requestee-container .btn-instant-feedback {
+  vertical-align: bottom;
+}
+
+.requestee-container {
+  margin-bottom: 1.25rem;
+}
+
+.requestee-container > .requestee-content {
+  width: 400px;
+
+  > .text-muted {
+    color: #c1bebb !important;
+  }
+
+  > .requestee-give-feedback {
+    font-size: large;
+    margin-top: 0.25rem;
+  }
+}
