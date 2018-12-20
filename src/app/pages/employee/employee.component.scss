@@ -52,11 +52,20 @@
   }
 }
 
-
 .btn-instant-feedback-link {
   padding: 6px 13px;
   background-color: #000;
   color: #C3BAAA;
   font-size: 16px;
   border-radius: 10px;
+}
+
+.form-header-text {
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+.form-header-text select {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  width: auto;
 }

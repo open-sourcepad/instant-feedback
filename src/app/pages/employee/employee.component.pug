@@ -9,9 +9,9 @@
           .inline-block.details
             h1.text-brown.font-bold {{ currentUser.display_name }}
             h4.text-capitalize {{ currentUser.role }} Team
-            button.btn.btn-instant-feedback.btn-instant-feedback-link Ask for Feedback
+            button.btn.btn-instant-feedback.btn-instant-feedback-link((click)="sideMenuState = 'in'; feedbackState = 'ask'") Ask for Feedback
             | &nbsp; &nbsp;
-            button.btn.btn-instant-feedback.btn-instant-feedback-link Give Feedback
+            button.btn.btn-instant-feedback.btn-instant-feedback-link((click)="sideMenuState = 'in'; feedbackState = 'give'") Give Feedback
 
       .col-md-9.m-auto
         br
@@ -29,3 +29,16 @@
       .col-md-9.m-auto
         .mt-5
           router-outlet
+
+side-menu([(menuState)]="sideMenuState", [(feedbackState)]="feedbackState", (cancel)="toggleSideMenuState($event)")
+  div(feedback="ask")
+    h2 Ask feedback
+  form(feedback="give")
+    .form-header-text Help and improve
+      select.form-control.inline-block
+      | with your feedback:
+    br
+    br
+    .form-group-box
+      textarea.form-control.form-control-line(type="text")
+      label Your feedback

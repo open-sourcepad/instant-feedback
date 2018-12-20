@@ -11,6 +11,8 @@ import { User } from '../../models';
 export class EmployeeComponent implements OnInit {
 
   currentUser: User;
+  sideMenuState: string = 'out';
+  feedbackState: string = null;
 
   constructor(
     private session: SessionService
@@ -18,6 +20,10 @@ export class EmployeeComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = new User(this.session.getCurrentUser());
+  }
+
+  toggleSideMenuState(value) {
+    this.sideMenuState = value;
   }
 
 }
