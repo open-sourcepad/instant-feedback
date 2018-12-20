@@ -3,16 +3,20 @@ import { CommonModule } from '@angular/common';
 import { routing } from './employee.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-import { EmployeeComponent } from './employee.component';
-
 import { Ng2LoadingSpinnerModule } from 'ng2-loading-spinner';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import {NgxPaginationModule} from 'ngx-pagination';
+
+import { EmployeeComponent } from './employee.component';
 import { EmployeeOverviewComponent } from './employee-overview/employee-overview.component';
 import { EmployeeMeetingsComponent } from './employee-meetings/employee-meetings.component';
+import { EmployeeFeedbackComponent } from './employee-feedback/employee-feedback.component';
 
 const MODULE_COMPONENTS = [
-  EmployeeComponent
+  EmployeeComponent,
+  EmployeeOverviewComponent,
+  EmployeeMeetingsComponent,
+  EmployeeFeedbackComponent
 ]
 
 @NgModule({
@@ -28,8 +32,6 @@ const MODULE_COMPONENTS = [
   ],
   declarations: [
     ...MODULE_COMPONENTS,
-    EmployeeOverviewComponent,
-    EmployeeMeetingsComponent
   ],
 })
 
