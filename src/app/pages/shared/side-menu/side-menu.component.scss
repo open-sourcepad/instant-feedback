@@ -1,0 +1,38 @@
+#side-menu-form {
+  background: rgba(255, 255, 255, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+}
+
+#side-menu-form > .side-menu-content {
+  background: #fff;
+  box-shadow: 0 0 16px 0 rgba(0,0,0,0.24);
+  position: fixed;
+  left: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20%;
+  min-width: 600px;
+  z-index: 9999;
+}
+
+.almost-full-height {
+  height: calc(100vh - 106px);
+}
+
+
+#side-menu-form > .side-menu-content .actions {
+  background-color: #333333;
+  padding: 25px;
+
+  .btn-round {
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}

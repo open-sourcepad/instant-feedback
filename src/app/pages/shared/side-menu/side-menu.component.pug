@@ -1,0 +1,18 @@
+#side-menu-form([@slideInOut]="menuState")
+  .side-menu-content
+    .container
+      .row
+        .col-md-10.mr-auto.ml-auto
+          .row
+            .mr-auto.ml-auto
+              .vertical-align.almost-full-height
+                .table-cell
+                  ng-content(*ngIf="feedbackState == 'give'", select="[feedback=give]")
+                  ng-content(*ngIf="feedbackState == 'ask'", select="[feedback=ask]")
+    .actions
+      .m-auto.text-center
+        button.btn.btn-round.btn-instant-feedback-cancel((click)="onCancel()")
+          u Cancel
+        button.btn.btn-round.btn-instant-feedback-brown
+          span Submit
+
