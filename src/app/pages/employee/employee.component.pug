@@ -36,6 +36,8 @@ side-menu([(menuState)]="sideMenuState", [(feedbackState)]="feedbackState", (can
   form(feedback="give")
     .form-header-text Help and improve
       select.form-control.inline-block
+        option(value="", disabled="true") Choose a User
+        option(*ngFor="let user of users", [value]="user.id") {{ user.display_name }}
       | with your feedback:
     br
     br
