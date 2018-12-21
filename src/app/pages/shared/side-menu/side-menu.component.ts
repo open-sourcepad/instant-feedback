@@ -22,7 +22,9 @@ export class SideMenuComponent implements OnInit {
 
   @Input() menuState;
   @Input() feedbackState;
+  @Input() form;
   @Output() cancel = new EventEmitter<string>();
+  @Output() submitFeedback = new EventEmitter<object>();
 
   constructor() { }
 
@@ -31,6 +33,10 @@ export class SideMenuComponent implements OnInit {
 
   onCancel() {
     this.cancel.emit('out');
+  }
+
+  onSubmit(values) {
+    this.submitFeedback.emit(values);
   }
 
 }
