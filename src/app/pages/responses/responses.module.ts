@@ -8,6 +8,9 @@ import { SearchFiltersComponent } from './search-filters/search-filters.componen
 
 import { Daterangepicker } from 'ng2-daterangepicker';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { SharedModule } from '../shared/shared.module';
+
+
 
 const MODULE_COMPONENTS = [
   ResponsesComponent,
@@ -21,7 +24,8 @@ const MODULE_COMPONENTS = [
     FormsModule,
     ReactiveFormsModule,
     Daterangepicker,
-    NgxPaginationModule
+    NgxPaginationModule,
+    SharedModule
   ],
   declarations: [
     ...MODULE_COMPONENTS

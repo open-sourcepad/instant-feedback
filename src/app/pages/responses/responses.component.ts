@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AnswerService, QuestionService, UserService } from '../../services/api'
+import {PaginationInstance} from 'ngx-pagination';
 
 @Component({
   selector: 'app-responses',
@@ -13,12 +14,17 @@ export class ResponsesComponent implements OnInit {
   users: any;
   loading = false;
   collection = [];
-  recordCount = 0;
   recordShownCount;
   recordAnswerSummary;
   queryParams;
-  page = {number: 1, size: 20};
   order = {name: 'asc', created_at: 'desc'};
+
+  paginationControls: PaginationInstance = {
+    id: 'paginationResults',
+    itemsPerPage: 20,
+    currentPage: 1,
+    totalItems: 0
+  }
 
   constructor(
     private answerApi: AnswerService,
@@ -34,13 +40,16 @@ export class ResponsesComponent implements OnInit {
   search(queryParams) {
     if (queryParams instanceof Event) {return;}
     this.queryParams = queryParams;
-    queryParams['page'] = this.page;
+    queryParams['page'] = {
+      number: this.paginationControls['currentPage'],
+      size: this.paginationControls['itemsPerPage']
+    };
     queryParams['order'] = this.order;
 
     this.answerApi.query({query: queryParams})
       .subscribe(res => {
         this.collection = res['collection']['data'];
-        this.recordCount = res['metadata']['record_count'];
+        this.paginationControls['totalItems'] = res['metadata']['record_count'];
         this.recordAnswerSummary = res['metadata']['answer_summary'];
         this.calculateShownCount();
         this.loading = false;
@@ -70,20 +79,20 @@ export class ResponsesComponent implements OnInit {
   }
 
   changePage(evt) {
-    this.page['number'] = evt;
+    this.paginationControls['currentPage'] = evt;
     this.search(this.queryParams);
   }
 
   calculateShownCount(){
-    var totalPages = Math.ceil(this.recordCount / this.page['size']);
-    var count = this.page['number'] * this.page['size'];
+    var totalPages = Math.ceil(this.paginationControls['totalItems'] / this.paginationControls['itemsPerPage']);
+    var count = this.paginationControls['currentPage'] * this.paginationControls['itemsPerPage'];
 
-    if(this.page['number'] == 1 && this.recordCount == 0) {
-      this.recordShownCount = `0-${this.recordCount}`;
-    }else if(this.page['number'] == 1 && this.recordCount < this.page['size']) {
-      this.recordShownCount = `${this.page['number']}-${this.recordCount}`;
-    }else if(this.page['number'] == totalPages ) {
-      let endRange = (count - this.page['size']) + this.collection.length;
+    if(this.paginationControls['currentPage'] == 1 && this.paginationControls['totalItems'] == 0) {
+      this.recordShownCount = `0-${this.paginationControls['totalItems']}`;
+    }else if(this.paginationControls['currentPage'] == 1 && this.paginationControls['totalItems'] < this.paginationControls['itemsPerPage']) {
+      this.recordShownCount = `${this.paginationControls['currentPage']}-${this.paginationControls['totalItems']}`;
+    }else if(this.paginationControls['currentPage'] == totalPages ) {
+      let endRange = (count - this.paginationControls['itemsPerPage']) + this.collection.length;
       this.recordShownCount = `${(count - 19)}-${endRange}`;
     }else {
       this.recordShownCount = `${(count - 19)}-${count}`;
