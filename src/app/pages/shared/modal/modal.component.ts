@@ -37,7 +37,7 @@ export class ModalComponent implements OnInit {
 
   onConfirm() {
     this.modalStateChange.emit(false);
-    this.removeItems.emit(this.currentSession);
+    if(this.currentSession) this.removeItems.emit(this.currentSession);
   }
 
 }

@@ -5,5 +5,5 @@
       p([innerHtml]="modalText.body")
 
       .text-center
-        button.btn-instant-feedback-modal-cancel((click)="onCancel()") {{ buttons.cancel.text }}
-        button.btn-instant-feedback-modal-confirm((click)="onConfirm()") {{ buttons.confirm.text }}
+        button.btn-instant-feedback-modal-cancel(*ngIf="buttons.cancel", (click)="onCancel()") {{ buttons.cancel.text }}
+        button.btn-instant-feedback-modal-confirm(*ngIf="buttons.confirm", (click)="onConfirm()") {{ buttons.confirm.text }}

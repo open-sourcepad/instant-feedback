@@ -77,6 +77,8 @@
 
 .instant-feedback-modal-content .btn-instant-feedback-modal-confirm {
   @include btn-modal;
+  background-color: #C3BAAA;
+  border-color: #C3BAAA;
   color: #000000;
   font-weight: bold;
 }
