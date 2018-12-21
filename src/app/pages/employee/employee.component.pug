@@ -27,17 +27,32 @@
   .col-md-12.p-0
     router-outlet
 
-side-menu([(menuState)]="sideMenuState", [(feedbackState)]="feedbackState", (cancel)="toggleSideMenuState($event)")
+modal(
+  [(visible)]="showModal",
+  [(modalText)]="modalText",
+  [(buttons)]="modalButtons",
+  (modalStateChange)="modalStateChange($event)"
+)
+
+side-menu(
+  [(menuState)]="sideMenuState",
+  [(feedbackState)]="feedbackState",
+  [(form)]="feedbackForm",
+  (cancel)="toggleSideMenuState($event)",
+  (submitFeedback)="submitFeedback($event)"
+)
   div(feedback="ask")
     h2 Ask feedback
-  form(feedback="give")
+  form(feedback="give", [formGroup]="feedbackForm", novalidate, autocomplete="off", (ngSubmit)="submitFeedback(feedbackForm.value)")
     .form-header-text Help and improve
-      select.form-control.inline-block
+      select.form-control.inline-block(formControlName="recipient_id", [class.is-invalid]="submitted && f.recipient_id.errors")
         option(value="", disabled="true") Choose a User
         option(*ngFor="let user of users", [value]="user.id") {{ user.display_name }}
       | with your feedback:
     br
     br
     .form-group-box
-      textarea.form-control.form-control-line(type="text")
+      textarea.form-control.form-control-line([class.is-invalid]="submitted && f.comment.errors", type="text", formControlName="comment")
+      .invalid-feedback
+        span Please enter your feedback
       label Your feedback
