@@ -9,6 +9,13 @@
       (submit)="search($event)"
     )
   .col-md-12
+    br
+    span.total-results Showing&nbsp;
+      span.font-bold {{ recordShownCount }}&nbsp;
+      | of 
+      span.font-bold {{ paginationControls['totalItems'] }}&nbsp;
+      | results
+  .col-md-12
     //- .alert.alert-danger(*ngIf="errorMsg") {{ errorMsg }}
     table.table.table-instant-feedback([ng2-loading]="loading")
       thead
@@ -64,15 +71,15 @@
               td.text-center(colspan="6")
                 span No results found
         ng-container(*ngIf="!loading && collection.length > 0")
-          tr(*ngFor="let obj of collection | paginate: { id: 'meetingCollection', itemsPerPage: page['size'], currentPage: page['number'], totalItems: recordCount}")
+          tr(*ngFor="let obj of collection | paginate: paginationControls")
             td
               span {{ obj.employee.display_name }}
             td
               span {{ obj.manager.display_name }}
             td.schedule
               span.schedule([class.due]="obj.status == 'due'") {{ obj.set_schedule | date: 'MMMM d' }}
-            td.text-center
-              span([innerHTML]="!!obj.actual_schedule ? obj.actual_schedule : '-'")
+            td.schedule
+              span([innerHTML]="!!obj.actual_schedule ? (obj.actual_schedule | date: 'MMMM d') : '-'")
             td
               span.text-capitalize {{ obj.status }}
             td.actions
@@ -81,10 +88,5 @@
               a()
                 .icon-remove.icon-sm.icon-holder
   .col-md-12.text-right
-    pagination-controls#meetingCollection(
-      (pageChange)="changePage($event)",
-      maxSize="5",
-      autoHide="true",
-      responsive="true",
-      directionLinks="true",
-      screenReaderPageLabel="page")
+    pagination([config]="paginationControls", (pageChange)="changePage($event)")
+

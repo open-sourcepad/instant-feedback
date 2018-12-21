@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MeetingService, UserService } from '../../../services/api';
+import {PaginationInstance} from 'ngx-pagination';
 
 @Component({
   selector: 'app-meeting-index',
@@ -21,6 +22,13 @@ export class MeetingIndexComponent implements OnInit {
   page = {number: 1, size: 20};
   order = {name: 'asc', created_at: 'desc'};
 
+  paginationControls: PaginationInstance = {
+    id: 'meetingCollection',
+    itemsPerPage: 20,
+    currentPage: 1,
+    totalItems: 0
+  };
+
   constructor(
     private meetingApi: MeetingService,
     private userApi: UserService
@@ -36,7 +44,10 @@ export class MeetingIndexComponent implements OnInit {
     if (queryParams instanceof Event) {return;}
     this.loading = true;
     this.queryParams = queryParams;
-    queryParams['page'] = this.page;
+    queryParams['page'] = {
+      number: this.paginationControls['currentPage'],
+      size: this.paginationControls['itemsPerPage']
+    };
     queryParams['order'] = this.order;
 
     queryParams['status'] = {
@@ -47,7 +58,8 @@ export class MeetingIndexComponent implements OnInit {
     this.meetingApi.search(queryParams).subscribe(res => {
       this.loading = false;
       this.collection = res['collection']['data'];
-      this.recordCount = res['metadata']['record_count'];
+      this.paginationControls['totalItems'] = res['metadata']['record_count'];
+      this.calculateShownCount();
     }, err => {
       this.loading = false;
     });
@@ -77,24 +89,26 @@ export class MeetingIndexComponent implements OnInit {
   }
 
   changePage(evt) {
-    this.page['number'] = evt;
+    this.paginationControls['currentPage'] = evt;
     this.search(this.queryParams);
   }
 
   calculateShownCount(){
-    var totalPages = Math.ceil(this.recordCount / this.page['size']);
-    var count = this.page['number'] * this.page['size'];
+    var totalPages = Math.ceil(this.paginationControls['totalItems'] / this.paginationControls['itemsPerPage']);
+    var count = this.paginationControls['currentPage'] *  this.paginationControls['itemsPerPage'];
 
-    if(this.page['number'] == 1 && this.recordCount == 0) {
-      this.recordShownCount = `0-${this.recordCount}`;
-    }else if(this.page['number'] == 1 && this.recordCount < this.page['size']) {
-      this.recordShownCount = `${this.page['number']}-${this.recordCount}`;
-    }else if(this.page['number'] == totalPages ) {
-      let endRange = (count - this.page['size']) + this.collection.length;
+    if(this.paginationControls['currentPage'] == 1 && this.paginationControls['totalItems'] == 0) {
+      this.recordShownCount = `0-${this.paginationControls['totalItems']}`;
+    }else if(this.paginationControls['currentPage'] == 1 && this.paginationControls['totalItems'] <  this.paginationControls['itemsPerPage']) {
+      this.recordShownCount = `${this.paginationControls['currentPage']}-${this.paginationControls['totalItems']}`;
+    }else if(this.paginationControls['currentPage'] == totalPages ) {
+      let endRange = (count - this.paginationControls['itemsPerPage']) + this.collection.length;
       this.recordShownCount = `${(count - 19)}-${endRange}`;
     }else {
       this.recordShownCount = `${(count - 19)}-${count}`;
     }
+
+
   }
 
 
