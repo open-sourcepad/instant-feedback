@@ -11,7 +11,7 @@
             .requestee-give-feedback
               span.text-indigo.font-bold Abby&nbsp;
               span.font-semi-bold has requested for your feedback.
-          button.btn-instant-feedback.btn-sm.btn-instant-feedback-semi-dark Give Feedback
+          button.btn-instant-feedback.btn-sm.btn-instant-feedback-semi-dark((click)="sideMenuState = 'in'; feedbackState = 'give'") Give Feedback
         .requestee-container
           .requestee-content.inline-block
             span.text-muted.font-size-13 Yesterday
@@ -27,3 +27,31 @@
     .col-md-9.m-auto
       .mt-5
         span from to your team
+
+
+modal(
+  [(visible)]="showModal",
+  [(modalText)]="modalText",
+  [(buttons)]="modalButtons",
+  (modalStateChange)="modalStateChange($event)"
+)
+
+side-menu(
+  [(menuState)]="sideMenuState",
+  [feedbackState]="'give'",
+  [(form)]="feedbackForm",
+  (cancel)="toggleSideMenuState($event)",
+  (submitFeedback)="submitFeedback($event)"
+)
+  form(feedback="give", [formGroup]="feedbackForm", novalidate, autocomplete="off", (ngSubmit)="submitFeedback(feedbackForm.value)")
+    span.text-muted.font-size-13 26 mins ago
+    .form-header-text Abby requested you to give feedback with this question:
+    br
+    h2.font-bold.text-brown What's one thing that I could do to be more effective?
+    br
+    br
+    .form-group-box
+      textarea.form-control.form-control-line([class.is-invalid]="submitted && f.comment.errors", type="text", formControlName="comment")
+      label Your feedback
+      .invalid-feedback
+        span Please enter your feedback

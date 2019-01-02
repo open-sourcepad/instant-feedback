@@ -24,10 +24,10 @@ export class EmployeeComponent implements OnInit {
   feedbackForm: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
-    private feedbackApi: FeedbackService,
-    private session: SessionService,
-    private userApi: UserService
+    public fb: FormBuilder,
+    public feedbackApi: FeedbackService,
+    public session: SessionService,
+    public userApi: UserService
   ) { }
 
   get f() { return this.feedbackForm.controls; }
