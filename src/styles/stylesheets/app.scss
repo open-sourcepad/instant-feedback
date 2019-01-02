@@ -23,3 +23,18 @@
 
 // import fonts
 @import url('https://fonts.googleapis.com/css?family=Poppins:600,700');
+
+
+.custom.ng-select {
+  &.ng-select-multiple .ng-select-container .ng-value-container {
+    .ng-value {
+      border-radius: 6px;
+      color: #4b4b4b;
+    }
+  }
+
+  &.ng-invalid .ng-select-container {
+    border-bottom: 1px solid #d1211a;
+    &:after { border: none; }
+  }
+}

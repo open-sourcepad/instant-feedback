@@ -69,3 +69,48 @@
   margin-right: 0.5rem;
   width: auto;
 }
+
+#existing-questions {
+  .choice {
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+
+    &.selected {
+      background-color: #E1DCD4;
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+#question-form {
+  label {
+    font-size: 16px;
+    color: #C3BAAA;
+  }
+
+  #existing-questions, #custom-question {
+    clear: both;
+  }
+
+  .bordered-bottom {
+    border-bottom: 2px solid #F5F5F2;
+    margin-bottom: 30px;
+
+    &.is-invalid {
+      border-bottom: 1px solid #d1211a;
+    }
+  }
+  .spacer { height: 45px; }
+
+  textarea {
+    resize: none;
+    border-radius: 8px;
+    margin-top: 12px;
+    margin-bottom: 50px;
+  }
+
+}

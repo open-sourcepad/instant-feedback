@@ -14,4 +14,8 @@ export class FeedbackService extends BaseService {
   ) {
     super(http, ENDPOINT);
   }
+
+  batchCreate(payload: Object): any {
+    return this.http.post(`${this.apiEndpoint}/batch_create`, payload);
+  }
 }

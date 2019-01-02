@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { routing } from './employee.routing';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { Ng2LoadingSpinnerModule } from 'ng2-loading-spinner';
@@ -23,6 +24,7 @@ const MODULE_COMPONENTS = [
   imports: [
     CommonModule,
     routing,
+    NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
     Daterangepicker,
