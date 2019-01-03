@@ -22,11 +22,25 @@
           button.btn-instant-feedback.btn-sm.btn-instant-feedback-semi-dark Give Feedback
         br
 
-.col-md-12.p-0
+.col-md-12.p-0.bg-lightbrown
   .row
     .col-md-9.m-auto
-      .mt-5
-        span from to your team
+      .mt-5.mb-5
+        ul.reset.user-overview-options
+          li.is-active
+            button.active From Your Team
+          li.is-active
+            button To Your Team
+
+      .mt-3.feedback-list
+        .feedback
+          span.text-muted.font-size-12 Yesterday
+          br
+          span.font-bold.text-indigo Sam&nbsp;
+          span said:
+          p.text-justify "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla partiur."
+          .text-right
+            button.btn-action.font-size-14.font-bold More
 
 
 modal(

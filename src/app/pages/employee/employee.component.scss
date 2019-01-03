@@ -2,6 +2,10 @@
   background-color: #fff;
 }
 
+.bg-lightbrown {
+  background-color: #f8f7f5;
+}
+
 .font-poppin {
   font-family: 'Poppins', sans-serif !important;
 }
@@ -30,7 +34,7 @@
   }
 }
 
-#user-overview-options {
+.user-overview-options {
   font-size: 1rem;
 
   > li {
@@ -38,7 +42,7 @@
     border-bottom: 8px solid transparent;
   }
 
-  > li.is-active > a {
+  > li.is-active > a, > li.is-active > button {
     background-color: transparent;
     border: 0;
     
@@ -49,6 +53,10 @@
       border-bottom: 5px solid #7d7c7a;
       font-weight: bold;
     }
+  }
+
+  > li.is-active > button.active {
+    color: #C3BAAA;
   }
 }
 
