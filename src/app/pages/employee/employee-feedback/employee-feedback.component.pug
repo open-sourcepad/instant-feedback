@@ -25,22 +25,48 @@
 .col-md-12.p-0.bg-lightbrown
   .row
     .col-md-9.m-auto
-      .mt-5.mb-5
+      #feedback-filters.mt-3
+        label.font-bold.text-muted Dates&nbsp;&nbsp;&nbsp;
+        .date-range.inline-block
+          span.font-bold {{ this.daterange.start | date : 'MMMM d, y'}} - {{ this.daterange.end | date : 'MMMM d, y'}}&nbsp;&nbsp;
+          button.btn.btn-instant-feedback.btn-daterange(daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
+            span.icon-holder.ti-calendar
+            | &nbsp;
+            span.icon-holder.ti-angle-down
+        
+        label.font-bold.text-muted.ml-4 User&nbsp;
+        select.form-control.inline-block.w-auto([(ngModel)]="selectedUser", (change)="loadFeedbacks()")
+          option(*ngFor="let user of users", [value]="user.id") {{ user.display_name }}
+      .mt-3.mb-3
         ul.reset.user-overview-options
           li.is-active
-            button.active From Your Team
+            button([class.active]="currentTab == 'received'", (click)="changeTab('received')") From Your Team
           li.is-active
-            button To Your Team
+            button([class.active]="currentTab == 'given'", (click)="changeTab('given')") To Your Team
 
       .mt-3.feedback-list
-        .feedback
-          span.text-muted.font-size-12 Yesterday
-          br
-          span.font-bold.text-indigo Sam&nbsp;
-          span said:
-          p.text-justify "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla partiur."
-          .text-right
-            button.btn-action.font-size-14.font-bold More
+        ng-container(*ngIf="currentTab == 'received'")
+          .feedback(*ngFor="let obj of collection")
+            span.text-muted.font-size-12 {{formatDate(obj.updated_at)}}
+            br
+            span.font-bold.text-indigo {{ obj.sender }}&nbsp;
+            span said
+            span.text-muted(*ngIf="obj.question") &nbsp;(in response to your feedback request)
+            span :
+            p.text-justify "{{ obj.comment }}"
+            .text-right
+              button.btn-action.font-size-14.font-bold More
+        ng-container(*ngIf="currentTab == 'given'")
+          .feedback(*ngFor="let obj of collection")
+            span.text-muted.font-size-12 {{formatDate(obj.updated_at)}}
+            br
+            span.font-bold.text-indigo You&nbsp;
+            span said to {{ obj.recipient.name }}
+            span.text-muted(*ngIf="obj.question") &nbsp;(in response to {{ obj.recipient.preposition }} feedback request)
+            span :
+            p.text-justify "{{ obj.comment }}"
+            .text-right
+              button.btn-action.font-size-14.font-bold More
 
 
 modal(

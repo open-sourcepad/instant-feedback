@@ -40,13 +40,14 @@ export class EmployeeComponent implements OnInit {
     public feedbackApi: FeedbackService,
     public session: SessionService,
     public userApi: UserService
-  ) { }
+  ) {
+    this.currentUser = new User(this.session.getCurrentUser());
+  }
 
   get f() { return this.feedbackForm.controls; }
 
   ngOnInit() {
     this.loading = true;
-    this.currentUser = new User(this.session.getCurrentUser());
     this.userApi.query({})
       .subscribe(res => {
         this.loading = false;
@@ -98,7 +99,7 @@ export class EmployeeComponent implements OnInit {
     values['errors'] = {};
     if (this.chosenUsers.length < 1) values['errors']['no sender'] = true
     if (values['question'].trim() == '') values['errors']['no question'] = true;
-    if (values['errors'] != {}) return;
+    if (Object.keys(values['errors']).length > 1) return;
 
     values['sender_ids'] = this.chosenUsers.map(u => u['id']);
     values['recipient_id'] = this.currentUser.id;
