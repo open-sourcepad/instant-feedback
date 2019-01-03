@@ -17,12 +17,16 @@
                       ng-container(*ngIf="form.get('talking_point_type').value == 'custom'")
                         .custom-question
                           h5.font-bold Your Talking Point
-                          textarea.form-control(type="text", formControlName="custom_question")
+                          textarea.form-control(type="text", formControlName="custom_question", [class.is-invalid]="submitted && f.custom_question.errors")
+                          .invalid-feedback
+                            span Please enter a Talking Point
                     li.talking-point-types
                       label Choose an existing talking point&nbsp;
                         input(type="radio", value="default", formControlName="talking_point_type", (change)="updateForm('default')")
                       hr
                       ng-container(*ngIf="form.get('talking_point_type').value == 'default'")
+                        .invalid-feedback([class.d-block]="submitted && f.talking_point_id.errors")
+                          span.font-bold Please choose a Talking Point
                         ul.talking-point-options
                           li(*ngFor="let talkingPoint of talkingPoints")
                             button([class.selected]="form.get('talking_point_id').value == talkingPoint.id", (click)="selectTalkingPoint(talkingPoint)")

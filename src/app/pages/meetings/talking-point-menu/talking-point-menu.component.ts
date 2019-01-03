@@ -15,12 +15,15 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
 
   form: FormGroup;
   loading: boolean = false;
+  submitted: boolean = false;
   talkingPoints: any = [];
 
   constructor(
     private fb: FormBuilder,
     private talkingPointApi: TalkingPointService
   ) { }
+
+  get f() { return this.form.controls; }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -84,12 +87,20 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
 
   onSubmit(values, action){
     this.loading = true;
+    this.submitted = true;
+
+    if(this.form.invalid) {
+      this.loading = false;
+      return;
+    }
+
     this.save.emit({values, action});
     this.form.get('custom_question').setValue('');
     this.form.get('talking_point_id').setValue('');
     this.form.get('custom_question').updateValueAndValidity();
     this.form.get('talking_point_id').updateValueAndValidity();
     this.loading = false;
+    this.submitted = false;
     this.cancel.emit();
 
   }

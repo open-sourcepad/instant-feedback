@@ -41,7 +41,7 @@
               button.btn.btn-instant-feedback.btn-instant-feedback-muted((click)="addTalkingPoints()") Add Talking Points
         ng-container(*ngIf="discussions.length > 0")
           .row
-            .col-md-12([ng2-loading]="loading", [@listAnimation]="discussions.length")
+            .col-md-12([ng2-loading]="loading")
               .card(*ngFor="let discuss of discussions; let idx = index")
                 .card-body((mouseover)="showActionsIdx=idx", (mouseout)="showActionsIdx=null")
                   .card-actions(*ngIf="meetingStatus != 'done'")
