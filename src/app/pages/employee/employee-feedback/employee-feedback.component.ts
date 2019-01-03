@@ -17,9 +17,14 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
   selectedUser = "";
   currentTab = 'received';
 
-  //show more
+  //request feedback
+  loadingPending: boolean = false;
+  requests = [];
+  requestedFeedback = null;
+
+  //show feedback
   showFeedback: string = 'out';
-  selectedFeedback: object = {};
+  selectedFeedback = null;
 
   daterange = {
     start: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
@@ -59,13 +64,47 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
 
   ngOnInit() {
     this.feedbackForm = this.fb.group({
-      recipient_id: ['', Validators.required],
-      sender_id: [this.currentUser.id, Validators.required],
       comment: ['', Validators.required]
     });
     this.loadFeedbacks();
+    this.loadRequestFeedbacks();
   }
 
+  //request feedbacks
+  loadRequestFeedbacks() {
+    this.loadingPending = true;
+    this.feedbackApi.pending().subscribe(res => {
+      this.loadingPending = false;
+      this.requests = res['collection']['data'];
+    }, err => {
+      this.loadingPending = false;
+    });
+  }
+
+  submitFeedback(values) {
+    this.submitted = true;
+    this.loading = true;
+
+    if(values.comment.trim() == '') this.f.comment.setValue('');
+    if(this.feedbackForm.invalid) {
+      this.loading = false;
+      return;
+    }
+
+    this.feedbackApi.update(this.requestedFeedback.id, values).subscribe(res => {
+      this.loading = false;
+      this.toggleSideMenuState('out');
+      this.modalStateChange(true);
+      this.modalText['body'] = "Thank you for giving your feedback";
+      this.loadRequestFeedbacks();
+      this.requestedFeedback = null;
+    }, err => {
+      this.loading = false;
+    });
+  }
+
+
+  //answered feedbacks
   loadFeedbacks() {
     this.loading = true;
     let query = {

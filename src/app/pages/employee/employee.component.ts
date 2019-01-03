@@ -125,6 +125,7 @@ export class EmployeeComponent implements OnInit {
 
     if(values.comment.trim() == '') this.f.comment.setValue('');
     if(this.feedbackForm.invalid) {
+      this.loading = false;
       return;
     }
 

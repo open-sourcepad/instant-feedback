@@ -18,4 +18,8 @@ export class FeedbackService extends BaseService {
   batchCreate(payload: Object): any {
     return this.http.post(`${this.apiEndpoint}/batch_create`, payload);
   }
+
+  pending(): any {
+    return this.http.get(`${this.apiEndpoint}?pending=true&given=true`);
+  }
 }
