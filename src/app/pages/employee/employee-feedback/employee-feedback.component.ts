@@ -16,7 +16,10 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
   collection = [];
   selectedUser = "";
   currentTab = 'received';
+
+  //show more
   showFeedback: string = 'out';
+  selectedFeedback: object = {};
 
   daterange = {
     start: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
@@ -107,10 +110,6 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
     this.daterange.end = moment(value.end).format('YYYY/MM/DD 23:59:59');
   
     this.loadFeedbacks();
-  }
-
-  formatDate(date) {
-    return moment(date).startOf('day').fromNow();
   }
 
 

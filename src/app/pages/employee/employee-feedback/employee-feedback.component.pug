@@ -48,7 +48,7 @@
       .mt-3.feedback-list
         ng-container(*ngIf="currentTab == 'received' && collection.length > 0")
           .feedback(*ngFor="let obj of collection")
-            span.text-idle.font-size-12 {{formatDate(obj.updated_at)}}
+            span.text-idle.font-size-12 {{ obj.updated_at | datePrettyFormat }}
             br
             span.font-bold.text-indigo {{ obj.sender }}&nbsp;
             span said
@@ -59,7 +59,7 @@
               button.btn-action.font-size-14.font-bold((click)="toggleShowFeedback('in'); selectedFeedback = obj") More
         ng-container(*ngIf="currentTab == 'given' && collection.length > 0")
           .feedback(*ngFor="let obj of collection")
-            span.text-idle.font-size-12 {{formatDate(obj.updated_at)}}
+            span.text-idle.font-size-12 {{ obj.updated_at | datePrettyFormat }}
             br
             span.font-bold.text-indigo You&nbsp;
             span said to {{ obj.recipient.name }}
@@ -105,7 +105,7 @@ side-menu(
   (cancel)="toggleShowFeedback($event)"
 )
   ng-container(*ngIf="selectedFeedback?.question")
-    span.text-idle {{ selectedFeedback?.created_at | date: 'MMMM d' }}
+    span.text-idle {{ selectedFeedback?.created_at | datePrettyFormat }}
     .form-header-text(*ngIf="currentTab == 'received'") You requested&nbsp;
       span.text-indigo.font-bold {{ selectedFeedback?.sender }}&nbsp;
       | to give you feedback with this question:
@@ -120,5 +120,5 @@ side-menu(
   .form-header-text.text-idle(*ngIf="currentTab == 'received'") {{ selectedFeedback?.sender }}'s feedback:
   .form-header-text.text-idle(*ngIf="currentTab == 'given'") Your feedback:
   br
-  span.text-idle {{ selectedFeedback?.updated_at | date: 'MMMM d' }}
+  span.text-idle {{ selectedFeedback?.updated_at | datePrettyFormat }}
   p.feedback-comment {{ selectedFeedback?.comment }}

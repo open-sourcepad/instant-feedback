@@ -6,7 +6,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { Ng2LoadingSpinnerModule } from 'ng2-loading-spinner';
 import { Daterangepicker } from 'ng2-daterangepicker';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { datePrettyFormat } from '../../services/pipes/date-pretty-format.pipe';
 
 import { EmployeeComponent } from './employee.component';
 import { EmployeeOverviewComponent } from './employee-overview/employee-overview.component';
@@ -34,6 +35,7 @@ const MODULE_COMPONENTS = [
   ],
   declarations: [
     ...MODULE_COMPONENTS,
+    datePrettyFormat
   ],
 })
 
