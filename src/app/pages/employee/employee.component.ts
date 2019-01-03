@@ -42,12 +42,6 @@ export class EmployeeComponent implements OnInit {
     public userApi: UserService
   ) {
     this.currentUser = new User(this.session.getCurrentUser());
-  }
-
-  get f() { return this.feedbackForm.controls; }
-
-  ngOnInit() {
-    this.loading = true;
     this.userApi.query({})
       .subscribe(res => {
         this.loading = false;
@@ -55,6 +49,12 @@ export class EmployeeComponent implements OnInit {
       }, err => {
         this.loading = false;
       });
+  }
+
+  get f() { return this.feedbackForm.controls; }
+
+  ngOnInit() {
+    this.loading = true;
 
     this.questionForm = {
       errors: {},

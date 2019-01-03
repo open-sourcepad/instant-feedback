@@ -10,6 +10,10 @@
   font-family: 'Poppins', sans-serif !important;
 }
 
+.font-karla {
+  font-family: 'Karla', sans-serif !important;
+}
+
 #user-overview {
   margin-top: 5rem;
 }
@@ -69,13 +73,28 @@
 }
 
 .form-header-text {
-  font-size: 1.5rem;
-  font-weight: 300;
+  @extend .font-karla;
+  font-size: 26px;
+  letter-spacing: -0.62px;
+  line-height: 31px;
 }
+
 .form-header-text select {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   width: auto;
+}
+
+.feedback-question {
+  font-size: 26px; 
+  font-weight: bold;
+  line-height: 31px;
+}
+
+.feedback-comment {
+  font-size: 26px;
+  letter-spacing: 0.08px;
+  line-height: 34px;
 }
 
 #existing-questions {

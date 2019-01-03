@@ -14,9 +14,9 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
   feedbackForm: FormGroup;
   searchForm: FormGroup;
   collection = [];
-  users: object[] = [{id: '', display_name: 'ALL'}];
   selectedUser = "";
   currentTab = 'received';
+  showFeedback: string = 'out';
 
   daterange = {
     start: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
@@ -57,18 +57,9 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
   ngOnInit() {
     this.feedbackForm = this.fb.group({
       recipient_id: ['', Validators.required],
-      sender_id: ['', Validators.required],
+      sender_id: [this.currentUser.id, Validators.required],
       comment: ['', Validators.required]
     });
-
-    // this.userApi.query({})
-    //   .subscribe(res => {
-    //     this.loading = false;
-    //     let users_data = res['collection']['data'].filter(u => u['id'] != this.currentUser.id);
-    //     users_data.forEach(user => this.users.push(user));
-    //   }, err => {
-    //     this.loading = false;
-    //   });
     this.loadFeedbacks();
   }
 
@@ -79,6 +70,15 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
       date_until: this.daterange.end
     }
     query[this.currentTab] = true;
+    delete query['received_from'];
+    delete query['given_to'];
+    if(this.selectedUser) {
+      if(this.currentTab == 'received') {
+        query['received_from'] = this.selectedUser;
+      }else {
+        query['given_to'] = this.selectedUser;
+      }
+    }
     this.feedbackApi.query(query)
       .subscribe(res => {
         this.loading = false;
@@ -86,6 +86,10 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
       }, err => {
         this.loading = false;
       });
+  }
+
+  toggleShowFeedback(value){
+    this.showFeedback = value;
   }
 
   changeTab(tab) {
