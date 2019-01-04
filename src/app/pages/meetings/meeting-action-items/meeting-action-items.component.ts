@@ -16,6 +16,15 @@ export class MeetingActionItemsComponent implements OnInit, OnChanges {
   @Input() allowEdit;
   @Input() allowReviewEdit;
 
+  loading = {
+    employee: false,
+    manager: false
+  }
+  submitted = {
+    employee: false,
+    manager: false
+  }
+
   loadingEmployeeItems: boolean = false;
   employeeItems = [];
   loadingManagerItems: boolean = false;
@@ -24,6 +33,7 @@ export class MeetingActionItemsComponent implements OnInit, OnChanges {
   editActionIdx: any = {employee: null, manager: null};
   newEdit: any = {employee: false, manager: false};
   reviewEdit: boolean = false;
+  userRole: string = '';
 
   employeeItemForm: FormGroup;
   managerItemForm: FormGroup;
@@ -33,57 +43,77 @@ export class MeetingActionItemsComponent implements OnInit, OnChanges {
     private activeRoute: ActivatedRoute,
     private actionItemApi: ActionItemService,
     private fb: FormBuilder
-   ) {
-    // this.reviewEdit = this.allowReviewEdit;
-  }
+   ) { }
+
+  get e() { return this.employeeItemForm.controls; }
+  get m() { return this.managerItemForm.controls; }
 
   ngOnInit() {
     this.employeeItemForm = this.fb.group({
-      'note': [''],
-      'employee_id': ['', Validators.required],
+      'note': ['', Validators.required],
+      'user_id': ['', Validators.required],
       'meeting_id': [this.slug_id, Validators.required]
     });
 
     this.managerItemForm = this.fb.group({
-      'note': [''],
-      'manager_id': ['', Validators.required],
+      'note': ['', Validators.required],
+      'user_id': ['', Validators.required],
       'meeting_id': [this.slug_id, Validators.required]
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.actionItems && !changes.actionItems.isFirstChange()){
-      this.employeeItemForm.get('employee_id').setValue(this.actionItems.employee.id);
-      this.managerItemForm.get('manager_id').setValue(this.actionItems.manager.id);
+      this.employeeItemForm.get('user_id').setValue(this.actionItems.employee.id);
+      this.managerItemForm.get('user_id').setValue(this.actionItems.manager.id);
       this.employeeItemForm.updateValueAndValidity();
       this.managerItemForm.updateValueAndValidity();
     }
   }
 
-  addActionItem(user, values) {
-    if(user == 'employee') {
-      this.loadingEmployeeItems = true;
-      this.actionItemApi.create(values)
-        .subscribe(res => {
-          this.loadingEmployeeItems = false;
+  onSubmit(action, values, role) {
+    this.userRole = role;
+
+    this.loading[this.userRole] = true;
+    this.submitted[this.userRole] = true;
+    
+    if(action == 'create') {
+      if(this.userRole == 'employee') {
+        if(values.note.trim() == '') this.e.note.setValue('');
+        if(this.employeeItemForm.invalid) {
+          this.loading[this.userRole] = false;
+          return;
+        }
+      }else {
+        if(values.note.trim() == '') this.m.note.setValue('');
+        if(this.managerItemForm.invalid) {
+          this.loading[this.userRole] = false;
+          return;
+        }
+      }
+
+      this.addActionItem(values);
+    }
+  }
+
+  addActionItem(values) {
+    this.actionItemApi.create(values)
+      .subscribe(res => {
+        this.loading[this.userRole] = false;
+        this.submitted[this.userRole] = false;
+        if(this.userRole == 'employee') {
           this.actionItems.employee.items.data.push(res['data']);
           this.employeeItemForm.get('note').setValue('');
           this.employeeItemForm.get('note').updateValueAndValidity();
-        }, err => {
-          this.loadingEmployeeItems = false;
-        });
-    }else {
-      this.loadingManagerItems = true;
-      this.actionItemApi.create(values)
-        .subscribe(res => {
-          this.loadingManagerItems = false;
+        }else {
           this.actionItems.manager.items.data.push(res['data']);
           this.managerItemForm.get('note').setValue('');
           this.managerItemForm.get('note').updateValueAndValidity();
-        }, err => {
-          this.loadingManagerItems = false;
-        });
-    }
+        }
+      }, err => {
+        this.loading[this.userRole] = false;
+        this.submitted[this.userRole] = false;
+      });
   }
 
 
@@ -97,36 +127,23 @@ export class MeetingActionItemsComponent implements OnInit, OnChanges {
     this.editActionIdx[user] = idx;
   }
 
-  saveActionItem(user, values, obj) {
-    if(user == 'employee') {
-      this.loadingEmployeeItems = true;
-      this.actionItemApi.update(obj.id, values)
-        .subscribe(res => {
-          this.loadingEmployeeItems = false;
-          obj.note = values.note;
-          if(!this.newEdit[user]) {
-            this.editNote = null;
-            this.editActionIdx[user] = null;
-          }
-          this.newEdit = false;
-        }, err => {
-          this.loadingEmployeeItems = false;
-        });
-    }else {
-      this.loadingManagerItems = true;
-      this.actionItemApi.update(obj.id, values)
-        .subscribe(res => {
-          this.loadingManagerItems = false;
-          obj.note = values.note;
-          if(!this.newEdit[user]) {
-            this.newEdit = false;
-            this.editNote = null;
-            this.editActionIdx[user] = null;
-          }
-        }, err => {
-          this.loadingManagerItems = false;
-        });
-    }
+  saveActionItem(role, values, obj) {
+    this.onSubmit('update', values, role);
+
+    this.actionItemApi.update(obj.id, values)
+      .subscribe(res => {
+        this.loading[role] = false;
+        this.submitted[this.userRole] = false;
+        obj.note = values.note;
+        if(!this.newEdit[role]) {
+          this.editNote = null;
+          this.editActionIdx[role] = null;
+        }
+        this.newEdit = false;
+      }, err => {
+        this.loading[role] = false;
+        this.submitted[this.userRole] = false;
+      });
   }
 
   removeActionItem(obj, idx, user) {

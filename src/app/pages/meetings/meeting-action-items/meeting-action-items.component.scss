@@ -16,6 +16,11 @@
 .action-items-container .user-item-container {
   margin-bottom: 1.5rem;
   margin-top: 1.5rem;
+
+  form > input.is-invalid {
+    border-width: 1px !important;
+    border-style: solid !important;
+  }
 }
 
 .action-items-container .user-item-container > .item-list {

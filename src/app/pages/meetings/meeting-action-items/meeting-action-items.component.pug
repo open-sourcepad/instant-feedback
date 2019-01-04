@@ -8,9 +8,11 @@
       .user-item-container
         h1.font-bold([class.text-idle]="allowEdit && !allowReviewEdit", [class.font-size-16]="allowEdit && !allowReviewEdit") {{ actionItems?.employee?.name?.split(' ')[0] }}'s Items
         ng-container(*ngIf="allowEdit")
-          form.mt-3(automcoplete="off", novalidate, [formGroup]="employeeItemForm", (ngSubmit)="addActionItem('employee', employeeItemForm.value)", [ng2-loading]="loadingEmployeeItems")
-            input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add an action item here", formControlName="note")
-        ul.item-list([class.reset]="actionItems?.employee?.items?.data.length < 1", [ng2-loading]="loadingEmployeeItems")
+          form.mt-3(automcoplete="off", novalidate, [formGroup]="employeeItemForm", (ngSubmit)="onSubmit('create', employeeItemForm.value, 'employee')", [ng2-loading]="loading.employee")
+            input.form-control.form-bg-yellow.form-control-md([class.is-invalid] = "submitted.employee && e.note.errors", type="text" placeholder="Add an action item here", formControlName="note")
+            .invalid-feedback
+              span Please enter an action item
+        ul.item-list([class.reset]="actionItems?.employee?.items?.data.length < 1", [ng2-loading]="loading.employee")
           ng-container(*ngIf="actionItems?.employee?.items?.data.length < 1")
             li.text-center
               span.text-muted.font-light([class.font-size-16]="allowEdit && !allowReviewEdit") {{ actionItems?.employee?.name?.split(' ')[0] }} has no action items yet
@@ -27,9 +29,11 @@
       .user-item-container
         h1.font-bold([class.text-idle]="allowEdit && !allowReviewEdit", [class.font-size-16]="allowEdit && !allowReviewEdit") {{ actionItems?.manager?.name?.split(' ')[0] }}'s Items
         ng-container(*ngIf="allowEdit")
-          form.mt-3(automcoplete="off", novalidate, [formGroup]="managerItemForm", (ngSubmit)="addActionItem('manager', managerItemForm.value)", [ng2-loading]="loadingManagerItems")
-            input.form-control.form-bg-yellow.form-control-md(type="text" placeholder="Add an action item here", formControlName="note")
-        ul.item-list([class.reset]="actionItems?.manager?.items?.data?.length < 1", [ng2-loading]="loadingManagerItems")
+          form.mt-3(automcoplete="off", novalidate, [formGroup]="managerItemForm", (ngSubmit)="onSubmit('create', managerItemForm.value, 'manager')", [ng2-loading]="loading.manager")
+            input.form-control.form-bg-yellow.form-control-md([class.is-invalid] = "submitted.manager && m.note.errors",type="text" placeholder="Add an action item here", formControlName="note")
+            .invalid-feedback
+              span Please enter an action item
+        ul.item-list([class.reset]="actionItems?.manager?.items?.data?.length < 1", [ng2-loading]="loading.manager")
           ng-container(*ngIf="actionItems?.manager?.items?.data?.length < 1")
             li.text-center
               span.text-muted.font-light([class.font-size-16]="allowEdit") {{ actionItems?.manager?.name?.split(' ')[0] }} has no action items yet
