@@ -1,3 +1,7 @@
+button.disabled {
+  pointer-events: none;
+}
+
 .btn-instant-feedback {
   font-size: 14px;
   font-weight: 700;

@@ -10,6 +10,7 @@ import { TalkingPointService } from '../../../services/api';
 export class TalkingPointMenuComponent implements OnInit, OnChanges {
 
   @Input() discussionObj;
+  @Input() selectedPoints;
   @Output() cancel = new EventEmitter<object>();
   @Output() save = new EventEmitter<object>();
 
@@ -35,7 +36,7 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
   }
 
   loadTalkingPoints() {
-    this.talkingPointApi.query({}).subscribe( res => {
+    this.talkingPointApi.query({unassigned: true}).subscribe( res => {
       this.talkingPoints = res['collection']['data'];
       this.loading = false;
     }, err => {
@@ -44,7 +45,7 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if(this.discussionObj) {
+    if(this.discussionObj){
       if(this.discussionObj.discuss_type == 'custom') {
         this.form = this.fb.group({
           'talking_point_type': [this.discussionObj.discuss_type, Validators.required],
@@ -61,7 +62,8 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
     }else {
       this.form = this.fb.group({
         'talking_point_type': ['custom', Validators.required],
-        'custom_question': ['', Validators.required]
+        'custom_question': ['', Validators.required],
+        'talking_point_id': [null]
       });
     }
   }
@@ -107,6 +109,10 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
 
   onCancel(){
     this.cancel.emit();
+  }
+
+  alreadySelected(id){
+    return this.selectedPoints.find(x => x['talking_point_id'] == id);
   }
 
 }
