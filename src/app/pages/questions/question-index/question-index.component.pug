@@ -27,7 +27,7 @@
           td
             span([innerHtml]="question.asking_time ? formatTime(question.asking_time) + ' EST' : '-'")
           td.actions
-            ng-container(*ngIf="question.category == 'custom'")
+            ng-container(*ngIf="question.allow_changes")
               a([routerLink]="['/questions', question.id]")
                 .icon-edit.icon-sm.icon-holder
               a((click)="remove(question.id, idx)")
