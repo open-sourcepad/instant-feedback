@@ -57,6 +57,11 @@ export class MeetingDetailsComponent implements OnInit {
   submittedNoteForm: boolean = false;
   showReschedModal: boolean = false;
 
+  //confirmation modal
+  showModal: boolean = false;
+  modalText: any = {body: 'Are you sure you want to delete it?'};
+  modalButtons: any = {cancel: {text: 'Cancel'}, confirm: {text: 'Yes, delete.'}};
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -135,8 +140,10 @@ export class MeetingDetailsComponent implements OnInit {
     this.addTalkingPoints();
   }
 
-  removeDiscussion(obj, idx) {
+  removeDiscussion(obj) {
     this.loading = true;
+
+    let idx = this.discussions.findIndex(x => x.id == obj.id);
     this.discussionApi.destroy(obj.id)
       .subscribe( res => {
         this.loading = false;
@@ -171,13 +178,10 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   updateOrder(values) {
-    // this.loading = true;
     let params = Object.assign(values, {meeting_id: this.slug_id});
     this.discussionApi.update(params.id, params)
       .subscribe( res => {
-        // this.loading = false;
       }, err => {
-        // this.loading = false;
       });
   }
 
@@ -220,5 +224,13 @@ export class MeetingDetailsComponent implements OnInit {
 
   updateMeeting(meeting) {
     this.obj = meeting;
+  }
+
+  modalStateChange(value) {
+    this.showModal = value;
+  }
+
+  onRemove(values) {
+    this.removeDiscussion(values);
   }
 }

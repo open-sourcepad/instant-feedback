@@ -52,7 +52,7 @@
                         span.ti-arrow-up
                       button((click)="editDiscussion(discuss)", [hidden]="discuss.default_question")
                         span.ti-pencil
-                      button((click)="removeDiscussion(discuss, idx)", [hidden]="discuss.default_question")
+                      button((click)="discussionObj = discuss; modalStateChange(true)", [hidden]="discuss.default_question")
                         span.ti-trash
                   ul.listStyle
                     li
@@ -90,6 +90,7 @@
 talking-point-menu(
   [@slideInOut]="menuState",
   [(discussionObj)]="discussionObj",
+  [(selectedPoints)]="discussions",
   (cancel)="addTalkingPoints()",
   (save)="saveDiscussion($event)"
 )
@@ -99,4 +100,13 @@ reschedule-modal(
   [(visible)]="showReschedModal",
   (updateMeeting)="updateMeeting($event)",
   (close)="closeReschedModal()",
+)
+
+modal(
+  [(visible)]="showModal",
+  [(currentSession)]="discussionObj",
+  [(modalText)]="modalText",
+  [(buttons)]="modalButtons",
+  (modalStateChange)="modalStateChange($event)",
+  (removeItems)="onRemove($event)"
 )
