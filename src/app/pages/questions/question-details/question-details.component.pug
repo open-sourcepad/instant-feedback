@@ -1,6 +1,6 @@
 .row
   .col-md-12
-    h2.title Add a Question
+    h2.title([innerHtml]="(isUpdate ? 'Edit' :  'Add') + ' a Question'")
   .col-md-12
     .row
       .col-md-8
@@ -9,7 +9,9 @@
           form(novalidate, autocomplete="off", [formGroup]="form")
             .form-group
               label.input-label QUESTION
-              input.form-control(formControlName="message")
+              input.form-control([class.is-invalid]="submitted && f.message.errors", formControlName="message")
+              .invalid-feedback
+                span Please enter a question
             .form-row
               .form-group.col-md-3
                 label.input-label FREQUENCY
@@ -19,7 +21,7 @@
               .form-group.col-md-5
                 label.input-label DAY
                 .input-group(daterangepicker, [options]="datepickeroptions", (selected)="selectedDate($event)")
-                  input.form-control(disabled, type="text", formControlName="chosenDay")
+                  input.form-control(type="text", formControlName="chosenDay")
                   .input-group-append
                     .input-group-text
                       .icon-calendar.icon-sm.icon-holder
@@ -50,9 +52,11 @@
             .row(*ngIf="errorMsg.addUser")
               .col-md-3.alert.alert-danger {{ errorMsg.addUser }}
             .row
-              #search-recipients.col-md-6.border-lightgray
+              #search-recipients.col-md-6.border-lightgray([class.is-invalid]="submitted && (f.recipient_type.value == 'specific' && recipients.length < 1)")
                 input.form-control(type="text", placeholder="Search for a name", [ngModel]="searchName", (keyup)="searchUserTerm$.next($event.target.value)")
                 button.btn.btn-instant-feedback((click)="addUser(searchName)") Add
+              .invalid-feedback
+                span Please choose a user
             .row
               .col-md-6.p-0.relative
                 ul#search-suggestion-list(*ngIf="showSuggestion")

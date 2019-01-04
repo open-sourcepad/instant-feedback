@@ -12,7 +12,7 @@
   }
 
   .input-group input {
-    background-color: transparent;
+    pointer-events: none;
   }
 }
 
@@ -104,6 +104,14 @@
 
 #search-recipients {
   padding: 0;
+
+  &.is-invalid {
+    border-color: #d1211a !important;
+  }
+
+  &.is-invalid ~ .invalid-feedback {
+    display: block;
+  }
 
   > input:focus, .input-container input:active {
     outline: none;

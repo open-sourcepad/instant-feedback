@@ -84,6 +84,7 @@ export class QuestionDetailsComponent implements OnInit {
   ]
   minuteList = [];
   loading = false;
+  submitted = false;
 
   //update
   private sub: any;
@@ -114,6 +115,8 @@ export class QuestionDetailsComponent implements OnInit {
       }
     }
   }
+
+  get f() { return this.form.controls; }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -148,7 +151,7 @@ export class QuestionDetailsComponent implements OnInit {
   selectedTime(){
     let hour = this.form.get('chosenHour').value;
     let minute = this.form.get('chosenMinute').value;
-    this.chosenDate = moment(this.chosenDate,`YYYY-MM-DD ${hour}:${minute}:00`);
+    this.chosenDate = moment(this.chosenDate,`YYYY-MM-DD ${hour}:${minute}:00`).format(`YYYY-MM-DD ${hour}:${minute}:00`);
   }
 
   selectUser(user) {
@@ -174,7 +177,14 @@ export class QuestionDetailsComponent implements OnInit {
   }
 
   save(){
+    this.submitted = true;
     this.loading = true;
+
+    if(this.f.message.value.trim() == '') this.f.message.setValue('');
+    if(this.form.invalid || (this.f.recipient_type.value == 'specific' && this.recipients.length < 1)) {
+      this.loading = false;
+      return;
+    }
     let params = {
       question: this.form.value,
       user_question: {
@@ -183,9 +193,11 @@ export class QuestionDetailsComponent implements OnInit {
         user_ids: this.recipients.map( recipient => recipient.id)
       }
     };
+
     if(this.isUpdate) {
       this.questionService.update(this.slug_id, params).subscribe( res => {
         this.loading = false;
+        this.router.navigate(['/questions']);
       }, err => {
         this.loading = false;
         this.errorMsg.question = "Failed to update question";
@@ -206,18 +218,21 @@ export class QuestionDetailsComponent implements OnInit {
       .subscribe(
         res => {
           this.currentObj = res['data'];
-          this.form.get('message').setValue(this.currentObj['message']);
-          this.form.get('recipient_type').setValue(this.currentObj['recipient_type']);
           let momentDate= moment(this.currentObj['asking_time']).tz('EST');
           this.chosenDate = momentDate.format(`D MMMM YYYY hh:mm:00`);
           this.formatedDate = new Date(this.chosenDate.replace(/-/g, "/"));
           this.chosenDay = momentDate.format('D MMMM YYYY');
           this.datepickeroptions.startDate = this.chosenDay ;
-          this.form.get('chosenDay').setValue(this.chosenDay);  
-          this.form.get('chosenHour').setValue(momentDate.hour());  
-          this.form.get('chosenMinute').setValue(momentDate.minute());  
           this.recipients = this.currentObj['recipients'];
           this.isUpdate = true;
+
+          this.form.patchValue({
+            message: this.currentObj['message'],
+            recipient_type: this.currentObj['recipient_type'],
+            chosenDay: this.chosenDay,
+            chosenHour: momentDate.hour(),
+            chosenMinute: momentDate.minute()
+          });
         }
       );
   }
