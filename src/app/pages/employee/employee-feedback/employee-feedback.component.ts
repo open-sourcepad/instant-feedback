@@ -60,7 +60,9 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
     alwaysShowCalendars: false,
     autoApply: true,
     autoUpdateInput: true,
-    opens: 'right'
+    opens: 'right',
+    startDate: moment().startOf('isoWeek').format('MM/DD/YYYY'),
+    endDate: moment().endOf('isoWeek').format('MM/DD/YYYY')
   };
 
   constructor(public fb: FormBuilder,
