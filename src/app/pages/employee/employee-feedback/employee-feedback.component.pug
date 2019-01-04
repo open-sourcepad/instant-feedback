@@ -44,24 +44,18 @@
             button([class.active]="currentTab == 'given'", (click)="changeTab('given')") To Your Team
 
       .mt-3.feedback-list
-        ng-container(*ngIf="currentTab == 'received' && collection.length > 0")
-          .feedback(*ngFor="let obj of collection")
+        ng-container(*ngIf="collection.length > 0")
+          .feedback(*ngFor="let obj of collection | paginate: paginationControls")
             span.text-idle.font-size-12 {{ obj.updated_at | datePrettyFormat }}
             br
-            span.font-bold.text-indigo {{ obj.sender }}&nbsp;
-            span said
-            span.text-idle(*ngIf="obj.question") &nbsp;(in response to your feedback request)
-            span :
-            p.text-justify "{{ obj.comment }}"
-            .text-right
-              button.btn-action.font-size-14.font-bold((click)="toggleShowFeedback('in'); selectedFeedback = obj") More
-        ng-container(*ngIf="currentTab == 'given' && collection.length > 0")
-          .feedback(*ngFor="let obj of collection")
-            span.text-idle.font-size-12 {{ obj.updated_at | datePrettyFormat }}
-            br
-            span.font-bold.text-indigo You&nbsp;
-            span said to {{ obj.recipient.name }}
-            span.text-idle(*ngIf="obj.question") &nbsp;(in response to {{ obj.recipient.preposition }} feedback request)
+            ng-container(*ngIf="currentTab == 'received'")
+              span.font-bold.text-indigo {{ obj.sender }}&nbsp;
+              span said
+              span.text-idle(*ngIf="obj.question") &nbsp;(in response to your feedback request)
+            ng-container(*ngIf="currentTab == 'given'")
+              span.font-bold.text-indigo You&nbsp;
+              span said to {{ obj.recipient.name }}
+              span.text-idle(*ngIf="obj.question") &nbsp;(in response to {{ obj.recipient.preposition }} feedback request)
             span :
             p.text-justify "{{ obj.comment }}"
             .text-right
@@ -69,6 +63,7 @@
         ng-container(*ngIf="collection.length < 1")
           .feedback.text-center
             span.font-bold No feedbacks yet.
+      pagination([config]="paginationControls", (pageChange)="pageChange($event)")
 
 
 modal(

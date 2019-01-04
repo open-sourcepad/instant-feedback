@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { EmployeeComponent } from '../employee.component';
 import { FeedbackService, MeetingService, SessionService, UserService } from '../../../services/api';
+import {PaginationInstance} from 'ngx-pagination';
 import * as moment from 'moment';
 
 @Component({
@@ -25,6 +26,13 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
   //show feedback
   showFeedback: string = 'out';
   selectedFeedback = null;
+
+  paginationControls: PaginationInstance = {
+    id: 'paginationResults',
+    itemsPerPage: 10,
+    currentPage: 1,
+    totalItems: 0
+  }
 
   daterange = {
     start: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
@@ -109,8 +117,12 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
     this.loading = true;
     let query = {
       date_since: this.daterange.start,
-      date_until: this.daterange.end
-    }
+      date_until: this.daterange.end,
+      page: {
+        number: this.paginationControls['currentPage'],
+        size: this.paginationControls['itemsPerPage']
+      }
+    };
     query[this.currentTab] = true;
     delete query['received_from'];
     delete query['given_to'];
@@ -125,6 +137,7 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
       .subscribe(res => {
         this.loading = false;
         this.collection = res['collection']['data'];
+        this.paginationControls['totalItems'] = res['metadata']['record_count'];
       }, err => {
         this.loading = false;
       });
@@ -136,6 +149,7 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
 
   changeTab(tab) {
     this.currentTab = tab;
+    this.paginationControls['currentPage'] = 1;
     this.loadFeedbacks();
   }
 
@@ -148,6 +162,11 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
     this.daterange.start = moment(value.start).format('YYYY/MM/DD 00:00:00');
     this.daterange.end = moment(value.end).format('YYYY/MM/DD 23:59:59');
   
+    this.loadFeedbacks();
+  }
+
+  pageChange(evt) {
+    this.paginationControls['currentPage'] = evt;
     this.loadFeedbacks();
   }
 
