@@ -12,14 +12,14 @@
               input.form-control(formControlName="message")
             .form-row
               .form-group.col-md-3
-                label.input-label FREQUNCY
+                label.input-label FREQUENCY
                 .select-dropdown
                   select.form-control(formControlName="trigger_schedule")
                     option once
               .form-group.col-md-5
                 label.input-label DAY
                 .input-group(daterangepicker, [options]="datepickeroptions", (selected)="selectedDate($event)")
-                  input.form-control(type="text", formControlName="chosenDay")
+                  input.form-control(disabled, type="text", formControlName="chosenDay")
                   .input-group-append
                     .input-group-text
                       .icon-calendar.icon-sm.icon-holder
@@ -38,7 +38,7 @@
               .form-group.col-md-2
             .form-group
               .icon-check-green.icon-sm
-              span.text-information &nbsp;This question will be shown {{ form.get('trigger_schedule').value }} on the {{ (chosenDate | date: 'd') | dateSuffix }} of {{ chosenDate | date: 'MMMM yyyy' }} at {{ chosenDate | date: 'HH:mm a' }}.
+              span.text-information &nbsp;This question will be shown {{ form.get('trigger_schedule').value }} on the {{ (formatedDate | date: 'd') | dateSuffix }} of {{ formatedDate | date: 'MMMM yyyy' }} at {{ formatedDate | date: 'HH:mm a' }}.
             .form-group
               label.input-label RECIPIENTS
               br

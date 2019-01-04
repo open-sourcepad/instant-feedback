@@ -14,10 +14,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class QuestionDetailsComponent implements OnInit {
 
+  chosenDate = moment().add(1, 'days').format("YYYY-MM-DD 00:00:00");
+  formatedDate = new Date(this.chosenDate.replace(/-/g, "/"));
+  chosenDay = moment(this.chosenDate).format('D MMMM YYYY');
   //daterangepicker options
   datepickeroptions: any = {
     locale: {
-      format: 'MM/DD/YYYY',
+      format: 'D MMMM YYYY',
       monthNames: [
         "January",
         "February",
@@ -37,12 +40,12 @@ export class QuestionDetailsComponent implements OnInit {
     autoApply: true,
     autoUpdateInput: true,
     opens: 'left',
-    singleDatePicker: true
+    singleDatePicker: true,
+    startDate: this.chosenDay,
+    minDate: this.chosenDay
   };
 
   form: FormGroup;
-  chosenDate = moment().format("YYYY-MM-DD 00:00:00");
-  chosenDay = moment().format("D MMMM YYYY");
   recipientTypes = [
     { value: 'all', label: 'All' },
     { value: 'specific', label: 'Specific' }
@@ -145,7 +148,7 @@ export class QuestionDetailsComponent implements OnInit {
   selectedTime(){
     let hour = this.form.get('chosenHour').value;
     let minute = this.form.get('chosenMinute').value;
-    this.chosenDate = moment(this.chosenDate).format(`YYYY-MM-DD ${hour}:${minute}:00`);
+    this.chosenDate = moment(this.chosenDate,`YYYY-MM-DD ${hour}:${minute}:00`);
   }
 
   selectUser(user) {
@@ -207,7 +210,9 @@ export class QuestionDetailsComponent implements OnInit {
           this.form.get('recipient_type').setValue(this.currentObj['recipient_type']);
           let momentDate= moment(this.currentObj['asking_time']).tz('EST');
           this.chosenDate = momentDate.format(`D MMMM YYYY hh:mm:00`);
-          this.chosenDay = momentDate.format(`D MMMM YYYY`);
+          this.formatedDate = new Date(this.chosenDate.replace(/-/g, "/"));
+          this.chosenDay = momentDate.format('D MMMM YYYY');
+          this.datepickeroptions.startDate = this.chosenDay ;
           this.form.get('chosenDay').setValue(this.chosenDay);  
           this.form.get('chosenHour').setValue(momentDate.hour());  
           this.form.get('chosenMinute').setValue(momentDate.minute());  

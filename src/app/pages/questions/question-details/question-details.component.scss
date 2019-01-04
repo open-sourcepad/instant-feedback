@@ -10,6 +10,10 @@
     color: #323C47;
     letter-spacing: 0.13px;
   }
+
+  .input-group input {
+    background-color: transparent;
+  }
 }
 
 .select-dropdown {
@@ -112,6 +116,7 @@
   }
 
   > button {
+    background-color: transparent;
     border: 1px solid rgba(195,186,170,0.70);
     border-radius: 2px;
     display: inline-block;
