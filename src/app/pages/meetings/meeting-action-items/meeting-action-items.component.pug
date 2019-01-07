@@ -23,7 +23,7 @@
               .item-actions(*ngIf="i != editActionIdx['employee']")
                 button.btn-action((click)="editActionItem(item, i, 'employee')")
                   span.ti-pencil
-                button.btn-action((click)="removeActionItem(item, i, 'employee')")
+                button.btn-action((click)="onSubmit('remove', item, 'employee')")
                   span.ti-trash
     .col-md-6.ml-auto([class.col-md-12]="allowEdit && !allowReviewEdit")
       .user-item-container
@@ -44,5 +44,15 @@
               .item-actions(*ngIf="i != editActionIdx['manager']")
                 button.btn-action((click)="editActionItem(item, i, 'manager')")
                   span.ti-pencil
-                button.btn-action((click)="removeActionItem(item, i, 'manager')")
+                button.btn-action((click)="onSubmit('remove', item, 'manager')")
                   span.ti-trash
+
+
+modal(
+  [(visible)]="showModal",
+  [(currentSession)]="removeObj",
+  [(modalText)]="modalText",
+  [(buttons)]="modalButtons",
+  (modalStateChange)="modalStateChange($event)",
+  (removeItems)="onRemove($event)"
+)

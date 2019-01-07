@@ -25,9 +25,7 @@ export class MeetingActionItemsComponent implements OnInit, OnChanges {
     manager: false
   }
 
-  loadingEmployeeItems: boolean = false;
   employeeItems = [];
-  loadingManagerItems: boolean = false;
   managerItems = [];
   editNote: string = '';
   editActionIdx: any = {employee: null, manager: null};
@@ -37,6 +35,12 @@ export class MeetingActionItemsComponent implements OnInit, OnChanges {
 
   employeeItemForm: FormGroup;
   managerItemForm: FormGroup;
+
+  //confirmation modal
+  showModal: boolean = false;
+  removeObj = null;
+  modalText: any = {body: 'Are you sure you want to delete it?'};
+  modalButtons: any = {cancel: {text: 'Cancel'}, confirm: {text: 'Yes, delete.'}};
 
   constructor(
     private router: Router,
@@ -73,30 +77,32 @@ export class MeetingActionItemsComponent implements OnInit, OnChanges {
 
   onSubmit(action, values, role) {
     this.userRole = role;
-
-    this.loading[this.userRole] = true;
-    this.submitted[this.userRole] = true;
-    
     if(action == 'create') {
+      this.submitted[this.userRole] = true;
+
       if(this.userRole == 'employee') {
         if(values.note.trim() == '') this.e.note.setValue('');
         if(this.employeeItemForm.invalid) {
-          this.loading[this.userRole] = false;
           return;
         }
       }else {
         if(values.note.trim() == '') this.m.note.setValue('');
         if(this.managerItemForm.invalid) {
-          this.loading[this.userRole] = false;
           return;
         }
       }
 
       this.addActionItem(values);
+    }else {
+      //action == remove
+      this.modalStateChange(true);
+      this.removeObj = values;
     }
   }
 
   addActionItem(values) {
+    this.loading[this.userRole] = true;
+
     this.actionItemApi.create(values)
       .subscribe(res => {
         this.loading[this.userRole] = false;
@@ -128,8 +134,6 @@ export class MeetingActionItemsComponent implements OnInit, OnChanges {
   }
 
   saveActionItem(role, values, obj) {
-    this.onSubmit('update', values, role);
-
     this.actionItemApi.update(obj.id, values)
       .subscribe(res => {
         this.loading[role] = false;
@@ -146,27 +150,27 @@ export class MeetingActionItemsComponent implements OnInit, OnChanges {
       });
   }
 
-  removeActionItem(obj, idx, user) {
-    if(user == 'employee') {
-      this.loadingEmployeeItems = true;
-    }else {
-      this.loadingManagerItems = true;
-    }
+  removeActionItem(obj) {
+    this.loading[this.userRole] = true;
+    let idx = this.actionItems[this.userRole].items.data.findIndex(x => x.id == obj.id);
+
     this.actionItemApi.destroy(obj.id)
-    .subscribe(res => {
-        if(user == 'employee') {
-          this.loadingEmployeeItems = false;
-        }else {
-          this.loadingManagerItems = false;
-        }
-        this.actionItems[user].items.data.splice(idx, 1);
+      .subscribe(res => {
+        this.loading[this.userRole] = false;
+        this.removeObj = null;
+
+        this.actionItems[this.userRole].items.data.splice(idx, 1);
       }, err => {
-        if(user == 'employee') {
-          this.loadingEmployeeItems = false;
-        }else {
-          this.loadingManagerItems = false;
-        }
+        this.loading[this.userRole] = false;
       });
+  }
+
+  modalStateChange(value) {
+    this.showModal = value;
+  }
+
+  onRemove(values) {
+    this.removeActionItem(values);
   }
 
 }
