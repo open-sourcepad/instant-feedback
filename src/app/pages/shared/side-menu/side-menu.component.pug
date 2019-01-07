@@ -7,9 +7,9 @@
             .col-md-12.mr-auto.ml-auto
               .vertical-align.almost-full-height
                 .table-cell
-                  ng-content(*ngIf="feedbackState == 'view'", select="[feedback=view]")
+                  ng-content(*ngIf="feedbackState == 'ask'", select="[feedback=ask]")
                   ng-content(*ngIf="feedbackState == 'give'", select="[feedback=give]")
-                  ng-content
+                  ng-content(*ngIf="!feedbackState")
     .actions
       .m-auto.text-center
         ng-container(*ngIf="feedbackState")
