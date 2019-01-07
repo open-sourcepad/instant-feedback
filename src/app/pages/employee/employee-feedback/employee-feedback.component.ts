@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { EmployeeComponent } from '../employee.component';
 import { FeedbackService, MeetingService, SessionService, UserService } from '../../../services/api';
 import {PaginationInstance} from 'ngx-pagination';
@@ -68,7 +69,8 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
   constructor(public fb: FormBuilder,
     public feedbackApi: FeedbackService,
     public session: SessionService,
-    public userApi: UserService) {
+    public userApi: UserService,
+    private route: ActivatedRoute) {
     super(fb, feedbackApi, session, userApi);
   }
 
@@ -80,12 +82,44 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
     this.loadRequestFeedbacks();
   }
 
+  handleRouteParams() {
+    this.route.queryParams.subscribe(params => {
+      var action = Object.keys(params)[0];
+      if(action == "show_feedback"){
+        this.getFeedback(+params[action]);
+        this.toggleShowFeedback('in');
+      }else if(action == "give_feedback"){
+        let idx = this.requests.findIndex(x => x.id == +params[action]);
+
+        if(idx > -1){
+          this.sideMenuState = 'in';
+          this.feedbackState = 'give';
+          this.requestedFeedback = this.requests[idx];
+        }else {
+          this.modalStateChange(true);
+          this.modalText['body'] = "Request feedback has already been answered or does not exist";
+        }
+      }
+    });
+  }
+
+  getFeedback(id) {
+    this.loading = true;
+    this.feedbackApi.get(id).subscribe(res => {
+      this.loading = false;
+      this.selectedFeedback = res['data'];
+    }, err => {
+      this.loading = false;
+    });
+  }
+
   //request feedbacks
   loadRequestFeedbacks() {
     this.loadingPending = true;
     this.feedbackApi.pending().subscribe(res => {
       this.loadingPending = false;
       this.requests = res['collection']['data'];
+      this.handleRouteParams();
     }, err => {
       this.loadingPending = false;
     });
@@ -106,7 +140,8 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
       this.toggleSideMenuState('out');
       this.modalStateChange(true);
       this.modalText['body'] = "Thank you for giving your feedback";
-      this.loadRequestFeedbacks();
+      let idx = this.requests.findIndex(x => x.id == this.requestedFeedback.id);
+      this.requests.splice(idx, 1);
       this.requestedFeedback = null;
     }, err => {
       this.loading = false;
