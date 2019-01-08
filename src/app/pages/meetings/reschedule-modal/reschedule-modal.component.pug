@@ -1,5 +1,5 @@
 #reschedule-modal(*ngIf="visible")
-  form#reschedule-modal-content([formGroup]="meetingForm", (ngSubmit)="save(meetingForm.value)")
+  form#reschedule-modal-content([formGroup]="meetingForm", (ngSubmit)="save(meetingForm.value)", autocomplete="off")
     #reschedule-modal-body.text-center
       .col-sm-12.heading
         span Reschedule 1-on-1 meeting to:

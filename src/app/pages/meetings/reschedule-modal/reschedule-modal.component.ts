@@ -43,6 +43,7 @@ export class RescheduleModalComponent implements OnInit, OnChanges {
     autoApply: true,
     autoUpdateInput: true,
     opens: 'left',
+    minDate: moment().add(1, 'day').format('D MMMM YYYY'),
     startDate: this.newSchedule,
     singleDatePicker: true
   };
