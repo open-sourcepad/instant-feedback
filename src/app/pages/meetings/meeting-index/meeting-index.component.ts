@@ -20,9 +20,6 @@ export class MeetingIndexComponent implements OnInit {
   recordShownCount;
   queryParams: any;
 
-  page = {number: 1, size: 20};
-  order = {name: 'asc', created_at: 'desc'};
-
   paginationControls: PaginationInstance = {
     id: 'meetingCollection',
     itemsPerPage: 20,
@@ -57,7 +54,7 @@ export class MeetingIndexComponent implements OnInit {
       number: this.paginationControls['currentPage'],
       size: this.paginationControls['itemsPerPage']
     };
-    queryParams['order'] = this.order;
+    queryParams['order'] = this.sort_by;
 
     queryParams['status'] = {
       'Due & Upcoming': ['upcoming', 'due'],
