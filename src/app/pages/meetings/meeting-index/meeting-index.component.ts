@@ -44,7 +44,7 @@ export class MeetingIndexComponent implements OnInit {
     this.loadUsers();
 
     this.sub = this.route.queryParams.subscribe(params => {
-      this.paginationControls['currentPage'] = params.page;
+      if(params.page) this.paginationControls['currentPage'] = params.page;
     });
     this.sub.unsubscribe();
   }
