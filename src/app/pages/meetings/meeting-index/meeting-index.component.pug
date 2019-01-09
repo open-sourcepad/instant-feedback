@@ -6,6 +6,7 @@
       [managers]="managers",
       [statuses]="statuses",
       [users]="users",
+      [(currentPage)]="paginationControls['currentPage']",
       (submit)="search($event)"
     )
   .col-md-12
@@ -87,6 +88,6 @@
                 .icon-edit.icon-sm.icon-holder
               a()
                 .icon-remove.icon-sm.icon-holder
-  .col-md-12.text-right
+  .col-md-12.text-right(*ngIf="collection.length > 0")
     pagination([config]="paginationControls", (pageChange)="changePage($event)")
 

@@ -12,38 +12,38 @@
         br
         #daterange-filters
           ng-container(*ngFor="let opt of dateOpts")
-            button.btn-filter.btn-terms.mr-2([class.active]="selectedDateFilter == opt.id", (click)="chooseDateRange(opt.id)")
+            button.btn-filter.btn-terms.mr-2([class.active]="selectedDateFilter == opt.id", (click)="onSelectDateOpt(opt.id)")
               span {{opt.label}}
         ng-container(*ngIf="selectedDateFilter == 4")
           .opts-group-filter
             h5.filter-title.sub Date Range
-            input.form-control(type="text" name="dateRangeInput" daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
+            input.form-control(type="text" name="dateRangeInput" daterangepicker, [options]="options", (selected)="selectedDate($event, daterange); onSubmit(form.value)")
 
       .col-md-12
         .opts-group-filter
           h5.filter-title.sub Status
           div
             ng-container(*ngFor="let status of statuses")
-              button.btn-filter.btn-terms.mr-2([class.active]="selectedStatusesFilter.indexOf(status) > -1", (click)="addFilter(selectedStatusesFilter, status, 'status')")
+              button.btn-filter.btn-terms.mr-2([class.active]="selectedStatusesFilter.indexOf(status) > -1", (click)="addFilter(selectedStatusesFilter, status, 'status'); onSubmit(form.value)")
                 span {{ status }}
 
       .col-md-12
         .opts-group-filter
           h5.filter-title.sub Manager / Facilitator
-          select.form-control.dropdown(formControlName="manager_id", (change)="addFilter2('selectedManagerFilter', 'manager_id')")
+          select.form-control.dropdown(formControlName="manager_id", (change)="addFilter2('selectedManagerFilter', 'manager_id'); onSubmit(form.value)")
             option(*ngFor="let user of managers", [value]="user.id") {{ user.display_name }}
 
       .col-md-12
         .opts-group-filter
           h5.filter-title.sub Employee
-          select.form-control.dropdown(formControlName="employee_id", (change)="addFilter2('selectedUserFilter', 'employee_id')")
+          select.form-control.dropdown(formControlName="employee_id", (change)="addFilter2('selectedUserFilter', 'employee_id'); onSubmit(form.value)")
             option(*ngFor="let user of users", [value]="user.id") {{ user.display_name }}
 
 #response-search-filter
   .mt-md-1
     .row
       .col-md-2
-        button.btn-filter([disabled]="openSearchFilter", (click)="toggleSearchFilter()")
+        button.btn-filter([disabled]="openSearchFilter", (click)="toggleSearchFilter('in')")
           span Add Filter&nbsp;
           span.icon-holder.ti-plus
       .col-md-9
@@ -57,7 +57,7 @@
                 button.btn-filter.btn-terms
                   span S: {{ q }}
               ng-container(*ngIf="q != 'All'")
-                button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter(selectedStatusesFilter, idx, 'status')")
+                button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter(selectedStatusesFilter, idx, 'status'); onSubmit(form.value)")
                   span S: {{ q }}
                   span.icon-holder.ti-close
 

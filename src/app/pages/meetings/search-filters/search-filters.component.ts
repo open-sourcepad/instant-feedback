@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { trigger, state, style, transition, animate, query, stagger, keyframes} from '@angular/animations';
 import * as moment from 'moment';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'search-filters',
@@ -33,21 +34,25 @@ import * as moment from 'moment';
     ])
   ]
 })
-export class SearchFiltersComponent implements OnInit {
+export class SearchFiltersComponent implements OnInit, OnChanges {
 
   @Input() users;
   @Input() managers;
   @Input() statuses;
+  @Input() currentPage;
   @Output() submit = new EventEmitter<object>();
 
   openSearchFilter = false;
   filterState = 'in';
   skipToggle = true;
   form: FormGroup;
-  daterange: any;
+  daterange = {
+    start: moment().format('YYYY/MM/DD'),
+    end: moment().format('YYYY/MM/DD')
+  };
   options: any = {
     locale: {
-      format: 'MM/DD/YYYY',
+      format: 'YYYY/MM/DD',
       monthNames: [
         "January",
         "February",
@@ -66,7 +71,9 @@ export class SearchFiltersComponent implements OnInit {
     alwaysShowCalendars: false,
     autoApply: true,
     autoUpdateInput: true,
-    opens: 'left'
+    opens: 'left',
+    startDate: this.daterange['start'],
+    endDate: this.daterange['end']
   };
   dateOpts = [
     {id: 1, label: 'Today'},
@@ -76,16 +83,72 @@ export class SearchFiltersComponent implements OnInit {
   ]
 
   allUser = {id: '', display_name: 'All'};
-  selectedDateFilter: number;
+  selectedDateFilter: number = this.dateOpts[0]['id'];
   selectedManagerFilter = this.allUser;
   selectedUserFilter = this.allUser;
   selectedStatusesFilter = ['All'];
 
-  constructor(private fb: FormBuilder) { }
+  queryParams = {
+    dateFilter: this.selectedDateFilter,
+    startDate: this.daterange.start,
+    endDate: this.daterange.end,
+    employee_id: this.selectedUserFilter['id'],
+    manager_id: this.selectedManagerFilter['id'],
+    status: this.selectedStatusesFilter[0],
+    page: 1
+  }
+
+  private sub: any;
+  get f() { return this.form.controls; }
+
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
-    this.skipToggle = false;
-    this.resetFilter();
+    console.log('init');
+    this.form = this.fb.group({
+      date_since: [`${this.daterange.start} 00:00:00`, Validators.required],
+      date_until: [`${this.daterange.end} 23:59:59`, Validators.required],
+      employee_id: [this.selectedUserFilter.id, Validators.required],
+      manager_id: [this.selectedManagerFilter.id, Validators.required],
+      'status': [this.selectedStatusesFilter, Validators.required],
+    });
+
+    this.sub = this.route.queryParams.subscribe(params => {
+      console.log(params);
+      if(Object.keys(params).length > 0) {
+        var dateFilter = +params.dateFilter;
+        this.chooseDateRange(dateFilter);
+        this.selectedDate({start: params.startDate, end: params.endDate});
+        this.options.startDate = params.startDate;
+        this.options.endDate = params.endDate;
+        this.addFilter(this.selectedStatusesFilter, params['status'], 'status');
+        
+        if(params.employee_id) this.f.employee_id.setValue(+params.employee_id);
+        if(params.manager_id) this.f.manager_id.setValue(+params.manager_id);
+      
+        this.queryParams['page'] = params.page;
+      }
+    });
+    this.sub.unsubscribe();
+    console.log('submit form init');
+    this.onSubmit(this.form.value);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.users && !changes.users.isFirstChange()){
+      this.addFilter2('selectedManagerFilter', 'manager_id');
+      this.addFilter2('selectedUserFilter', 'employee_id');
+    }
+
+    if(changes.currentPage && changes.currentPage.previousValue != changes.currentPage.currentValue) {
+      console.log('update currentPage value');
+      this.queryParams['page'] = this.currentPage;
+      this.router.navigate([], {queryParams: this.queryParams, queryParamsHandling: "merge"});
+    }
   }
 
   addFilter(arr, value, attr) {
@@ -101,16 +164,12 @@ export class SearchFiltersComponent implements OnInit {
 
       this.form.get(attr).setValue(arr);
     }
-    this.skipToggle = false;
-    this.onSubmit(this.form.value);
   }
 
   addFilter2(selectedAttr, attr) {
     let userId = this.form.get(attr).value;
 
     this[selectedAttr] = this.users.find(user => user.id == userId);
-    this.skipToggle = false;
-    this.onSubmit(this.form.value);
   }
 
   removeFilter(arr, idx, attr) {
@@ -121,32 +180,32 @@ export class SearchFiltersComponent implements OnInit {
       this.skipToggle = false;
     }
     this.form.get(attr).setValue(arr);
-    this.onSubmit(this.form.value);
   }
 
   removeFilter2(selectedAttr, attr) {
     this[selectedAttr] = this.allUser;
     this.form.get(attr).setValue(this.allUser.id);
     this.skipToggle = true;
+    console.log('submit remove filter 2');
     this.onSubmit(this.form.value);
   }
 
   resetFilter() {
     this.daterange = {
-      start: moment().format('YYYY/MM/DD 00:00:00'),
-      end: moment().format('YYYY/MM/DD 23:59:59')
+      start: moment().format('YYYY/MM/DD'),
+      end: moment().format('YYYY/MM/DD')
     };
     this.selectedDateFilter = 1;
     this.selectedUserFilter = this.allUser;
     this.selectedManagerFilter = this.allUser;
     this.selectedStatusesFilter = ['All'];
 
-    this.form = this.fb.group({
-      date_since: [this.daterange.start, Validators.required],
-      date_until: [this.daterange.end, Validators.required],
-      employee_id: [this.selectedUserFilter.id, Validators.required],
-      manager_id: [this.selectedManagerFilter.id, Validators.required],
-      'status': [this.selectedStatusesFilter, Validators.required],
+    this.form.patchValue({
+      date_since: `${this.daterange.start} 00:00:00`,
+      date_until: `${this.daterange.end} 23:59:59`,
+      employee_id: this.selectedUserFilter,
+      manager_id: this.selectedManagerFilter,
+      'status':  this.selectedStatusesFilter
     });
     this.onSubmit(this.form.value);
   }
@@ -156,8 +215,8 @@ export class SearchFiltersComponent implements OnInit {
     switch(option){
       case 1: {
         this.daterange = {
-          start: moment().format('YYYY/MM/DD 00:00:00'),
-          end: moment().format('YYYY/MM/DD 23:59:59')
+          start: moment().format('YYYY/MM/DD'),
+          end: moment().format('YYYY/MM/DD')
         };
 
         this.selectedDate(this.daterange);
@@ -165,8 +224,8 @@ export class SearchFiltersComponent implements OnInit {
       }
       case 2: {
         this.daterange = {
-          start: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
-          end: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59')
+          start: moment().startOf('isoWeek').format('YYYY/MM/DD'),
+          end: moment().endOf('isoWeek').format('YYYY/MM/DD')
         };
 
         this.selectedDate(this.daterange);
@@ -174,8 +233,8 @@ export class SearchFiltersComponent implements OnInit {
       }
       case 3: {
         this.daterange = {
-          start: moment().startOf('month').format('YYYY/MM/DD 00:00:00'),
-          end: moment().endOf('month').format('YYYY/MM/DD 23:59:59')
+          start: moment().startOf('month').format('YYYY/MM/DD'),
+          end: moment().endOf('month').format('YYYY/MM/DD')
         };
 
         this.selectedDate(this.daterange);
@@ -195,24 +254,38 @@ export class SearchFiltersComponent implements OnInit {
     }
 
     // or manipulate your own internal property
-    this.daterange.start = value.start;
-    this.daterange.end = value.end;
+    this.daterange.start = moment(value.start).format('YYYY/MM/DD');
+    this.daterange.end = moment(value.end).format('YYYY/MM/DD');
     this.form.get('date_since').setValue(moment(value.start).format('YYYY/MM/DD 00:00:00'));
     this.form.get('date_until').setValue(moment(value.end).format('YYYY/MM/DD 23:59:59'));
-  
-    this.onSubmit(this.form.value);
   }
 
+  onSelectDateOpt(option) {
+    this.chooseDateRange(option);
+    if(option != 4) {
+      this.onSubmit(this.form.value);
+    }
+  }
 
-  toggleSearchFilter(){
-    this.filterState = this.filterState === 'out' ? 'in' : 'out';
+  toggleSearchFilter(action){
+    this.filterState = action;
   }
 
   onSubmit(values) {
-    if (!this.skipToggle) {
-      this.skipToggle = false;
-      this.toggleSearchFilter();
-    }
+    this.toggleSearchFilter('out');
+    this.handleQueryParams();
+    console.log('values', values);
     this.submit.emit(values);
+  }
+
+  handleQueryParams() {
+    this.queryParams['startDate'] = this.daterange['start'];
+    this.queryParams['endDate'] = this.daterange['end'];
+    this.queryParams['dateFilter'] = this.selectedDateFilter;
+    this.queryParams['status'] = this.selectedStatusesFilter[0];
+    this.queryParams['employee_id'] = this.f.employee_id.value;
+    this.queryParams['manager_id'] = this.f.manager_id.value;
+
+    this.router.navigate([], {queryParams: this.queryParams, queryParamsHandling: "merge"});  
   }
 }
