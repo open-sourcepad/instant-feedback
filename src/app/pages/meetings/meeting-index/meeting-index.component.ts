@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MeetingService, UserService } from '../../../services/api';
 import {PaginationInstance} from 'ngx-pagination';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-meeting-index',
@@ -32,7 +32,8 @@ export class MeetingIndexComponent implements OnInit {
   constructor(
     private meetingApi: MeetingService,
     private userApi: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.sort_by = {set_schedule: 'asc'};
   }
@@ -42,6 +43,10 @@ export class MeetingIndexComponent implements OnInit {
 
     this.sub = this.route.queryParams.subscribe(params => {
       if(params.page) this.paginationControls['currentPage'] = params.page;
+      if(params.sort && params.order){
+        this.sort_by = {};
+        this.sort_by[params.sort] = params.order;
+      }
     });
     this.sub.unsubscribe();
   }
@@ -91,6 +96,9 @@ export class MeetingIndexComponent implements OnInit {
       this.sort_by = {};
       this.sort_by[key] = val;
     }
+
+    let qparams = {sort: key, order: val};
+    this.router.navigate([], {queryParams: qparams, queryParamsHandling: "merge"});
     this.search(this.queryParams);
   }
 

@@ -40,6 +40,7 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   @Input() managers;
   @Input() statuses;
   @Input() currentPage;
+  @Input() sort;
   @Output() submit = new EventEmitter<object>();
 
   openSearchFilter = false;
@@ -95,7 +96,9 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     employee_id: this.selectedUserFilter['id'],
     manager_id: this.selectedManagerFilter['id'],
     status: this.selectedStatusesFilter[0],
-    page: 1
+    page: 1,
+    sort: 'set_schedule',
+    order: 'asc'
   }
 
   private sub: any;
@@ -108,7 +111,6 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    console.log('init');
     this.form = this.fb.group({
       date_since: [`${this.daterange.start} 00:00:00`, Validators.required],
       date_until: [`${this.daterange.end} 23:59:59`, Validators.required],
@@ -118,7 +120,6 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     });
 
     this.sub = this.route.queryParams.subscribe(params => {
-      console.log(params);
       if(Object.keys(params).length > 0) {
         var dateFilter = +params.dateFilter;
         this.chooseDateRange(dateFilter);
@@ -134,7 +135,6 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
       }
     });
     this.sub.unsubscribe();
-    console.log('submit form init');
     this.onSubmit(this.form.value);
   }
 
@@ -144,9 +144,14 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
       this.addFilter2('selectedUserFilter', 'employee_id');
     }
 
-    if(changes.currentPage && changes.currentPage.previousValue != changes.currentPage.currentValue) {
-      console.log('update currentPage value');
-      this.queryParams['page'] = this.currentPage;
+    if(changes.currentPage && (changes.currentPage.previousValue != changes.currentPage.currentValue)) {
+      this.router.navigate([], {queryParams: {page: this.currentPage}, queryParamsHandling: "merge"});
+    }
+
+    if(changes.sort && (changes.sort.previousValue != changes.sort.currentValue)) {
+      let key = Object.keys(this.sort);
+      this.queryParams['sort'] = key[0];
+      this.queryParams['order'] = this.sort[key[0]];
       this.router.navigate([], {queryParams: this.queryParams, queryParamsHandling: "merge"});
     }
   }
@@ -186,7 +191,6 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     this[selectedAttr] = this.allUser;
     this.form.get(attr).setValue(this.allUser.id);
     this.skipToggle = true;
-    console.log('submit remove filter 2');
     this.onSubmit(this.form.value);
   }
 
@@ -274,7 +278,6 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   onSubmit(values) {
     this.toggleSearchFilter('out');
     this.handleQueryParams();
-    console.log('values', values);
     this.submit.emit(values);
   }
 
