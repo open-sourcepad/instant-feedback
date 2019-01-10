@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeComponent } from '../employee.component';
 import { FeedbackService, MeetingService, SessionService, UserService } from '../../../services/api';
 import {PaginationInstance} from 'ngx-pagination';
@@ -36,8 +36,8 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
   }
 
   daterange = {
-    start: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
-    end: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59')
+    start: moment().startOf('isoWeek').format('YYYY/MM/DD'),
+    end: moment().endOf('isoWeek').format('YYYY/MM/DD')
   };
   //daterangepicker options
   options: any = {
@@ -66,11 +66,14 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
     endDate: moment().endOf('isoWeek').format('MM/DD/YYYY')
   };
 
+  private sub: any;
+
   constructor(public fb: FormBuilder,
     public feedbackApi: FeedbackService,
     public session: SessionService,
     public userApi: UserService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private router: Router) {
     super(fb, feedbackApi, session, userApi);
   }
 
@@ -78,6 +81,17 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
     this.feedbackForm = this.fb.group({
       comment: ['', Validators.required]
     });
+
+    this.sub = this.route.queryParams.subscribe(params => {
+      this.currentTab = params.tab;
+      this.daterange['start'] = params.startDate;
+      this.daterange['end'] = params.endDate;
+      this.selectedUser = params.user;
+      this.paginationControls['currentPage'] = params.page;
+    });
+
+    this.sub.unsubscribe();
+
     this.loadFeedbacks();
     this.loadRequestFeedbacks();
   }
@@ -153,8 +167,8 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
   loadFeedbacks() {
     this.loading = true;
     let query = {
-      date_since: this.daterange.start,
-      date_until: this.daterange.end,
+      date_since: `${this.daterange.start} 00:00:00`,
+      date_until: `${this.daterange.end} 23:59:59`,
       page: {
         number: this.paginationControls['currentPage'],
         size: this.paginationControls['itemsPerPage']
@@ -170,6 +184,8 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
         query['given_to'] = this.selectedUser;
       }
     }
+
+    this.handleQueryParams();
     this.feedbackApi.query(query)
       .subscribe(res => {
         this.loading = false;
@@ -178,6 +194,17 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
       }, err => {
         this.loading = false;
       });
+  }
+
+  handleQueryParams(){
+    let queryParams = {
+      tab: this.currentTab,
+      startDate: this.daterange.start,
+      endDate: this.daterange.end,
+      user: this.selectedUser,
+      page: this.paginationControls['currentPage']
+    }
+    this.router.navigate([], {queryParams: queryParams, queryParamsHandling: "merge"});
   }
 
   toggleShowFeedback(value){
@@ -196,8 +223,8 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
       datepicker.end = value.end;
     }
 
-    this.daterange.start = moment(value.start).format('YYYY/MM/DD 00:00:00');
-    this.daterange.end = moment(value.end).format('YYYY/MM/DD 23:59:59');
+    this.daterange.start = moment(value.start).format('YYYY/MM/DD');
+    this.daterange.end = moment(value.end).format('YYYY/MM/DD');
   
     this.loadFeedbacks();
   }

@@ -63,7 +63,7 @@
         ng-container(*ngIf="collection.length < 1")
           .feedback.text-center
             span.font-bold No feedbacks yet.
-      pagination([config]="paginationControls", (pageChange)="pageChange($event)")
+      pagination(*ngIf="collection.length > 0", [config]="paginationControls", (pageChange)="pageChange($event)")
 
 
 modal(
