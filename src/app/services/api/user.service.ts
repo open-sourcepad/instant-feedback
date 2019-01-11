@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpService } from '../utils/http.service';
 import { BaseService } from './base.service';
 import { environment } from '../../../environments/environment';
@@ -34,5 +33,9 @@ export class UserService extends BaseService {
 
   allMeetings(params) {
     return this.http.get(`${ENDPOINT}/all_meetings?${this.buildParams(params)}`);
+  }
+
+  traverseMeeting(meetingId: number) {
+    return this.http.get(`${ENDPOINT}/traverse_meeting?meeting_id=${meetingId}`);
   }
 }

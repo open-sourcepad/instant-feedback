@@ -1,0 +1,142 @@
+.meeting-detail {
+  .users-avatar {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .user-header {
+    display: inline-block;
+    margin-left: 23px;
+  }
+
+  .user-header .title {
+    font-family: 'Poppins' !important;
+    color: #C3BAAA;
+    font-weight: bold;
+  }
+
+  .user-header h4 {
+    font-family: 'MADE Evolve Sans', sans-serif !important;
+  }
+
+  .talkingPoints {
+    margin-top: 5rem;
+  
+    .btn-instant-feedback-muted {
+      background-color: transparent;
+      border: 1px solid #C3BAAA;
+      font-size: 16px;
+      padding: 6px 12px;
+    }
+  
+    .card {
+      border-color:rgba(255,237,225,0.2);
+    }
+  
+    .card-body {
+      border: 0;
+      border-radius: 6px;
+      background-color: rgba(255,237,225,0.2);
+      box-shadow: 0 22px 34px 0 rgba(0,0,0,0.2);
+      font-size: 18px;
+      padding: 3rem 1.25rem;
+    }
+  
+    .card-body .listStyle {
+      color: #c3baaa;
+      > li {font-size: xx-large;}
+      li > span {
+        color: #4a4a4a;
+        font-family: "MADE Evolve Sans";
+        font-size: 18px;
+        position: relative;
+        top: -5px;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+      }
+    }
+  
+    .card-actions {
+      text-align: right;
+      min-height: 30px;
+  
+      > div > button {
+        background-color: transparent;
+        border: 0;
+        font-size: 18px;
+        outline: none;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+    }
+  
+    .qrtr-height {
+      height: 25vh;
+    }
+  
+    .user-notes {
+      margin-top: 15px;
+      margin-bottom: 15px;
+  
+      .table-cell > .opacity-75 {
+        opacity: 0.75;
+      }
+  
+      .form-add-talking-point {
+        min-height: 120px;
+      }
+  
+    }
+  }
+  
+  .no-list-style {
+    list-style: none;
+
+    p {
+      font-family: 'MADE Evolve Sans' !important;
+    }
+  }
+  
+  .form-add-talking-point {
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid #C3BAAA;
+    min-height: 40px;
+    resize: none;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+  
+  }
+  
+  .form-add-talking-point:focus{
+    border: 0 0 2px 0 solid #C3BAAA;
+    outline: none;
+  }
+  
+  #user-add-topic button {
+    background: transparent;
+    border: 0;
+  }
+
+  .meeting-page-nav button {
+    height: 36px;
+    width: 37px;
+    border: 1px solid rgba(151,151,151,0.4);
+    border-radius: 4px;
+
+    [class^="ti-"], [class*=" ti-"] {
+      line-height: 2;
+    }
+  }
+
+  .meeting-page-nav .content {
+    font-family: Karla;
+    font-size: 16px;
+    letter-spacing: 0.56px;
+    line-height: 17px;
+    vertical-align: top;
+  }
+}

@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { UserQuestionsComponent } from './user-questions/user-questions.component';
 import { PagesGuard } from './pages.guard';
 import { RoleGuard } from './role.guard';
+import { EmployeeMeetingDetailComponent } from './employee/employee-meeting-detail/employee-meeting-detail.component';
 
 export const routes: Routes = [
   {
@@ -36,7 +37,8 @@ export const routes: Routes = [
       {
         path: 'employee',
         loadChildren: "./employee/employee.module#EmployeeModule"
-      }
+      },
+      { path: 'employee/one-on-ones/:id',component: EmployeeMeetingDetailComponent}
     ]
   },
 ];

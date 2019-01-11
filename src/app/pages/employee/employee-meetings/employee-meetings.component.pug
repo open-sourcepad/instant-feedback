@@ -28,6 +28,6 @@
             td
               span.text-capitalize {{ obj.status }}
             td.actions
-              a([routerLink]="['/one-on-ones', obj.id]") View
+              a([routerLink]="['/employee/one-on-ones', obj.id]") View
 
 pagination([config]="paginationControls", (pageChange)="pageChange($event)")

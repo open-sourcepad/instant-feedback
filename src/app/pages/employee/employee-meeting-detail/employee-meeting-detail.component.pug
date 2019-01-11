@@ -1,0 +1,114 @@
+.row
+  .col-md-10.m-auto.meeting-detail
+    .row
+      .col-md-12.mt-5
+        back-button([backText]="'Back to 1-on-1s'", [returnUrl]="'/employee/one-on-ones'")
+      .col-md-12
+        .users-avatar
+          .avatar-user
+            .avatar-name
+              | {{ currentObj?.employee?.display_name.split(" ")[0].charAt(0) }}
+              | {{ currentObj?.employee?.display_name.split(" ")[1].charAt(0) }}
+          .avatar-user
+            .avatar-name
+              | {{ currentObj?.manager?.display_name.split(" ")[0].charAt(0) }}
+              | {{ currentObj?.manager?.display_name.split(" ")[1].charAt(0) }}
+        .user-header
+          h1.title 1-on-1 with {{ currentObj?.employee?.display_name }}
+          h4 {{ currentObj?.set_schedule | date: 'MMMM d, y' }}
+          h4.font-bold(*ngIf="currentObj?.status == 'done'") Actual 1-on-1 date: {{ currentObj?.actual_schedule | date: 'MMMM d, y' }}
+          .user-actions(*ngIf="currentObj?.status != 'done'")
+            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready
+        .float-right.meeting-page-nav
+          ng-container(*ngIf="paginate['prev']")
+            button.inline-block([routerLink]="['/employee/one-on-ones', paginate['prev']['id']]")
+              span.ti-angle-left
+            .inline-block.content.ml-2.mr-3
+              span.text-idle.text-uppercase([innerHTML]="paginate['prev']['actual_schedule'] ? (paginate['prev']['actual_schedule'] | date: 'MMMM d') : (paginate['prev']['set_schedule'] | date: 'MMMM d')")
+              br
+              span.text-brown 1on1 with {{ paginate['prev']['manager']['display_name'].split(" ")[0] }}
+          ng-container(*ngIf="paginate['next']")
+            .inline-block.content.ml-3.mr-2
+              span.text-idle.text-uppercase([innerHTML]="paginate['next']['actual_schedule'] ? (paginate['next']['actual_schedule'] | date: 'MMMM d') : (paginate['next']['set_schedule'] | date: 'MMMM d')")
+              br
+              span.text-brown 1on1 with {{ paginate['next']['manager']['display_name'].split(" ")[0] }}
+            button.inline-block([routerLink]="['/employee/one-on-ones', paginate['next']['id']]")
+              span.ti-angle-right
+    ng-container(*ngIf="meetingStatus == 'done'")
+      .row
+        .col-md-12
+          br
+          br
+          .action-items-container
+            .row
+              .col-md-6.mr-auto
+                .user-item-container
+                  h1.font-bold {{ actionItems?.employee?.name?.split(' ')[0] }}'s Items
+
+                  ul.item-list([class.reset]="actionItems?.employee?.items?.data.length < 1", [ng2-loading]="loading.employee")
+                    ng-container(*ngIf="actionItems?.employee?.items?.data.length < 1")
+                      li.text-center
+                        span.text-muted.font-light {{ actionItems?.employee?.name?.split(' ')[0] }} has no action items yet
+                    li.relative(*ngFor="let item of actionItems?.employee?.items?.data; let i = index")
+                      span {{ item.note }}
+
+              .col-md-6.ml-auto
+                .user-item-container
+                  h1.font-bold {{ actionItems?.manager?.name?.split(' ')[0] }}'s Items
+
+                  ul.item-list([class.reset]="actionItems?.manager?.items?.data?.length < 1", [ng2-loading]="loading.manager")
+                    ng-container(*ngIf="actionItems?.manager?.items?.data?.length < 1")
+                      li.text-center
+                        span.text-muted.font-light {{ actionItems?.manager?.name?.split(' ')[0] }} has no action items yet
+                    li.relative(*ngFor="let item of actionItems?.manager?.items?.data; let i = index")
+                      span {{ item.note }}
+    .row
+      .talkingPoints.col-md-12
+        h4.font-bold.text-brown.inline-block Talking Points
+        br
+        br
+        .row(*ngIf="discussions.length <= 0 && (userIsManager && currentUser.id == obj?.manager?.id)", [ng2-loading]="loading")
+          .col-md-12.m-auto.text-center
+            .mt-5
+              h4.font-semi-bold.text-idle You currently do not have any talking points set.
+              button.btn.btn-instant-feedback.btn-instant-feedback-muted((click)="addTalkingPoints()") Add Talking Points
+        ng-container(*ngIf="discussions.length > 0")
+          .row
+            .col-md-12([ng2-loading]="loading")
+              .card(*ngFor="let discuss of discussions; let idx = index")
+                .card-body((mouseover)="showActionsIdx=idx", (mouseout)="showActionsIdx=null")
+                  .card-actions(*ngIf="meetingStatus != 'done'")
+                  ul.listStyle
+                    li
+                      span {{ discuss.question }}
+                      br
+                  ng-container(*ngIf="!discuss.employee_notes && meetingStatus != 'done'")
+                    .user-notes.mr-auto.ml-auto.w-50.text-center([hidden]="addNoteIdx != null && addNoteIdx == idx")
+                      .vertical-align.qrtr-height
+                        .table-cell
+                          button.btn.btn-instant-feedback.btn-instant-feedback-muted((click)="addNotes(idx)") Add Notes
+                    .user-notes(*ngIf="addNoteIdx == idx")
+                      textarea.form-control.form-add-talking-point.inline-block.w-75(type="text", [(ngModel)]="employeeInputNote", [class.is-invalid]="submittedNoteForm && !!employeeInputNote", (keydown.enter)="submitNote(employeeInputNote, discuss)")
+                      .inline-block.ml-2.font-size-12.text-brown(*ngIf="employeeInputNote != ''") press enter {{ submittedNoteForm }} {{ !!employeeInputNote }}
+                      .invalid-feedback(*ngIf="submittedNoteForm && !!employeeInputNote")
+                        span Please add your notes
+                  ng-container(*ngIf="discuss.employee_notes")
+                    .user-notes
+                      ul.no-list-style
+                        li
+                          p.font-bold.mb-1 Your Notes
+                        li
+                          p.text-justify.font-light {{ discuss.employee_notes }}
+        ng-container(*ngIf="meetingStatus != 'done'")
+          .row
+            .col-md-12
+              br
+              form#user-add-topic(novalidate, autocomplete="off", [formGroup]="talkingPointForm", (ngSubmit)="submitTopic(talkingPointForm.value)")
+                p.font-bold.font-size-18 Add any additional topic to this meeting, if you have any.
+                input.form-control.form-add-talking-point.inline-block.w-75(type="text", formControlName="custom_question", [class.is-invalid]="submittedPointForm && tp.custom_question.errors")
+                .inline-block.ml-2.font-size-12.text-brown(*ngIf="tp.custom_question.valid") press enter
+                .invalid-feedback(*ngIf="submittedPointForm && tp.custom_question.errors")
+                  span Please enter a topic
+              br
+              br
+              br
