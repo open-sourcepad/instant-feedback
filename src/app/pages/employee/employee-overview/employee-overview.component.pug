@@ -28,7 +28,7 @@
             h4.font-bold Upcoming
 
             .upcoming-meeting-item.mb-3(*ngFor="let obj of upcoming_meetings | slice:0:3")
-              button([routerLink]="['/one-on-ones', obj.id]")
+              button([routerLink]="['/employee/one-on-ones', obj.id]")
                 .mr-1.inline-block
                   .avatar-user
                     .avatar-name
@@ -46,7 +46,7 @@
             h4.font-bold Past
 
             .past-meeting-item(*ngFor="let obj of past_meetings | slice:0:3")
-              button([routerLink]="['/one-on-ones', obj.id]")
+              button([routerLink]="['/employee/one-on-ones', obj.id]")
                 ul.reset.list
                   li
                     button
