@@ -83,14 +83,16 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
     });
 
     this.sub = this.route.queryParams.subscribe(params => {
-      this.currentTab = params.tab;
-      this.daterange['start'] = params.startDate;
-      this.daterange['end'] = params.endDate;
-      this.selectedUser = params.user;
-      this.paginationControls['currentPage'] = params.page;
+      if(Object.keys(params).length > 0) {
+        this.currentTab = params.tab;
+        this.daterange['start'] = params.startDate;
+        this.daterange['end'] = params.endDate;
+        this.selectedUser = params.user;
+        this.paginationControls['currentPage'] = params.page;
+      }
     });
 
-    this.sub.unsubscribe();
+    if(this.sub) this.sub.unsubscribe();
 
     this.loadFeedbacks();
     this.loadRequestFeedbacks();
