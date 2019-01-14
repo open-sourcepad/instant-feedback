@@ -1,5 +1,5 @@
 .row
-  .col-md-10.m-auto
+  .col-md-10.m-auto.meeting-detail
     .row
       .col-md-12
         back-button([backText]="'Back to 1-on-1s'")
@@ -28,7 +28,7 @@
           br
           meeting-action-items([(actionItems)]="actionItems" , [(slug_id)]="slug_id", [(allowEdit)]="actionEditable")
     .row
-      #talkingPoints.col-md-12
+      .talkingPoints.col-md-12
         h4.font-bold.text-brown.inline-block Talking Points
         button.inline-block.ml-3.btn-circle-add(*ngIf="meetingStatus != 'done' && (userIsManager && currentUser.id == obj?.manager?.id)", (click)="addTalkingPoints()")
           span.ti-plus

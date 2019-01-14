@@ -16,6 +16,7 @@
 .action-items-container .user-item-container {
   margin-bottom: 1.5rem;
   margin-top: 1.5rem;
+  font-family: 'Made Evolve Sans';
 
   form > input.is-invalid {
     border-width: 1px !important;
@@ -25,14 +26,14 @@
 
 .action-items-container .user-item-container > .item-list {
   color: #C3BAAA;
-  font-size: xx-large;
+  font-size: 36px;
   line-height: 1.3;
-  margin-top: 1.5rem;
+  margin-top: 0.25rem;
 }
 
 .action-items-container .user-item-container > .item-list  span, .action-items-container .user-item-container > .item-list  input {
   color: initial;
-  font-size: 16px;
+  font-size: 18px;
   display: inline-block;
   width: calc(100% - 15%);
 }
