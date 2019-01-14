@@ -21,6 +21,7 @@ import {
 } from './services/api';
 import { HttpService, LocalStorage, CommonService, AppSettings } from './services/utils';
 import { HttpClientModule } from '@angular/common/http';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 const APP_SERVICES = [
@@ -47,7 +48,8 @@ const APP_PROVIDERS = [
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
