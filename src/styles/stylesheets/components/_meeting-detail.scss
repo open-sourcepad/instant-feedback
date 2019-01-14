@@ -112,7 +112,8 @@
   }
   
   .form-add-talking-point:focus{
-    border: 0 0 2px 0 solid #C3BAAA;
+    border: 0;
+    border-bottom: 2px solid #C3BAAA;
     outline: none;
   }
   

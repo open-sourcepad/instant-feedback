@@ -57,6 +57,7 @@ export class EmployeeMeetingDetailComponent implements OnInit {
     // this.sub.unsubscribe();
 
     this.talkingPointForm = this.fb.group({
+      meeting_id: [this.slug_id],
       talking_point_type: ['custom', Validators.required],
       custom_question: ['', Validators.required]
     });
