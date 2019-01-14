@@ -31,14 +31,16 @@ export const routes: Routes = [
       },
       {
         path: 'one-on-ones',
+        canActivate: [RoleGuard],
         loadChildren: "./meetings/meetings.module#MeetingsModule"
       },
       { path: 'assigned-questions', component: UserQuestionsComponent, canActivate: [RoleGuard]},
       {
         path: 'employee',
+        canActivate: [RoleGuard],
         loadChildren: "./employee/employee.module#EmployeeModule"
       },
-      { path: 'employee/one-on-ones/:id',component: EmployeeMeetingDetailComponent}
+      { path: 'employee/one-on-ones/:id',component: EmployeeMeetingDetailComponent, canActivate: [RoleGuard]},
     ]
   },
 ];

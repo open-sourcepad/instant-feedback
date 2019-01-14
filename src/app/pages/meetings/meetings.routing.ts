@@ -10,7 +10,7 @@ export const routes: Routes = [
     path: '',
     component: MeetingsComponent,
     children: [
-      {path: '', component: MeetingIndexComponent, canActivate: [RoleGuard]},
+      {path: '', component: MeetingIndexComponent},
       {path: ':id', component: MeetingDetailsComponent},
       {path: ':id/discussion', component: MeetingDiscussionComponent}
     ]
