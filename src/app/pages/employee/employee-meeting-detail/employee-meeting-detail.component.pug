@@ -67,7 +67,7 @@
         h4.font-bold.text-brown.inline-block Talking Points
         br
         br
-        .row(*ngIf="discussions.length <= 0 && (userIsManager && currentUser.id == obj?.manager?.id)", [ng2-loading]="loading")
+        .row(*ngIf="discussions.length <= 0 && (userIsManager && currentUser.id == currentObj?.manager?.id)", [ng2-loading]="loading")
           .col-md-12.m-auto.text-center
             .mt-5
               h4.font-semi-bold.text-idle You currently do not have any talking points set.
