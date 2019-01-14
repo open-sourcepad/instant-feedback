@@ -64,6 +64,12 @@ export class MeetingActionItemsComponent implements OnInit, OnChanges {
       'user_id': ['', Validators.required],
       'meeting_id': [this.slug_id, Validators.required]
     });
+    if(this.actionItems['employee'] && this.actionItems['manager']) {
+      this.e.user_id.setValue(this.actionItems.employee.id);
+      this.m.user_id.setValue(this.actionItems.manager.id);
+      this.e.user_id.updateValueAndValidity();
+      this.m.user_id.updateValueAndValidity();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
