@@ -37,10 +37,9 @@ export const routes: Routes = [
       { path: 'assigned-questions', component: UserQuestionsComponent, canActivate: [RoleGuard]},
       {
         path: 'employee',
-        canActivate: [RoleGuard],
         loadChildren: "./employee/employee.module#EmployeeModule"
       },
-      { path: 'employee/one-on-ones/:id',component: EmployeeMeetingDetailComponent, canActivate: [RoleGuard]},
+      { path: 'employee/one-on-ones/:id',component: EmployeeMeetingDetailComponent}
     ]
   },
 ];
