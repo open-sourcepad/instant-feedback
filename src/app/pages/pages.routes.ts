@@ -36,6 +36,10 @@ export const routes: Routes = [
       },
       { path: 'assigned-questions', component: UserQuestionsComponent, canActivate: [RoleGuard]},
       {
+        path: 'manager',
+        loadChildren: "./manager/manager.module#ManagerModule"
+      },
+      {
         path: 'employee',
         loadChildren: "./employee/employee.module#EmployeeModule"
       },

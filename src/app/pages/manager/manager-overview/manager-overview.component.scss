@@ -1,0 +1,110 @@
+#manager-overview {
+  font-family: Karla;
+
+  .action-items-box {
+    .action-item-list {
+      margin-top: 1rem;
+      margin-bottom: 1.75rem;
+
+      span {
+        color: #333;
+        font-size: 18px;
+        letter-spacing: 0.5px;
+        line-height: 28px;
+      }
+    }
+  }
+
+  h4 {
+    margin-bottom: 0;
+    font-family: Karla !important;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    line-height: 22px;
+
+    &.section-heading {
+      font-family: Chivo !important;
+      font-size: 20px;
+      font-weight: normal;
+    }
+    &.user-name {
+      color: #496584;
+      margin-right: 10px;
+    }
+    &.meeting-date {
+      color: #4A4A4A;
+    }
+  }
+
+  .due-label {
+    color: #D0021B;
+    //font-weight: normal;
+    //font-size: 20px;
+    //line-height: 24px;
+  }
+
+  .blue {
+    color: #496584;
+  }
+
+  .employee-name {
+    color: #496584;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    line-height: 22px;
+    text-decoration: underline;
+  }
+
+  .avatar-user {
+    display: inline-block;
+    box-sizing: border-box;
+    height: 49px;
+    width: 49px;
+    border: 2px solid #496584;
+    margin-right: 12px;
+    background-color: white;
+    vertical-align: top;
+
+    .avatar-name {
+      color: #496584;
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 45px;
+    }
+  }
+
+  .date, .date-day {
+    font-family: Karla;
+    font-size: 16px;
+    letter-spacing: 0.44px;
+    line-height: 19px;
+
+    &.date-day {
+      color: #c3c3c3;
+    }
+    &.date {
+      color: #9b9b9b;
+    }
+  }
+
+  .upcoming-meeting, .due-meeting {
+    margin-top: 13px;
+  }
+
+  .facilitator-label {
+    color: #C3BAAA;
+    font-family: Karla;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: -0.26px;
+    line-height: 19px;
+    margin-left: 6px;
+  }
+
+  .check-icon {
+    color: #7ED321;
+    margin-left: 6px;
+    font-weight: bold;
+  }
+}

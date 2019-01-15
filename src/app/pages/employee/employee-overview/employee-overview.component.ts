@@ -33,6 +33,7 @@ export class EmployeeOverviewComponent implements OnInit {
   loadMeetings() {
     this.loading = true;
     this.userApi.meetings().subscribe(res => {
+      console.log(res);
       this.loading = false;
       this.upcoming_meetings = res['data']['upcoming']['data'];
       this.past_meetings = res['data']['past']['data'];

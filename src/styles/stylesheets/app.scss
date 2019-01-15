@@ -25,6 +25,7 @@
 // import fonts
 @import url('https://fonts.googleapis.com/css?family=Poppins:600,700');
 @import url('https://fonts.googleapis.com/css?family=Karla:100,400,700');
+@import url('https://fonts.googleapis.com/css?family=Chivo:400');
 
 
 .custom.ng-select {
@@ -39,4 +40,8 @@
     border-bottom: 1px solid #d1211a;
     &:after { border: none; }
   }
+}
+
+.clickable {
+  cursor: pointer;
 }

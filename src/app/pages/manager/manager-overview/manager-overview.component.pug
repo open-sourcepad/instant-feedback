@@ -1,0 +1,53 @@
+#manager-overview.row
+  .col-md-9.m-auto
+    .mt-5
+      .row([ng2-loading]="loading")
+        .col-md-8
+          h4.section-heading.text-brown.mb-5 Action Items
+          .action-items-scroll
+            .action-items-box(*ngFor="let obj of meets")
+              div
+                h4.user-name.font-bold.inline-block {{ obj.employee.display_name }}
+                h4.meeting-date.font-bold.inline-block {{ obj.set_schedule | date: 'MMMM d'}}
+                ng-container(*ngIf="obj.action_items.manager.length < 1")
+                  ul.action-item-list.reset
+                    li
+                      span.text-muted No action items
+                  br
+                ng-container(*ngIf="obj.action_items.manager.length > 0")
+                  ul.action-item-list
+                    li(*ngFor="let action of obj.action_items.manager")
+                      span {{ action }}
+
+        .col-md-4
+          h4.section-heading.text-brown.mb-5 1-on-1s This Week
+          #upcoming-meetings.mb-5
+            .upcoming-meeting(*ngFor="let obj of meetsThisWeek")
+              .clickable([routerLink]="['/one-on-ones', obj.id]")
+                .avatar-user
+                  .avatar-name
+                    | {{ obj.other_party.display_name.split(' ')[0].charAt(0) }}
+                    | {{ obj.other_party.display_name.split(' ')[1].charAt(0) }}
+                .inline-block.details.text-justify
+                  span.employee-name {{ obj.other_party.display_name.split(' ')[0] }}
+                  span.facilitator-label(*ngIf="obj.other_party.show_facilitator_label") Facilitator
+                  span.check-icon(*ngIf="obj.status == 'done'") &#10003;
+                  br
+                  span.date-day {{ obj.set_schedule | date: 'EEEE ' | uppercase }}
+                  span.date {{ obj.set_schedule | date: 'MMMM d' | uppercase }}
+
+          #past-meetings
+            h4.section-heading.due-label Due
+            .due-meeting(*ngFor="let obj of meetsOnDue")
+              .clickable([routerLink]="['/one-on-ones', obj.id]")
+                .avatar-user
+                  .avatar-name
+                    | {{ obj.other_party.display_name.split(' ')[0].charAt(0) }}
+                    | {{ obj.other_party.display_name.split(' ')[1].charAt(0) }}
+                .inline-block.details.text-justify
+                  span.employee-name {{ obj.other_party.display_name.split(' ')[0] }}
+                  span.facilitator-label(*ngIf="obj.other_party.show_facilitator_label") Facilitator
+                  span.check-icon(*ngIf="obj.status == 'done'") &#10003;
+                  br
+                  span.date-day {{ obj.set_schedule | date: 'EEEE ' | uppercase }}
+                  span.date {{ obj.set_schedule | date: 'MMMM d' | uppercase }}
