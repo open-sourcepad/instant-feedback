@@ -19,7 +19,7 @@ import {
   UserService,
   UserQuestionService
 } from './services/api';
-import { HttpService, LocalStorage, CommonService, AppSettings } from './services/utils';
+import { HttpService, LocalStorage, CommonService, AppSettings, RoutingState } from './services/utils';
 import { HttpClientModule } from '@angular/common/http';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
@@ -37,7 +37,8 @@ const APP_SERVICES = [
   UserService,
   UserQuestionService,
   LocalStorage,
-  AppSettings
+  AppSettings,
+  RoutingState
 ]
 const APP_PROVIDERS = [
   HttpService,

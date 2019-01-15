@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RoutesRecognized } from '@angular/router';
+import { filter, pairwise } from 'rxjs/operators';
+import { RoutingState } from 'src/app/services/utils';
 
 @Component({
   selector: 'back-button',
@@ -14,16 +16,22 @@ export class BackButtonComponent implements OnInit {
 
   constructor(
     private location: Location,
-    private router: Router
+    private router: Router,
+    private routingState: RoutingState
   ) { }
 
   ngOnInit() {
   }
 
   goBack() {
-    if(this.returnUrl){
-      this.router.navigateByUrl(this.returnUrl);
-    } else {
+    var _returnUrl = this.routingState.getPreviousUrl();
+    if(!_returnUrl){
+      _returnUrl = this.returnUrl;
+    }
+
+    if(_returnUrl){
+      this.router.navigateByUrl(_returnUrl);
+    }else {
       this.location.back();
     }
   }

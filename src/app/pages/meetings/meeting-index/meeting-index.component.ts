@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MeetingService, UserService } from '../../../services/api';
 import {PaginationInstance} from 'ngx-pagination';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RoutingState } from 'src/app/services/utils';
 
 @Component({
   selector: 'app-meeting-index',
@@ -33,12 +34,14 @@ export class MeetingIndexComponent implements OnInit {
     private meetingApi: MeetingService,
     private userApi: UserService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private routingState: RoutingState
   ) {
     this.sort_by = {set_schedule: 'asc'};
   }
 
   ngOnInit() {
+    this.routingState.loadRouting();
     this.loadUsers();
 
     this.sub = this.route.queryParams.subscribe(params => {
@@ -49,6 +52,10 @@ export class MeetingIndexComponent implements OnInit {
       }
     });
     this.sub.unsubscribe();
+  }
+
+  ngOnDestroy() {
+    this.routingState.stopRouting();
   }
 
   search(queryParams) {

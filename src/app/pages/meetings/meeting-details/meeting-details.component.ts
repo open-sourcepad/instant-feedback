@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { trigger, state, style, transition, animate, query, stagger, keyframes} from '@angular/animations';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MeetingService, DiscussionService,
-  SessionService, TalkingPointService } from '../../../services/api';
+import { MeetingService, DiscussionService, SessionService } from '../../../services/api';
 
 @Component({
   selector: 'app-meeting-details',
@@ -68,8 +67,7 @@ export class MeetingDetailsComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private meetingApi: MeetingService,
     private discussionApi: DiscussionService,
-    private session: SessionService,
-    private talkingPointApi: TalkingPointService
+    private session: SessionService
   ) {
     this.currentUser = this.session.getCurrentUser();
     this.userIsManager = this.currentUser['is_manager'];
