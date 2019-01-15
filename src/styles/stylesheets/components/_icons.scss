@@ -38,6 +38,23 @@
   background-image: url("../icons/check-green.png");
 }
 
+.icon-prev-nav {
+  background-image: url("../icons/previous-nav.png");
+}
+
+.icon-next-nav{
+  background-image: url("../icons/previous-nav.png");
+  transform: rotate(180deg);
+}
+
+.icon-xs {
+  height: 12.2px;
+  width: auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-x: 0.35rem;
+}
+
 .icon-sm {
   height: 50px;
   width: auto;

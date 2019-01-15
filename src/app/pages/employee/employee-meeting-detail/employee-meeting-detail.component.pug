@@ -22,7 +22,7 @@
         .float-right.meeting-page-nav
           ng-container(*ngIf="paginate['prev']")
             button.inline-block([routerLink]="['/employee/one-on-ones', paginate['prev']['id']]")
-              span.ti-angle-left
+              .icon-prev-nav.icon-xs
             .inline-block.content.ml-2.mr-3
               span.text-idle.text-uppercase([innerHTML]="paginate['prev']['actual_schedule'] ? (paginate['prev']['actual_schedule'] | date: 'MMMM d') : (paginate['prev']['set_schedule'] | date: 'MMMM d')")
               br
@@ -33,7 +33,7 @@
               br
               span.text-brown 1on1 with {{ paginate['next']['manager']['display_name'].split(" ")[0] }}
             button.inline-block([routerLink]="['/employee/one-on-ones', paginate['next']['id']]")
-              span.ti-angle-right
+              .icon-next-nav.icon-xs
     ng-container(*ngIf="meetingStatus == 'done'")
       .row
         .col-md-12
