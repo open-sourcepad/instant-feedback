@@ -8,7 +8,8 @@
                 | {{ currentUser.initials() }}
           .inline-block.details
             h1.text-brown.font-bold {{ currentUser.display_name }}
-            h4.text-capitalize {{ currentUser.role }} Team
+            h4.text-capitalize.ml-2 {{ currentUser.role }} Team
+            br
             button.btn.btn-instant-feedback.btn-instant-feedback-link((click)="sideMenuState = 'in'; feedbackState = 'ask'") Ask for Feedback
             | &nbsp; &nbsp;
             button.btn.btn-instant-feedback.btn-instant-feedback-link((click)="sideMenuState = 'in'; feedbackState = 'give'") Give Feedback

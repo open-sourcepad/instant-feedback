@@ -27,12 +27,12 @@ export class UserService extends BaseService {
     return this.http.get(`${ENDPOINT}/get_specific_user?${this.buildParams(params)}`);
   }
 
-  meetings() {
-    return this.http.get(`${ENDPOINT}/meetings`);
+  meetings(params) {
+    return this.http.get(`${ENDPOINT}/meetings?${this.buildParams(params)}`);
   }
 
   allMeetings(params) {
-    return this.http.get(`${ENDPOINT}/all_meetings?${this.buildParams(params)}`);
+    return this.http.get(`${ENDPOINT}/meetings?${this.buildParams(params)}`);
   }
 
   traverseMeeting(meetingId: number) {

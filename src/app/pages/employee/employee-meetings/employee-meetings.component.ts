@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService, SessionService } from '../../../services/api';
+import { MyMeetingService } from '../../../services/api';
 import {PaginationInstance} from 'ngx-pagination';
 
 @Component({
@@ -12,6 +12,7 @@ export class EmployeeMeetingsComponent implements OnInit {
   loading: boolean = false;
   collection: any = [];
   recordCount: number = 0;
+  orderParams = {set_schedule: 'desc'};
 
   paginationControls: PaginationInstance = {
     id: 'paginationResults',
@@ -21,8 +22,7 @@ export class EmployeeMeetingsComponent implements OnInit {
   }
 
   constructor(
-    private session: SessionService,
-    private userApi: UserService
+    private myMeetingApi: MyMeetingService
   ) { }
 
   ngOnInit() {
@@ -34,7 +34,7 @@ export class EmployeeMeetingsComponent implements OnInit {
       number: this.paginationControls['currentPage'],
       size: this.paginationControls['itemsPerPage']
     };
-    this.userApi.allMeetings({page: pageParams}).subscribe(res => {
+    this.myMeetingApi.search({order: this.orderParams, page: pageParams}).subscribe(res => {
       this.loading = false;
       this.collection = res['collection']['data'];
       this.paginationControls['totalItems'] = res['metadata']['record_count'];

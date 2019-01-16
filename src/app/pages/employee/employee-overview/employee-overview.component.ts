@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MeetingService, SessionService, UserService } from '../../../services/api';
+import { MeetingService, SessionService, UserService, MyMeetingService } from '../../../services/api';
 import { User } from '../../../models';
 import * as moment from 'moment';
 
@@ -21,9 +21,8 @@ export class EmployeeOverviewComponent implements OnInit {
   modalButtons: any = {cancel: {text: 'Cancel'}, confirm: {text: 'Yes, delete.'}};
 
   constructor(
-    private session: SessionService,
-    private userApi: UserService,
-    private meetingApi: MeetingService
+    private meetingApi: MeetingService,
+    private myMeetingApi: MyMeetingService
   ) { }
 
   ngOnInit() {
@@ -32,12 +31,10 @@ export class EmployeeOverviewComponent implements OnInit {
 
   loadMeetings() {
     this.loading = true;
-    this.userApi.meetings().subscribe(res => {
-      console.log(res);
+    this.myMeetingApi.search({order: {set_schedule: 'desc'}}).subscribe(res => {
       this.loading = false;
-      this.upcoming_meetings = res['data']['upcoming']['data'];
-      this.past_meetings = res['data']['past']['data'];
-      this.past_meeting_action_items = res['data']['action_items'];
+      this.upcoming_meetings = res['collection']['data'].filter(d => d['status'] == 'upcoming');
+      this.past_meetings = res['collection']['data'].filter(d => d['status'] == 'done');
     }, err => {
       this.loading = false;
     });
@@ -68,7 +65,7 @@ export class EmployeeOverviewComponent implements OnInit {
     this.meetingApi.removeEmployeeActionItems(values.data.id)
       .subscribe(res => {
         this.loading = false;
-        this.past_meeting_action_items[values.idx]['action_items']['data'] = [];
+        this.past_meetings[values.idx]['action_items']['employee'] = [];
       }, err => {
         this.loading = false;
       });

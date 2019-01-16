@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { MeetingService, SessionService, DiscussionService, UserService } from 'src/app/services/api';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MeetingService, SessionService, DiscussionService, UserService, MyMeetingService } from 'src/app/services/api';
 
 @Component({
   selector: 'app-employee-meeting-detail',
@@ -34,10 +34,10 @@ export class EmployeeMeetingDetailComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private meetingApi: MeetingService,
+    private meetingApi: MyMeetingService,
     private discussionApi: DiscussionService,
-    private userApi: UserService,
-    private session: SessionService
+    private session: SessionService,
+    private router: Router
   ) {
     this.currentUser = this.session.getCurrentUser();
     this.userIsManager = this.currentUser['is_manager'];
@@ -54,8 +54,6 @@ export class EmployeeMeetingDetailComponent implements OnInit {
       }
     });
 
-    // this.sub.unsubscribe();
-
     this.talkingPointForm = this.fb.group({
       meeting_id: [this.slug_id],
       talking_point_type: ['custom', Validators.required],
@@ -69,20 +67,17 @@ export class EmployeeMeetingDetailComponent implements OnInit {
 
   loadData(slug_id: number) {
     this.loading = true;
-    this.meetingApi.get(slug_id)
+    this.meetingApi.profile(slug_id)
       .subscribe( res => {
         this.loading = false;
         this.currentObj = res['data'];
         this.meetingStatus = this.currentObj['status'];
         this.discussions = res['data']['discussions']['data'];
         this.actionItems = res['data']['action_items'];
+        this.paginate['prev'] = res['links']['prev'];
+        this.paginate['next'] = res['links']['next']
       }, err => {
         this.loading = false;
-      });
-    this.userApi.traverseMeeting(slug_id)
-      .subscribe(res => {
-        this.paginate['prev'] = res['prev']['data'];
-        this.paginate['next'] = res['next']['data'];
       });
   }
 
@@ -125,5 +120,9 @@ export class EmployeeMeetingDetailComponent implements OnInit {
         this.loading = false;
       });
     this.submittedNoteForm = false;
+  }
+
+  navigate(url) {
+    this.router.navigateByUrl(url);
   }
 }

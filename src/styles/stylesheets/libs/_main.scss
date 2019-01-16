@@ -11,7 +11,7 @@ body {
   background-color: $linkColor;
   font-family: 'Avenir', "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
-  color: $default;
+  color: $main-color;
 }
 
 body {
@@ -107,8 +107,4 @@ ul.reset {
     position: relative;
     right: 8px;
   }
-}
-
-.bg-brown {
-  background-color: #e1dcd9;
 }

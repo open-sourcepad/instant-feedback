@@ -1,9 +1,14 @@
-.font-poppin {
-  font-family: 'Poppins', sans-serif !important;
-}
-
 .hidden {
   display: none;
+}
+
+.action-items-box, .action-items-box h4, #upcoming-meetings, #past-meetings {
+  font-family: 'MADE Evolve Sans', sans-serif !important;
+}
+
+.action-items-box .btn-action {
+  color: rgba(125,124,122,0.32);
+  font-size: 14px;
 }
 
 #upcoming-meetings .avatar-user {

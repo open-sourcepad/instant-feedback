@@ -21,18 +21,12 @@
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready
         .float-right.meeting-page-nav
           ng-container(*ngIf="paginate['prev']")
-            button.inline-block([routerLink]="['/employee/one-on-ones', paginate['prev']['id']]")
+            button.inline-block((click)="navigate(paginate['prev']['path'])")
               .icon-prev-nav.icon-xs
-            .inline-block.content.ml-2.mr-3
-              span.text-idle.text-uppercase([innerHTML]="paginate['prev']['actual_schedule'] ? (paginate['prev']['actual_schedule'] | date: 'MMMM d') : (paginate['prev']['set_schedule'] | date: 'MMMM d')")
-              br
-              span.text-brown 1on1 with {{ paginate['prev']['manager']['display_name'].split(" ")[0] }}
+            .inline-block.content.ml-2.mr-3([innerHTML]="paginate['prev']['title']")
           ng-container(*ngIf="paginate['next']")
-            .inline-block.content.ml-3.mr-2
-              span.text-idle.text-uppercase([innerHTML]="paginate['next']['actual_schedule'] ? (paginate['next']['actual_schedule'] | date: 'MMMM d') : (paginate['next']['set_schedule'] | date: 'MMMM d')")
-              br
-              span.text-brown 1on1 with {{ paginate['next']['manager']['display_name'].split(" ")[0] }}
-            button.inline-block([routerLink]="['/employee/one-on-ones', paginate['next']['id']]")
+            .inline-block.content.ml-3.mr-2([innerHTML]="paginate['next']['title']")
+            button.inline-block((click)="navigate(paginate['next']['path'])")
               .icon-next-nav.icon-xs
     ng-container(*ngIf="meetingStatus == 'done'")
       .row
