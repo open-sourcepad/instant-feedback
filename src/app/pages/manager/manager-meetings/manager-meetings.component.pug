@@ -1,0 +1,14 @@
+.row
+  .col-md-9.m-auto
+    .mt-5
+
+      #default-questions-container
+        h4.section-heading.text-brown.mb-5 Default Questions
+        ul#default-questions
+          li(*ngFor="let obj of defaultQuestions; let i = index")
+            input(type="text", [name]="'questions[' + i +']'", [value]="obj.question")
+
+
+      #meetings-container
+        h4.section-heading.text-brown.mb-5 Meetings
+
