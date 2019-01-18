@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MyMeetingService, SessionService } from '../../../services/api';
 import { User } from '../../../models';
+import { PaginationInstance } from 'ngx-pagination';
 import * as moment from 'moment';
 
 @Component({
@@ -16,6 +17,12 @@ export class ManagerOverviewComponent implements OnInit {
   meetsThisWeek: any = [];
   meetsOnDue: any = [];
   currentUser: User;
+  paginationControls: PaginationInstance = {
+    id: 'paginationResults',
+    itemsPerPage: 5,
+    currentPage: 1,
+    totalItems: 0
+  }
 
   constructor(
     private session: SessionService,
@@ -28,11 +35,7 @@ export class ManagerOverviewComponent implements OnInit {
     let loadedQueries = 0;
 
     // for action items
-    this.myMeetingApi.query({}).subscribe(res => {
-      this.meets = res['collection']['data'];
-    }, err => {
-      console.error(err);
-    });
+    this.loadActionItems();
 
     // for 1-on-1s this week
     let params = {
@@ -69,6 +72,24 @@ export class ManagerOverviewComponent implements OnInit {
 
   isForThisWeek(meet) {
     return moment(meet.set_schedule).week() == moment().week();
+  }
+
+  loadActionItems() {
+    let params = {
+      number: this.paginationControls['currentPage'],
+      size: this.paginationControls['itemsPerPage']
+    };
+    this.myMeetingApi.query({page: params}).subscribe(res => {
+      this.meets = res['collection']['data'];
+      this.paginationControls['totalItems'] = res['metadata']['record_count'];
+    }, err => {
+      console.error(err);
+    });
+  }
+
+  pageChange(evt) {
+    this.paginationControls['currentPage'] = evt;
+    this.loadActionItems();
   }
 
 }

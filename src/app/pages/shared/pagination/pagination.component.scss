@@ -1,9 +1,14 @@
 #pagination .btn-pagination {
-  background-color: transparent;
-  padding: 0.5rem 0.75rem;
-  border-color: #dadada;
+  background-color: #F9F9F9;
+  padding: 0.594rem 0.75rem;
+  border: 0.5px solid #BBBBBB;
+  border-radius: 4px;
   color: #C3BAAA;
   min-width: 56px;
+  font-family: "Helvetica Neue";
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
 }
 
 #pagination-pages {
@@ -12,11 +17,22 @@
 
 #pagination-pages > li {
   display: inline-block;
+
+  &:last-child button {
+    border-right: 0.5px solid #BBBBBB;
+    border-radius: 0 4px 4px 0;
+  }
+
+  &:first-child button {
+    border-radius: 4px 0 0 4px;
+  }
 }
 
 #pagination-pages > li > button {
-  color: #7f7e7c;
-  min-width: 37px;
+  color: #7D7C7A;
+  border-right: 0;
+  border-radius: 0;
+  min-width: 36px;
 }
 
 #pagination .btn-pagination.active,
