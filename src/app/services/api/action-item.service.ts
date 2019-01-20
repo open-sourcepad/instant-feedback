@@ -4,7 +4,7 @@ import { HttpService } from '../utils/http.service';
 import { BaseService } from './base.service';
 import { environment } from '../../../environments/environment';
 
-const ENDPOINT = `${environment.api_url}/api/action_items`;
+const ENDPOINT = `${environment.api_url}/api/meeting_objectives`;
 
 @Injectable()
 export class ActionItemService extends BaseService {

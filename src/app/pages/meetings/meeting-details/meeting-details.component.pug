@@ -50,9 +50,9 @@
                         span.ti-arrow-down
                       button((click)="moveUp(discuss, idx)", [disabled]="idx === 0")
                         span.ti-arrow-up
-                      button((click)="editDiscussion(discuss)", [hidden]="discuss.default_question")
+                      button((click)="editDiscussion(discuss)", [hidden]="discuss.is_question_locked")
                         span.ti-pencil
-                      button((click)="discussionObj = discuss; modalStateChange(true)", [hidden]="discuss.default_question")
+                      button((click)="discussionObj = discuss; modalStateChange(true)", [hidden]="discuss.is_question_locked")
                         span.ti-trash
                   ul.listStyle
                     li
@@ -82,9 +82,9 @@
             .col-md-12
               form#user-add-topic(novalidate, autocomplete="off", [formGroup]="talkingPointForm", (ngSubmit)="submitTopic(talkingPointForm.value)")
                 p.font-bold.font-size-18 Add any additional topic to this meeting, if you have any.
-                input.form-control.form-add-talking-point.inline-block.w-75(type="text", formControlName="custom_question", [class.is-invalid]="submittedPointForm && tp.custom_question.errors")
-                .inline-block.ml-2.font-size-12.text-brown(*ngIf="tp.custom_question.valid") press enter
-                .invalid-feedback(*ngIf="submittedPointForm && tp.custom_question.errors")
+                input.form-control.form-add-talking-point.inline-block.w-75(type="text", formControlName="question", [class.is-invalid]="submittedPointForm && tp.question.errors")
+                .inline-block.ml-2.font-size-12.text-brown(*ngIf="tp.question.valid") press enter
+                .invalid-feedback(*ngIf="submittedPointForm && tp.question.errors")
                   span Please enter a topic
 
 talking-point-menu(

@@ -86,8 +86,8 @@ export class MeetingDetailsComponent implements OnInit {
     });
 
     this.talkingPointForm = this.fb.group({
-      talking_point_type: ['custom', Validators.required],
-      custom_question: ['', Validators.required]
+      meeting_objective_type: ['custom', Validators.required],
+      question: ['', Validators.required]
     });
   }
 

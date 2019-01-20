@@ -12,24 +12,24 @@
                   ul
                     li.talking-point-types
                       label Add your own&nbsp;
-                        input(type="radio", value="custom", formControlName="talking_point_type", (change)="updateForm('custom')")
+                        input(type="radio", value="custom", formControlName="meeting_objective_type", (change)="updateFormQuestion('')")
                       hr
-                      ng-container(*ngIf="form.get('talking_point_type').value == 'custom'")
+                      ng-container(*ngIf="f.meeting_objective_type.value == 'custom'")
                         .custom-question
                           h5.font-bold Your Talking Point
-                          textarea.form-control(type="text", formControlName="custom_question", [class.is-invalid]="submitted && f.custom_question.errors")
+                          textarea.form-control(type="text", formControlName="question", [class.is-invalid]="submitted && f.question.errors")
                           .invalid-feedback
                             span Please enter a Talking Point
                     li.talking-point-types
                       label Choose an existing talking point&nbsp;
-                        input(type="radio", value="default", formControlName="talking_point_type", (change)="updateForm('default')")
+                        input(type="radio", value="default", formControlName="meeting_objective_type", (change)="updateFormQuestion('')")
                       hr
-                      ng-container(*ngIf="form.get('talking_point_type').value == 'default'")
-                        .invalid-feedback([class.d-block]="submitted && f.talking_point_id.errors")
+                      ng-container(*ngIf="f.meeting_objective_type.value == 'default'")
+                        .invalid-feedback([class.d-block]="submitted && f.question.errors")
                           span.font-bold Please choose a Talking Point
                         ul.talking-point-options
                           li(*ngFor="let talkingPoint of talkingPoints")
-                            button([class.selected]="f.talking_point_id.value == talkingPoint.id", [class.disabled]="alreadySelected(talkingPoint.id) && !discussionObj", (click)="selectTalkingPoint(talkingPoint)")
+                            button([class.selected]="f.question.value == talkingPoint.question", [class.disabled]="alreadySelected(talkingPoint.question) && !discussionObj", (click)="updateFormQuestion(talkingPoint.question)")
                               span {{ talkingPoint.question }}
   .talking-point-actions
     .m-auto.text-center
