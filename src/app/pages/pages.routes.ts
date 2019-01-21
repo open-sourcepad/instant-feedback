@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { LoginComponent } from './login/login.component';
+import { SentimentTestComponent } from './sentiment-test/sentiment-test';
 import { UserQuestionsComponent } from './user-questions/user-questions.component';
 import { PagesGuard } from './pages.guard';
 import { RoleGuard } from './role.guard';
@@ -43,6 +44,7 @@ export const routes: Routes = [
         path: 'employee',
         loadChildren: "./employee/employee.module#EmployeeModule"
       },
+      { path: 'sentiment-test',component: SentimentTestComponent},
       { path: 'employee/one-on-ones/:id',component: EmployeeMeetingDetailComponent}
     ]
   },

@@ -10,6 +10,7 @@ import { routing } from './pages.routes';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from './shared/shared.module';
 import { LoginComponent } from './login/login.component';
+import { SentimentTestComponent } from './sentiment-test/sentiment-test';
 import { PagesGuard } from './pages.guard';
 import { UserQuestionsComponent } from './user-questions/user-questions.component';
 import { EmployeeMeetingDetailComponent } from './employee/employee-meeting-detail/employee-meeting-detail.component';
@@ -22,6 +23,7 @@ const PAGES_MODULE = [
   declarations: [
     PagesComponent,
     LoginComponent,
+    SentimentTestComponent,
     UserQuestionsComponent,
     EmployeeMeetingDetailComponent
   ],

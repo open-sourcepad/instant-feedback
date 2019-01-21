@@ -1,0 +1,25 @@
+.row
+  .col-md-12.mr-auto.ml-auto
+    .row
+      .vertical-align.full-height.height-100
+        .card([ng2-loading]="loading")
+          .card-body
+            .pdd-horizon-30.pdd-vertical-30
+              h3 Sentiment Analysis
+              #sentiment-test
+                .form-group
+                  textarea.form-control([(ngModel)]="sentiment" placeholder="Insert text here...")
+                .row
+                  .col-md-12
+                    button.btn.btn-instant-feedback.btn-instant-feedback-primary.btn-block((click)="submit()")
+                      span Analyze
+                .row
+                  .col-md-4.form-group
+                    h4 IBM Tone Analyzer
+                    pre {{ ibmTone | json }}
+                  .col-md-4.form-group
+                    h4 Google Sentiment
+                    pre {{ googleSentiment | json }}
+                  .col-md-4.form-group
+                    h4 Google Entity Sentiment
+                    pre {{ googleEntitySentiment | json }}
