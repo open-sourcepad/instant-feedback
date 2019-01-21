@@ -7,7 +7,6 @@ import { SharedModule } from '../shared/shared.module';
 import { Ng2LoadingSpinnerModule } from 'ng2-loading-spinner';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { datePrettyFormat } from '../../services/pipes/date-pretty-format.pipe';
 
 import { ManagerComponent } from './manager.component';
 import { ManagerOverviewComponent } from './manager-overview/manager-overview.component';
@@ -34,8 +33,7 @@ const MODULE_COMPONENTS = [
     SharedModule
   ],
   declarations: [
-    ...MODULE_COMPONENTS,
-    datePrettyFormat
+    ...MODULE_COMPONENTS
   ],
 })
 

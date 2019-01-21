@@ -30,9 +30,6 @@ export class ManagerMeetingsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.questionForm = this.fb.group({
-      questions: this.fb.array([])
-    });
 
     this.loadMeetings();
   }
