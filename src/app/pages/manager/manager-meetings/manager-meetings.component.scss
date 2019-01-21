@@ -1,32 +1,57 @@
 #default-questions-container {
   background-color: white;
-  display: inline-block;
-  vertical-align: top;
-  width: 40%;
-  margin-right: 20px;
+  // display: inline-block;
+  // vertical-align: top;
+  // width: 40%;
+  margin-right: 50px;
 
   #default-questions {
     color: #C3BAAA;
-    font-size: xx-large;
+    font-size: 16px;
     line-height: 26px;
+    padding-inline-start: 0.5rem;
 
     li {
       margin-bottom: 15px;
     }
 
-    input {
-      color: #333;
+    input, .text {
+      color: #4A4A4A;
+      font-family: Karla;
       font-size: 16px;
-      position: relative;
-      top: -5px;
+      line-height: 23px;
+      width: 77%;
     }
+
+    .float-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+
+  input {
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid #979797;
+    width: 77%;
+
+    &:focus {
+      border-bottom-width: 2px;
+    }
+  }
+
+  .press-enter {
+    color: rgba(125,124,122,0.32);
+    font-family: "MADE Evolve Sans";
+    font-size: 12px;
+    right: -11px !important;
   }
 }
 
 #meetings-container {
   background-color: white;
-  display: inline-block;
-  vertical-align: top;
-  width: 55%;
+  max-width: 62.333333%;
+  padding: 40px;
 }
 

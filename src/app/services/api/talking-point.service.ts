@@ -14,4 +14,8 @@ export class TalkingPointService extends BaseService {
   ) {
     super(http, ENDPOINT);
   }
+
+  myTopics(){
+    return this.http.get(`${this.apiEndpoint}/my_default_topics`);
+  }
 }

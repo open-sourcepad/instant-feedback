@@ -1,14 +1,33 @@
 .row
-  .col-md-9.m-auto
+  .col-md-10.m-auto
     .mt-5
+      .row
 
-      #default-questions-container
-        h4.section-heading.text-brown.mb-5 Default Questions
-        ul#default-questions
-          li(*ngFor="let obj of defaultQuestions; let i = index")
-            input(type="text", [name]="'questions[' + i +']'", [value]="obj.question")
-
-
-      #meetings-container
-        h4.section-heading.text-brown.mb-5 Meetings
-
+        #default-questions-container.col-md-4
+          h5.font-karla.font-bold.text-brown.mb-3.mt-5 Default Questions
+          form.container(novalidate, autocomplete="off", [formGroup]="questionForm")
+            ul#default-questions
+              li(formArrayName="questions", *ngFor="let question of questionForm.get('questions').controls; let i = index;")
+                div([formGroupName]="i")
+                  .relative
+                    .text(*ngIf="!question.get('user_id').value || editIndex != i") {{ question.get('question').value }}
+                    input.form-control.inline-block(*ngIf="editIndex == i", [class.is-invalid]="submitUpdated && question.controls.question.errors", type="text", formControlName="question", (keydown.enter)="updateQuestion(question.value)")
+                    .float-right.press-enter(*ngIf="editIndex == i && question.controls.question.valid") press enter
+                    .float-right(*ngIf="question.get('user_id').value && editIndex != i")
+                      button.btn-action((click)="editQuestion(question.value, i)")
+                        span.ti-pencil
+                      button.btn-action((click)="removeQuestion(question.value, i)")
+                        span.ti-trash
+                    .invalid-feedback
+                      span Please enter a question
+          br
+          h5.section-heading.mt-2.font-karla Add a question:
+          form(novalidate, autocomplete="off", [formGroup]="addQuestionForm", (ngSubmit)="submitQuestion(addQuestionForm.value)")
+            input.relative.inline-block.form-control([class.is-invalid]="submitted && f.question.errors", type="text", formControlName="question")
+            .float-right.press-enter(*ngIf="f.question.valid") press enter
+            .invalid-feedback
+              span Please enter a question
+          br
+          br
+        #meetings-container.col-md-7
+          
