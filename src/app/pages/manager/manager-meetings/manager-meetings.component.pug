@@ -85,7 +85,7 @@
                 td
                   span.text-capitalize {{ meeting['status'] }}
                 td.actions
-                  button.btn-action.font-bold VIEW
+                  button.btn-action.font-bold([routerLink]="['/one-on-ones', meeting.id]") VIEW
               tr(*ngIf="meetings.length < 1")
                 td.text-center(colspan="5")
                   span.text-idle No scheduled 1-on-1s

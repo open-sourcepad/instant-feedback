@@ -63,8 +63,8 @@
                       .vertical-align.qrtr-height
                         .table-cell
                           p.text-muted.opacity-75(*ngIf="(userIsManager && currentUser.id == obj?.manager?.id)") {{ obj?.employee?.display_name }} has no notes yet.
-                          button.btn.btn-instant-feedback.btn-instant-feedback-muted(*ngIf="(!userIsManager && currentUser.id == obj?.employee?.id)", (click)="addNotes(idx)") Add Notes
-                    .user-notes(*ngIf="!userIsManager && addNoteIdx == idx")
+                          button.btn.btn-instant-feedback.btn-instant-feedback-muted(*ngIf="(!userIsManager || currentUser.id == obj?.employee?.id)", (click)="addNotes(idx)") Add Notes
+                    .user-notes(*ngIf="(!userIsManager || currentUser.id == obj?.employee?.id) && addNoteIdx == idx")
                       textarea.form-control.form-add-talking-point.inline-block.w-75(type="text", [(ngModel)]="employeeInputNote", [class.is-invalid]="submittedNoteForm && employeeInputNote == ''", (keydown.enter)="submitNote(employeeInputNote, discuss)")
                       .inline-block.ml-2.font-size-12.text-brown(*ngIf="employeeInputNote != ''") press enter
                       .invalid-feedback(*ngIf="submittedNoteForm && employeeInputNote == ''")
@@ -77,7 +77,7 @@
                           p.font-bold.mb-1(*ngIf="(!userIsManager && currentUser.id == obj?.employee?.id)") Your Notes
                         li
                           p.text-justify {{ discuss.employee_notes }}
-        ng-container(*ngIf="(!userIsManager && currentUser.id == obj?.employee?.id) && meetingStatus != 'done'")
+        ng-container(*ngIf="(!userIsManager || currentUser.id == obj?.employee?.id) && meetingStatus != 'done'")
           .row
             .col-md-12
               form#user-add-topic(novalidate, autocomplete="off", [formGroup]="talkingPointForm", (ngSubmit)="submitTopic(talkingPointForm.value)")

@@ -197,8 +197,8 @@ export class MeetingDetailsComponent implements OnInit {
 
     if (this.talkingPointForm.valid) {
       this.saveDiscussion({action: 'create', values: values});
-      this.tp.custom_question.setValue('');
-      this.tp.custom_question.updateValueAndValidity();
+      this.tp.question.setValue('');
+      this.tp.question.updateValueAndValidity();
       this.submittedPointForm = false;
     }
   }
