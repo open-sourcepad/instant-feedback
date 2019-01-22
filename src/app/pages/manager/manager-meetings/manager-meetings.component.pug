@@ -6,7 +6,7 @@
           h5.font-karla.font-bold.text-brown.mb-3 Default Questions
           form.container(novalidate, autocomplete="off", [formGroup]="questionForm")
             ul#default-questions
-              li(formArrayName="questions", *ngFor="let question of questionForm.get('questions').controls; let i = index;")
+              li(formArrayName="questions", *ngFor="let question of questionformData; let i = index;")
                 div([formGroupName]="i")
                   .relative
                     .inline-block.text(*ngIf="!question.get('user_id').value || editIndex != i") {{ question.get('question').value }}

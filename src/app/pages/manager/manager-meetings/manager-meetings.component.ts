@@ -71,6 +71,7 @@ export class ManagerMeetingsComponent implements OnInit {
   ) { }
 
   get questions() { return <FormArray>this.questionForm.controls['questions']; }
+  get questionformData() { return this.questionForm.get('questions')['controls']; }
   get f() { return this.addQuestionForm.controls; }
   get filters() { return this.searchForm.controls; }
 
