@@ -1,19 +1,18 @@
 .row
   .col-md-10.m-auto
-    .mt-5
+    .mt-5.mb-5
       .row
-
-        #default-questions-container.col-md-4
-          h5.font-karla.font-bold.text-brown.mb-3.mt-5 Default Questions
+        #default-questions-container.col-md-4([ng2-loading]="loading.topics")
+          h5.font-karla.font-bold.text-brown.mb-3 Default Questions
           form.container(novalidate, autocomplete="off", [formGroup]="questionForm")
             ul#default-questions
               li(formArrayName="questions", *ngFor="let question of questionForm.get('questions').controls; let i = index;")
                 div([formGroupName]="i")
                   .relative
-                    .text(*ngIf="!question.get('user_id').value || editIndex != i") {{ question.get('question').value }}
+                    .inline-block.text(*ngIf="!question.get('user_id').value || editIndex != i") {{ question.get('question').value }}
                     input.form-control.inline-block(*ngIf="editIndex == i", [class.is-invalid]="submitUpdated && question.controls.question.errors", type="text", formControlName="question", (keydown.enter)="updateQuestion(question.value)")
                     .float-right.press-enter(*ngIf="editIndex == i && question.controls.question.valid") press enter
-                    .float-right(*ngIf="question.get('user_id').value && editIndex != i")
+                    .inline-block.ml-1(*ngIf="question.get('user_id').value && editIndex != i")
                       button.btn-action((click)="editQuestion(question.value, i)")
                         span.ti-pencil
                       button.btn-action((click)="removeQuestion(question.value, i)")
@@ -29,5 +28,67 @@
               span Please enter a question
           br
           br
-        #meetings-container.col-md-7
+        #meetings-container.col-md-7([ng2-loading]="loading.meetings")
+          form.mt-4(novalidate, autocomplete="off", [formGroup]="searchForm")
+            #date-range.inline-block
+              span.font-bold {{ filters.date_since.value | date : 'MMMM d, y'}} - {{ filters.date_until.value | date : 'MMMM d, y'}}&nbsp;&nbsp;
+              button.btn.btn-instant-feedback.btn-daterange(daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
+                .icon-calendar.icon-sm.inline-block
+                .icon-down-nav.icon-xs.inline-block
+            #search-bar.float-right
+              span.ti-search.text-idle
+              input.form-control.inline-block(type="text", formControlName="username", placeholder="Search", (keydown.enter)="searchMeetings(searchForm.value)")
+          br
+          br
+          table.table.table-striped
+            thead
+              tr
+                th
+                  ng-container(*ngIf="orderParams['manager'] != 'asc'")
+                    button.btn-action((click)="changeOrder('manager', 'asc')")
+                      span Facilitator
+                      span.icon-holder.ti-angle-down
+                  ng-container(*ngIf="orderParams['manager'] && orderParams['manager'] != 'desc'")
+                    button.btn-action((click)="changeOrder('manager', 'desc')")
+                      span Facilitator
+                      span.icon-holder.ti-angle-up
+                th
+                  ng-container(*ngIf="orderParams['employee'] != 'asc'")
+                    button.btn-action((click)="changeOrder('employee', 'asc')")
+                      span Employee
+                      span.icon-holder.ti-angle-down
+                  ng-container(*ngIf="orderParams['employee'] && orderParams['employee'] != 'desc'")
+                    button.btn-action((click)="changeOrder('employee', 'desc')")
+                      span Employee
+                      span.icon-holder.ti-angle-up
+                th
+                  ng-container(*ngIf="orderParams['set_schedule'] != 'asc'")
+                    button.btn-action((click)="changeOrder('set_schedule', 'asc')")
+                      span Date
+                      span.icon-holder.ti-angle-down
+                  ng-container(*ngIf="orderParams['set_schedule'] && orderParams['set_schedule'] != 'desc'")
+                    button.btn-action((click)="changeOrder('set_schedule', 'desc')")
+                      span Date
+                      span.icon-holder.ti-angle-up
+                th
+                  span Status
+                th
+                  span
+            tbody
+              tr(*ngFor="let meeting of meetings | paginate: paginationControls")
+                td
+                  span {{ meeting['manager']['display_name'] }}
+                td
+                  span {{ meeting['employee']['display_name'] }}
+                td
+                  span {{ meeting['set_schedule'] | date: 'MMMM d' }}
+                td
+                  span.text-capitalize {{ meeting['status'] }}
+                td.actions
+                  button.btn-action.font-bold VIEW
+              tr(*ngIf="meetings.length < 1")
+                td.text-center(colspan="5")
+                  span.text-idle No scheduled 1-on-1s
+          .mr-3
+            pagination([config]="paginationControls", (pageChange)="pageChange($event)")
           

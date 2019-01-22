@@ -1,8 +1,8 @@
 #default-questions-container {
   background-color: white;
-  // display: inline-block;
-  // vertical-align: top;
-  // width: 40%;
+  padding-left: 40px;
+  padding-top: 24px;
+  padding-right: 40px;
   margin-right: 50px;
 
   #default-questions {
@@ -20,7 +20,7 @@
       font-family: Karla;
       font-size: 16px;
       line-height: 23px;
-      width: 77%;
+      // width: 77%;
     }
 
     .float-right {
@@ -51,7 +51,73 @@
 
 #meetings-container {
   background-color: white;
+  font-family: 'Karla';
   max-width: 62.333333%;
-  padding: 40px;
+  padding: 0;
+
+  form {
+    padding-left: 55px;
+    padding-right: 55px;
+  }
+
+  #date-range > .btn-daterange {
+    margin-bottom: 0;
+    padding-left: 2px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  
+  #date-range > .btn-daterange .icon-calendar {
+    height: 16.17px;
+    width: 24px;
+  }
+  #date-range > .btn-daterange .icon-down-nav {
+    width: 6.78px;
+    background-position: center;
+  }
+
+  #search-bar {
+    background-color: #F9F9F9;
+    border-radius: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
+    input {
+      background-color: transparent;
+      border: 0;
+      padding-left: 5px;
+      width: 90%;
+    }
+  }
+
+  .table th, .table td {
+    border: 0;
+
+    &:first-child {
+      padding-left: 2.5rem;
+    }
+  }
+
+  .table > thead th span {
+    color: #C3BAAA;
+    font-weight: bold;
+
+    &.icon-holder {
+      font-size: 9px;
+      margin-left: 14px;
+    }
+  }
+
+  .table > tbody td {
+    font-family: 'MADE Evolve Sans';
+    font-size: 16px;
+
+    
+  }
+
+  .table > tbody td.actions {
+    font-family: inherit;
+    font-size: 12px;
+    vertical-align: middle;
+  }
 }
 

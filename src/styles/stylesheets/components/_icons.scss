@@ -47,6 +47,11 @@
   transform: rotate(180deg);
 }
 
+.icon-down-nav{
+  background-image: url("../icons/previous-nav.png");
+  transform: rotate(-90deg);
+}
+
 .icon-xs {
   height: 12.2px;
   width: auto;
