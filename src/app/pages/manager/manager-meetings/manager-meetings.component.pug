@@ -32,7 +32,7 @@
           form.mt-4(novalidate, autocomplete="off", [formGroup]="searchForm")
             #date-range.inline-block
               span.font-bold {{ filters.date_since.value | date : 'MMMM d, y'}} - {{ filters.date_until.value | date : 'MMMM d, y'}}&nbsp;&nbsp;
-              button.btn.btn-instant-feedback.btn-daterange(daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
+              button.btn.btn-instant-feedback.btn-daterange(daterangepicker, [options]="options", (selected)="selectedDate($event)")
                 .icon-calendar.icon-sm.inline-block
                 .icon-down-nav.icon-xs.inline-block
             #search-bar.float-right
