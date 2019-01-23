@@ -36,6 +36,11 @@
         select.form-control.inline-block.w-auto([(ngModel)]="selectedUser", (change)="loadFeedbacks()")
           option(value="") ALL
           option(*ngFor="let user of users", [value]="user.id") {{ user.display_name }}
+
+        #mood-score(*ngIf="showMoodScore")
+          span Feedback Mood
+          img(*ngIf="moodScore > 0.24", src="assets/images/happy-face.png")
+          img(*ngIf="moodScore < 0", src="assets/images/sad-face.png")
       .mt-3.mb-3
         ul.reset.user-overview-options
           li.is-active
@@ -49,10 +54,16 @@
             span.text-idle.font-size-12 {{ obj.updated_at | datePrettyFormat }}
             br
             ng-container(*ngIf="currentTab == 'received'")
+              span
+                img(*ngIf="obj.sentiment_score > 0.24", src="assets/images/happy-face.png")
+                img(*ngIf="obj.sentiment_score < 0", src="assets/images/sad-face.png")
               span.font-bold.text-indigo {{ obj.sender }}&nbsp;
               span said
               span.text-idle(*ngIf="obj.question") &nbsp;(in response to your feedback request)
             ng-container(*ngIf="currentTab == 'given'")
+              span
+                img(*ngIf="obj.sentiment_score > 0.24", src="assets/images/happy-face.png")
+                img(*ngIf="obj.sentiment_score < 0", src="assets/images/sad-face.png")
               span.font-bold.text-indigo You&nbsp;
               span said to {{ obj.recipient.name }}
               span.text-idle(*ngIf="obj.question") &nbsp;(in response to {{ obj.recipient.preposition }} feedback request)

@@ -19,6 +19,9 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
   selectedUser = "";
   currentTab = 'received';
 
+  moodScore: number = 0;
+  showMoodScore: boolean = false;
+
   //request feedback
   loadingPending: boolean = false;
   requests = [];
@@ -193,6 +196,8 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
         this.loading = false;
         this.collection = res['collection']['data'];
         this.paginationControls['totalItems'] = res['metadata']['record_count'];
+        this.moodScore = this.collection.reduce((sum, obj) => sum + parseFloat(obj.sentiment_score), 0.0) / this.collection.length;
+        this.showMoodScore = this.moodScore < 0 || this.moodScore > 0.24;
       }, err => {
         this.loading = false;
       });

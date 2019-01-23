@@ -24,6 +24,13 @@
   font-size: 1.05rem;
   padding-bottom: 1rem;
   margin-bottom: 1rem;
+
+  img {
+    width: 14px;
+    height: 14px;
+    margin-right: 12px;
+    vertical-align: baseline;
+  }
 }
 
 .feedback-list > .feedback p {
@@ -47,6 +54,7 @@
 }
 
 #feedback-filters {
+  position: relative;
   font-size: 1.05rem;
 
   > select {
@@ -54,5 +62,35 @@
     background: transparent;
     font-weight: bold;
     font-size: 1.05rem;
+  }
+}
+
+#mood-score {
+  position: absolute;
+  top: 0;
+  right: 17px;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 9px 0 rgba(0,0,0,0.03);
+  width: 200px;
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+
+  span {
+    color: #496584;
+    font-family: Karla;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: -0.27px;
+    line-height: 19px;
+    display: inline-block;
+    margin: 16px auto;
+  }
+
+  img {
+    width: 20px;
+    height: 18px;
+    margin-left: 14px;
   }
 }
