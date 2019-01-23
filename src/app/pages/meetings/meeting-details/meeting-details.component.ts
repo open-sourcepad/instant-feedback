@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { trigger, state, style, transition, animate, query, stagger, keyframes} from '@angular/animations';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MeetingService, DiscussionService, SessionService } from '../../../services/api';
+import { MeetingDiscussion, Meeting } from 'src/app/models';
 
 @Component({
   selector: 'app-meeting-details',
@@ -38,8 +39,7 @@ export class MeetingDetailsComponent implements OnInit {
 
   slug_id = null;
   loading = false;
-  obj = null;
-  discussions: any = [];
+  meeting = new Meeting();
   actionItems: any = [];
   discussionObj: any = null;
   menuState: string = 'out';
@@ -49,15 +49,16 @@ export class MeetingDetailsComponent implements OnInit {
   currentUser: any = {};
   userIsManager: boolean = false;
   addNoteIdx: number = null;
-  employeeInputNote: string = '';
+  addNoteObj: Object = null;
 
+  discussionForm: FormGroup;
   talkingPointForm: FormGroup;
   submittedPointForm: boolean = false;
   submittedNoteForm: boolean = false;
   showReschedModal: boolean = false;
 
   //confirmation modal
-  showModal: boolean = false;
+  showRemoveModal: boolean = false;
   modalText: any = {body: 'Are you sure you want to delete it?'};
   modalButtons: any = {cancel: {text: 'Cancel'}, confirm: {text: 'Yes, delete.'}};
 
@@ -75,8 +76,14 @@ export class MeetingDetailsComponent implements OnInit {
 
   // convenience getter for easy access to form fields
   get tp() { return this.talkingPointForm.controls; }
-
+  get discussions() { return <FormArray>this.discussionForm.controls['discussions']; }
+  get discussionFormData() { return this.discussionForm.get('discussions')['controls']; }
+  
   ngOnInit() {
+    this.discussionForm = this.fb.group({
+      discussions: this.fb.array([])
+    });
+
     this.activeRoute.params.subscribe(params => {
       this.slug_id = +params['id'];
 
@@ -96,17 +103,20 @@ export class MeetingDetailsComponent implements OnInit {
     this.meetingApi.get(slug_id)
       .subscribe( res => {
         this.loading = false;
-        this.obj = res['data'];
-        this.meetingStatus = this.obj.status;
+        this.meeting = new Meeting(res['data']);
+        this.meetingStatus = this.meeting.status;
         this.actionEditable = this.meetingStatus != 'done';
-        this.discussions = res['data']['discussions']['data'];
+        res['data']['discussions']['data'].forEach(discussion => {
+          let obj = new MeetingDiscussion(discussion);
+          this.discussions.push(obj.setForm());
+        });
         this.actionItems = res['data']['action_items'];
       }, err => {
         this.loading = false;
       });
   }
 
-  addTalkingPoints() {
+  showTalkingPointMenu() {
     this.menuState = this.menuState === 'out' ? 'in' : 'out';
     if(this.menuState === 'out'){
       this.discussionObj = null;
@@ -119,14 +129,18 @@ export class MeetingDetailsComponent implements OnInit {
     if(obj.action == "create") {
       this.discussionApi.create(params)
         .subscribe( res => {
-          this.loadData(this.slug_id);
+          let obj = new MeetingDiscussion(res['data']);
+          this.discussions.push(obj.setForm());
+          this.loading = false;
         }, err => {
           this.loading = false;
         });
     }else {
+      let idx = this.discussions.controls.findIndex(x => x.value.id == this.discussionObj.id);
       this.discussionApi.update(this.discussionObj.id, params)
         .subscribe( res => {
-          this.loadData(this.slug_id);
+          this.loading = false;
+          this.discussions.at(idx).patchValue(res['data']);
         }, err => {
           this.loading = false;
         });
@@ -135,29 +149,18 @@ export class MeetingDetailsComponent implements OnInit {
 
   editDiscussion(obj) {
     this.discussionObj = obj;
-    this.addTalkingPoints();
+    this.showTalkingPointMenu();
   }
 
-  removeDiscussion(obj) {
-    this.loading = true;
-
-    let idx = this.discussions.findIndex(x => x.id == obj.id);
-    this.discussionApi.destroy(obj.id)
-      .subscribe( res => {
-        this.loading = false;
-        this.discussions.splice(idx, 1);
-      }, err => {
-        this.loading = false;
-      });
-  }
-
+  // reorder discussions
   moveUp(item, idx) {
     item.point_order -= 1;
-    let adjItem = this.discussions[idx - 1];
-    adjItem.point_order += 1;
+    let adjItem = this.discussions.controls[idx - 1];
+    let adjNewOrder = adjItem.get('point_order').value + 1;
+    adjItem.patchValue({point_order: adjNewOrder});
 
-    this.discussions.splice(idx, 1);
-    this.discussions.splice(idx - 1, 0, item);
+    this.discussions.at(idx).patchValue(adjItem.value);
+    this.discussions.at(idx - 1).patchValue(item);
 
     this.updateOrder(item);
     this.updateOrder(adjItem);
@@ -165,33 +168,56 @@ export class MeetingDetailsComponent implements OnInit {
 
   moveDown(item, idx) {
     item.point_order += 1;
-    let adjItem = this.discussions[idx + 1];
-    adjItem.point_order -= 1;
+    let adjItem = this.discussions.controls[idx + 1];
+    let adjNewOrder = adjItem.get('point_order').value - 1;
+    adjItem.patchValue({point_order: adjNewOrder});
 
-    this.discussions.splice(idx, 1);
-    this.discussions.splice(idx + 1, 0, item);
+    this.discussions.at(idx).patchValue(adjItem.value);
+    this.discussions.at(idx + 1).patchValue(item);
 
     this.updateOrder(item);
     this.updateOrder(adjItem);
   }
 
   updateOrder(values) {
-    let params = Object.assign(values, {meeting_id: this.slug_id});
-    this.discussionApi.update(params.id, params)
-      .subscribe( res => {
-      }, err => {
-      });
+    this.discussionApi.update(values.id, values);
   }
 
+  // redirect page: start meeting
   startDiscussion(){
     this.router.navigateByUrl(`/one-on-ones/${this.slug_id}/discussion?action=start`);
   }
 
-  addNotes(idx) {
+  // employee add note on discussion
+  addNotes(idx, obj) {
+    if(this.addNoteIdx) this.discussions.at(this.addNoteIdx).patchValue(this.addNoteObj);
     this.addNoteIdx = idx;
-    this.employeeInputNote = '';
+    this.addNoteObj = obj;
+    this.submittedNoteForm = false;
   }
 
+  submitNote(values) {
+    this.loading = true;
+    this.submittedNoteForm = true;
+
+    if(this.discussions.controls[this.addNoteIdx].invalid) {
+      this.loading = false;   
+      return;
+    }else {
+      this.discussionApi.update(values.id, values)
+        .subscribe( res => {
+          this.loading = false;
+          this.submittedNoteForm = false;
+          this.addNoteIdx = null;
+          this.addNoteObj = null;
+        }, err => {
+          this.loading = false;
+        });
+    }
+    return false;
+  }
+
+  // employee add new discussion
   submitTopic(values) {
     this.submittedPointForm = true;
 
@@ -203,32 +229,35 @@ export class MeetingDetailsComponent implements OnInit {
     }
   }
 
-  submitNote(value, obj) {
-    this.submittedNoteForm = true;
-
-    if(value.trim() == '') {
-      this.employeeInputNote = value.trim();
-      return;
-    }
-    let params = {employee_notes: value};
-    this.discussionObj = obj;
-    this.saveDiscussion({action: 'update', values: params});
-    this.submittedNoteForm = false;
-  }
-
+  // reschedule meeting
   closeReschedModal() {
     this.showReschedModal = false;
   }
 
   updateMeeting(meeting) {
-    this.obj = meeting;
+    this.meeting = meeting;
   }
 
-  modalStateChange(value) {
-    this.showModal = value;
+  // remove discussion
+  removeDiscussion(values) {
+    this.showRemoveModal = true;
+    this.discussionObj = values;
+  }
+
+  confirmModalState(value){
+    this.showRemoveModal = value;
   }
 
   onRemove(values) {
-    this.removeDiscussion(values);
+    this.loading = true;
+
+    let idx = this.discussions.controls.findIndex(x => x.value.id == values.id);
+    this.discussionApi.destroy(values.id)
+      .subscribe( res => {
+        this.loading = false;
+        this.discussions.removeAt(idx)
+      }, err => {
+        this.loading = false;
+      });
   }
 }

@@ -46,7 +46,7 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if(this.discussionObj){
       this.form.patchValue({
-        meeting_objective_type: this.discussionObj.meeting_objective_type,
+        meeting_objective_type: this.discussionObj.discuss_type,
         question: this.discussionObj.question
       });
     }
@@ -67,8 +67,7 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
     }
 
     this.save.emit({values, action});
-    this.form.get('question').setValue('');
-    this.form.get('question').updateValueAndValidity();
+    this.form.patchValue({question: ''});
     this.loading = false;
     this.submitted = false;
     this.cancel.emit();
@@ -80,7 +79,7 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
   }
 
   alreadySelected(question){
-    return this.selectedPoints.find(x => x['question'] == question);
+    return this.selectedPoints.controls.find(x => x.value.question == question);
   }
 
 }

@@ -39,11 +39,11 @@ ul {
 
 .custom-question, .talking-point-options {
   padding-top: 0.5em;
-  padding-bottom: 1.8rem;
+  margin-bottom: 1.8rem;
 }
 
 .talking-point-options {
-  height: 370px;
+  height: 302px;
   overflow-y: auto;
 
   li > button {
@@ -67,6 +67,9 @@ ul {
 .talking-point-actions {
   background-color: #333333;
   padding: 25px;
+  clear: both;
+  position: relative;
+  bottom: 0;
 
   .btn-round {
     border-radius: 25px;

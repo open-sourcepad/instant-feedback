@@ -29,7 +29,7 @@
                           span.font-bold Please choose a Talking Point
                         ul.talking-point-options
                           li(*ngFor="let talkingPoint of talkingPoints")
-                            button([class.selected]="f.question.value == talkingPoint.question", [class.disabled]="alreadySelected(talkingPoint.question) && !discussionObj", (click)="updateFormQuestion(talkingPoint.question)")
+                            button([class.selected]="f.question.value == talkingPoint.question", [class.disabled]="alreadySelected(talkingPoint.question)", (click)="updateFormQuestion(talkingPoint.question)")
                               span {{ talkingPoint.question }}
   .talking-point-actions
     .m-auto.text-center
