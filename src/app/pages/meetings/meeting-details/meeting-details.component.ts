@@ -185,7 +185,13 @@ export class MeetingDetailsComponent implements OnInit {
 
   // redirect page: start meeting
   startDiscussion(){
-    this.router.navigateByUrl(`/one-on-ones/${this.slug_id}/discussion?action=start`);
+    if(!this.meeting.started_at) {
+      this.meetingApi.start(this.slug_id).subscribe(res => {
+        this.router.navigateByUrl(`/one-on-ones/${this.slug_id}/discussion?action=start`);
+      });
+    }else {
+      this.router.navigateByUrl(`/one-on-ones/${this.slug_id}/discussion?action=start`);
+    }
   }
 
   // employee add note on discussion

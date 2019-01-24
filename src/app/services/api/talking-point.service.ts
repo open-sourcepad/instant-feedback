@@ -18,4 +18,8 @@ export class TalkingPointService extends BaseService {
   myTopics(){
     return this.http.get(`${this.apiEndpoint}/my_default_topics`);
   }
+
+  addDefaultTopic(payload){
+    return this.http.post(`${this.apiEndpoint}/create_default_topic`, payload);
+  }
 }

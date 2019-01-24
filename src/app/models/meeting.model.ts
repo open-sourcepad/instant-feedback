@@ -7,6 +7,7 @@ export class Meeting {
   public manager;
   public scheduled_at;
   public status;
+  public started_at;
 
   constructor(
     fields?: {
@@ -17,6 +18,7 @@ export class Meeting {
     manager?: Object,
     scheduled_at?: string,
     status?: string,
+    started_at?: string,
     id? :number},
   ) {
      if (fields) Object.assign(this, fields);

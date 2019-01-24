@@ -157,7 +157,7 @@ export class ManagerMeetingsComponent implements OnInit {
       return;
     }
 
-    this.topicApi.create(values).subscribe(res => {
+    this.topicApi.addDefaultTopic(values).subscribe(res => {
       var obj = new MeetingTopic(res['data']);
       this.questions.push(obj.setForm(this.createQuestionForm()));
       this.addQuestionForm = this.createQuestionForm();      
