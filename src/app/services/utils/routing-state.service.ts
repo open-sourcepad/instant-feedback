@@ -4,7 +4,6 @@ import { filter, pairwise } from 'rxjs/operators';
 
 @Injectable()
 export class RoutingState {
-  private history = [];
   private previousUrl = '';
   private sub: any;
 
@@ -28,5 +27,9 @@ export class RoutingState {
 
   public getPreviousUrl(): string {
     return this.previousUrl || null;
+  }
+
+  public setPreviousUrl(url) {
+    this.previousUrl = url
   }
 }

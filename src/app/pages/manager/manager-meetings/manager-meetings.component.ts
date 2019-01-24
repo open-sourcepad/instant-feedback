@@ -4,6 +4,8 @@ import { MyMeetingService, TalkingPointService, SessionService } from '../../../
 import { PaginationInstance } from 'ngx-pagination';
 import { MeetingTopic, User } from 'src/app/models';
 import * as moment from 'moment';
+import { Router, ActivatedRoute } from '@angular/router';
+import { RoutingState } from 'src/app/services/utils';
 
 @Component({
   selector: 'app-manager-meetings',
@@ -23,6 +25,7 @@ export class ManagerMeetingsComponent implements OnInit {
   currentUser: User;
   editIndex: number;
   editObj: any;
+  queryParams = {page: 1};
 
   questionForm: FormGroup;
   addQuestionForm: FormGroup;
@@ -67,7 +70,10 @@ export class ManagerMeetingsComponent implements OnInit {
     private fb: FormBuilder,
     private myMeetingApi: MyMeetingService,
     private topicApi: TalkingPointService,
-    private session: SessionService
+    private session: SessionService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private routingState: RoutingState
   ) { }
 
   get questions() { return <FormArray>this.questionForm.controls['questions']; }
@@ -92,8 +98,29 @@ export class ManagerMeetingsComponent implements OnInit {
       username: ['']
     });
 
-    this.searchMeetings(this.searchForm.value);
+    this.routingState.loadRouting();
+    if(this.routingState.getPreviousUrl() == null) this.routingState.setPreviousUrl('/manager/one-on-ones');
+
+    this.route.queryParams.subscribe(params => {
+      if(Object.keys(params).length > 0){
+        this.searchForm.patchValue({
+          date_since: params['date_since'],
+          date_until: params['date_until'],
+          username: params['username']
+        });
+        this.paginationControls['currentPage'] = params['page'];
+
+        this.loadMeetings(this.searchForm.value);
+      } else {
+        this.loadMeetings(this.searchForm.value);
+      }
+    });
+
     this.loadTopics();
+  }
+
+  ngOnDestroy(){
+    this.routingState.stopRouting();
   }
 
   createQuestionForm(){
@@ -104,7 +131,7 @@ export class ManagerMeetingsComponent implements OnInit {
     })
   }
 
-  searchMeetings(values) {
+  loadMeetings(values) {
     this.loading['meetings'] = true;
     let params = values;
     params['page'] = {
@@ -209,7 +236,7 @@ export class ManagerMeetingsComponent implements OnInit {
       date_until: moment(value.end).format('YYYY/MM/DD 23:59:59')
     });
 
-    this.searchMeetings(this.searchForm.value);
+    this.onSearch(this.searchForm.value);
   }
 
   changeOrder(key, val){
@@ -221,11 +248,20 @@ export class ManagerMeetingsComponent implements OnInit {
       this.orderParams[key] = val;
     }
 
-    this.searchMeetings(this.searchForm.value);
+    this.onSearch(this.searchForm.value);
   }
 
   pageChange(evt) {
     this.paginationControls['currentPage'] = evt;
-    this.searchMeetings(this.searchForm.value);
+    this.onSearch(this.searchForm.value);
+  }
+
+  onSearch(values) {
+    for(let key of Object.keys(values)){
+      this.queryParams[key] = values[key];
+    }
+    this.queryParams['page'] = this.paginationControls['currentPage'];
+
+    this.router.navigate([], { queryParams: this.queryParams});
   }
 }

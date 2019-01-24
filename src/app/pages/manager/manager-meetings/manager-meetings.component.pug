@@ -29,15 +29,15 @@
           br
           br
         #meetings-container.col-md-7([ng2-loading]="loading.meetings")
-          form.mt-4(novalidate, autocomplete="off", [formGroup]="searchForm")
+          form.mt-4(novalidate, autocomplete="off", [formGroup]="searchForm", (ngSubmit)="onSearch(searchForm.value)")
             #date-range.inline-block
               span.font-bold {{ filters.date_since.value | date : 'MMMM d, y'}} - {{ filters.date_until.value | date : 'MMMM d, y'}}&nbsp;&nbsp;
-              button.btn.btn-instant-feedback.btn-daterange(daterangepicker, [options]="options", (selected)="selectedDate($event)")
+              button.btn.btn-instant-feedback.btn-daterange(type="button", daterangepicker, [options]="options", (selected)="selectedDate($event)")
                 .icon-calendar.icon-sm.inline-block
                 .icon-down-nav.icon-xs.inline-block
             #search-bar.float-right
               span.ti-search.text-idle
-              input.form-control.inline-block(type="text", formControlName="username", placeholder="Search", (keydown.enter)="searchMeetings(searchForm.value)")
+              input.form-control.inline-block(type="text", formControlName="username", placeholder="Search")
           br
           br
           table.table.table-striped
