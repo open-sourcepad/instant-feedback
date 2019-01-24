@@ -38,16 +38,16 @@
           th
             span Manager
           th
-            ng-container(*ngIf="!sort_by['set_schedule']")
-              button((click)="changeOrder('set_schedule', 'asc')")
+            ng-container(*ngIf="!sort_by['scheduled_at']")
+              button((click)="changeOrder('scheduled_at', 'asc')")
                 span Schedule
-            ng-container(*ngIf="sort_by['set_schedule']")
-              ng-container(*ngIf="sort_by['set_schedule'] == 'asc'")
-                button((click)="changeOrder('set_schedule', 'desc')")
+            ng-container(*ngIf="sort_by['scheduled_at']")
+              ng-container(*ngIf="sort_by['scheduled_at'] == 'asc'")
+                button((click)="changeOrder('scheduled_at', 'desc')")
                   span Schedule
                   span.icon-holder.ti-arrow-up
-              ng-container(*ngIf="sort_by['set_schedule'] == 'desc'")
-                button((click)="changeOrder('set_schedule', 'asc')")
+              ng-container(*ngIf="sort_by['scheduled_at'] == 'desc'")
+                button((click)="changeOrder('scheduled_at', 'asc')")
                   span Schedule
                   span.icon-holder.ti-arrow-down
           th
@@ -79,9 +79,9 @@
             td
               span {{ obj.manager.display_name }}
             td.schedule
-              span.schedule([class.due]="obj.status == 'due'") {{ obj.set_schedule | date: 'MMMM d' }}
+              span.schedule([class.due]="obj.status == 'due'") {{ obj.scheduled_at | date: 'MMMM d' }}
             td.schedule
-              span([innerHTML]="!!obj.actual_schedule ? (obj.actual_schedule | date: 'MMMM d') : '-'")
+              span([innerHTML]="!!obj.finished_at ? (obj.finished_at | date: 'MMMM d') : '-'")
             td
               span.text-capitalize {{ obj.status }}
             td.actions

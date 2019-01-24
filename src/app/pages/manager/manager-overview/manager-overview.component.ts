@@ -71,7 +71,7 @@ export class ManagerOverviewComponent implements OnInit {
   }
 
   isForThisWeek(meet) {
-    return moment(meet.set_schedule).week() == moment().week();
+    return moment(meet.scheduled_at).week() == moment().week();
   }
 
   loadActionItems() {

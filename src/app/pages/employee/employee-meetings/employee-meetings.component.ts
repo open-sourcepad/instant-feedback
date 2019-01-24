@@ -12,7 +12,7 @@ export class EmployeeMeetingsComponent implements OnInit {
   loading: boolean = false;
   collection: any = [];
   recordCount: number = 0;
-  orderParams = {set_schedule: 'desc'};
+  orderParams = {scheduled_at: 'desc'};
 
   paginationControls: PaginationInstance = {
     id: 'paginationResults',

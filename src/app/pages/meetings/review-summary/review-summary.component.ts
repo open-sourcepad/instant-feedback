@@ -78,7 +78,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.loading = true;
     this.meetingForm = this.fb.group({
-      'set_schedule': [this.options.startDate, Validators.required]
+      'scheduled_at': [this.options.startDate, Validators.required]
     });
     if(this.meeting) {
       this.meetingForm.addControl('employee_id', new FormControl(this.meeting['employee']['id']));
@@ -116,8 +116,8 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
 
   selectedDate(value: any, datepicker?: any) {
     this.new_schedule = moment(value.start).format('D MMMM YYYY');
-    this.meetingForm.get('set_schedule').setValue(this.new_schedule);
-    this.meetingForm.get('set_schedule').updateValueAndValidity();
+    this.meetingForm.get('scheduled_at').setValue(this.new_schedule);
+    this.meetingForm.get('scheduled_at').updateValueAndValidity();
     this.editSchedule = false;
   }
 
@@ -132,7 +132,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
 
   finishMeeting(createVal){
     this.loading = true;
-    this.meetingApi.update(this.slug_id, {status: 'done', actual_schedule: moment().format('YYYY-MM-DD')})
+    this.meetingApi.update(this.slug_id, {status: 'done', finished_at: moment().format('YYYY-MM-DD')})
       .subscribe(res => {
         this.createMeeting(createVal);
       }, err => {

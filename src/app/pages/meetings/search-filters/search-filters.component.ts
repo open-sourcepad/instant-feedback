@@ -97,7 +97,7 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     manager_id: this.selectedManagerFilter['id'],
     status: this.selectedStatusesFilter[0],
     page: 1,
-    sort: 'set_schedule',
+    sort: 'scheduled_at',
     order: 'asc'
   }
 

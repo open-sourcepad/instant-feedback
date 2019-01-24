@@ -31,7 +31,7 @@ export class EmployeeOverviewComponent implements OnInit {
 
   loadMeetings() {
     this.loading = true;
-    this.myMeetingApi.search({order: {set_schedule: 'desc'}}).subscribe(res => {
+    this.myMeetingApi.search({order: {scheduled_at: 'desc'}}).subscribe(res => {
       this.loading = false;
       this.upcoming_meetings = res['collection']['data'].filter(d => d['status'] == 'upcoming');
       this.past_meetings = res['collection']['data'].filter(d => d['status'] == 'done');
@@ -51,7 +51,7 @@ export class EmployeeOverviewComponent implements OnInit {
     this.modalStateChange(true);
     this.currentSession.data = obj;
     this.currentSession.idx = idx;
-    let sessionDate = moment(obj.actual_schedule).format('MMMM D');
+    let sessionDate = moment(obj.finished_at).format('MMMM D');
     let text = `Are you sure you want to delete all action items on <span class="text-brown">${sessionDate}</span> 1-on-1 session?`;
     this.modalText = {body: text};
   }

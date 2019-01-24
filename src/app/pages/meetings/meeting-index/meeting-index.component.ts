@@ -37,7 +37,7 @@ export class MeetingIndexComponent implements OnInit {
     private router: Router,
     private routingState: RoutingState
   ) {
-    this.sort_by = {set_schedule: 'asc'};
+    this.sort_by = {scheduled_at: 'asc'};
   }
 
   ngOnInit() {

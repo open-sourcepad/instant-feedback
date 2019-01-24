@@ -55,21 +55,21 @@ export class RescheduleModalComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.meetingForm = this.fb.group({
-      set_schedule: [this.options.startDate, Validators.required],
+      scheduled_at: [this.options.startDate, Validators.required],
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.meeting && !changes.meeting.isFirstChange()) {
-      let initSched = moment(this.meeting.set_schedule).format('DD MMMM YYYY');
-      this.meetingForm.get('set_schedule').setValue(initSched);
+      let initSched = moment(this.meeting.scheduled_at).format('DD MMMM YYYY');
+      this.meetingForm.get('scheduled_at').setValue(initSched);
     }
   }
 
   selectedDate(value: any, datepicker?: any) {
     let newSchedule = moment(value.start).format('D MMMM YYYY');
-    this.meetingForm.get('set_schedule').setValue(newSchedule);
-    this.meetingForm.get('set_schedule').updateValueAndValidity();
+    this.meetingForm.get('scheduled_at').setValue(newSchedule);
+    this.meetingForm.get('scheduled_at').updateValueAndValidity();
   }
 
   save(values) {

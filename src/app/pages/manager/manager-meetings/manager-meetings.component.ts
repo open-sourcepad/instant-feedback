@@ -19,7 +19,7 @@ export class ManagerMeetingsComponent implements OnInit {
   meetings: any = [];
   defaultQuestions: any = [];
   recordCount: number = 0;
-  orderParams: any = {set_schedule: 'desc'};
+  orderParams: any = {scheduled_at: 'desc'};
   currentUser: User;
   editIndex: number;
   editObj: any;

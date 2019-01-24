@@ -1,21 +1,21 @@
 export class Meeting {
   public id;
   public action_items;
-  public actual_schedule;
+  public finished_at;
   public discussions;
   public employee;
   public manager;
-  public set_schedule;
+  public scheduled_at;
   public status;
 
   constructor(
     fields?: {
     action_items?: any,
-    actual_schedule?: string,
+    finished_at?: string,
     discussions?: any,
     employee?: Object,
     manager?: Object,
-    set_schedule?: string,
+    scheduled_at?: string,
     status?: string,
     id? :number},
   ) {

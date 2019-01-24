@@ -15,8 +15,8 @@
               | {{ meeting.manager?.display_name.split(" ")[1].charAt(0) }}
         .user-header
           h1.title 1-on-1 with {{ meeting.employee?.display_name }}
-          h3 {{ meeting.set_schedule | date: 'MMMM d, y' }}
-          h3.font-bold(*ngIf="meetingStatus == 'done'") Actual 1-on-1 date: {{ meeting.actual_schedule | date: 'MMMM d, y' }}
+          h3 {{ meeting.scheduled_at | date: 'MMMM d, y' }}
+          h3.font-bold(*ngIf="meetingStatus == 'done'") Actual 1-on-1 date: {{ meeting.finished_at | date: 'MMMM d, y' }}
           .user-actions(*ngIf="meetingStatus != 'done'")
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3(*ngIf="(userIsManager && currentUser.id == meeting.manager?.id)", (click)="showReschedModal=true") Reschedule
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready

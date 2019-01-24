@@ -8,7 +8,7 @@
           .action-items-scroll
             .action-items-box(*ngFor="let obj of past_meetings; let idx = index", [ng2-loading]="loading")
               div((mouseover)="hoverActionItemIdx=idx", (mouseout)="hoverActionItemIdx=null")
-                h4.font-bold.inline-block {{ obj.actual_schedule | date: 'MMMM d, y'}}
+                h4.font-bold.inline-block {{ obj.finished_at | date: 'MMMM d, y'}}
                 .inline-block.ml-2(*ngIf="obj.action_items.employee.length > 0")
                   button.btn-instant-feedback.btn-instant-feedback-cancel.btn-action.font-weight-light([class.hidden]="hoverActionItemIdx != idx", (click)="clearItem(obj, idx)") Clear Action Items
                 br
@@ -43,7 +43,7 @@
                 .inline-block.details.text-justify
                   span.text-brown.font-bold.underline {{ past_meeting_text(obj) }}
                   br
-                  span.date {{ obj.set_schedule | date: 'MMMM d, y' }}
+                  span.date {{ obj.scheduled_at | date: 'MMMM d, y' }}
           #past-meetings
             h4.font-bold.text-indigo Past
 
@@ -53,7 +53,7 @@
                   li
                     button
                       span.mr-3.underline.font-bold.text-brown {{ past_meeting_text(obj) }}
-                      span {{ obj.actual_schedule | date: 'MMMM d, y' }}
+                      span {{ obj.finished_at | date: 'MMMM d, y' }}
 
 modal(
   [(visible)]="showModal",

@@ -19,7 +19,7 @@ export class MyMeetingService extends BaseService {
     return this.http.get(`${ENDPOINT}/search?${this.buildParams(query)}`);
   }
 
-  profile(id, query={order: {set_schedule: 'desc'}}) {
+  profile(id, query={order: {scheduled_at: 'desc'}}) {
     return this.http.get(`${ENDPOINT}/${id}?${this.buildParams(query)}`);
   }
 

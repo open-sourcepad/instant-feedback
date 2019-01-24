@@ -62,12 +62,12 @@
                       span Employee
                       span.icon-holder.ti-angle-up
                 th
-                  ng-container(*ngIf="orderParams['set_schedule'] != 'asc'")
-                    button.btn-action((click)="changeOrder('set_schedule', 'asc')")
+                  ng-container(*ngIf="orderParams['scheduled_at'] != 'asc'")
+                    button.btn-action((click)="changeOrder('scheduled_at', 'asc')")
                       span Date
                       span.icon-holder.ti-angle-down
-                  ng-container(*ngIf="orderParams['set_schedule'] && orderParams['set_schedule'] != 'desc'")
-                    button.btn-action((click)="changeOrder('set_schedule', 'desc')")
+                  ng-container(*ngIf="orderParams['scheduled_at'] && orderParams['scheduled_at'] != 'desc'")
+                    button.btn-action((click)="changeOrder('scheduled_at', 'desc')")
                       span Date
                       span.icon-holder.ti-angle-up
                 th
@@ -81,7 +81,7 @@
                 td
                   span {{ meeting['employee']['display_name'] }}
                 td
-                  span {{ meeting['set_schedule'] | date: 'MMMM d' }}
+                  span {{ meeting['scheduled_at'] | date: 'MMMM d' }}
                 td
                   span.text-capitalize {{ meeting['status'] }}
                 td.actions

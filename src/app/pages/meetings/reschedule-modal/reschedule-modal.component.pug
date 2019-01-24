@@ -7,7 +7,7 @@
       .col-sm-12
         br
         .input-group(daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
-          input.form-control(type="text" name="dateRangeInput", formControlName="set_schedule", [class.is-invalid]="meetingForm.invalid")
+          input.form-control(type="text" name="dateRangeInput", formControlName="scheduled_at", [class.is-invalid]="meetingForm.invalid")
           .input-group-append.inline-block
             .input-group-text
               button.btn
