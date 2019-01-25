@@ -1,11 +1,24 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'search-filters',
   templateUrl: './search-filters.component.pug',
-  styleUrls: ['./search-filters.component.scss']
+  styleUrls: ['./search-filters.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('out', style({
+        transform: 'translate3d(100%, 0, 0)'
+      })),
+      transition('in => out', animate('400ms ease-in-out')),
+      transition('out => in', animate('400ms ease-in-out'))
+    ])
+  ]
 })
 export class SearchFiltersComponent implements OnInit {
 
@@ -19,7 +32,7 @@ export class SearchFiltersComponent implements OnInit {
   //daterangepicker options
   options: any = {
     locale: {
-      format: 'MM/DD/YYYY',
+      format: 'YYYY/MM/DD',
       monthNames: [
         "January",
         "February",
@@ -38,7 +51,9 @@ export class SearchFiltersComponent implements OnInit {
     alwaysShowCalendars: false,
     autoApply: true,
     autoUpdateInput: true,
-    opens: 'left'
+    opens: 'left',
+    startDate: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
+    endDate: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59')
   };
   //dateranges option filters
   dateOpts = [
@@ -48,17 +63,20 @@ export class SearchFiltersComponent implements OnInit {
     {id: 4, label: 'Date Range'},
   ]
 
-  openSearchFilter = false;
+  filterMenu = 'out';
   skipToggle = true;
   form: FormGroup;
+  allUser = {id: '', display_name: 'All'};
 
   //selected search filters
   selectedDateFilter: number;
   selectedQuestionsFilter: any;
   selectedAnswersFilter: any;
-  selectedUserFilter: string;
+  selectedUserFilter: any;
 
   constructor(private fb: FormBuilder) { }
+
+  get filters() { return this.form.controls; }
 
   ngOnInit() {
     this.resetFilter();
@@ -69,36 +87,34 @@ export class SearchFiltersComponent implements OnInit {
     this.selectedDateFilter = option;
     switch(option){
       case 1: {
-        this.daterange = {
-          start: moment().format('YYYY/MM/DD 00:00:00'),
-          end: moment().format('YYYY/MM/DD 23:59:59')
-        };
+        this.form.patchValue({
+          date_since: moment().format('YYYY/MM/DD 00:00:00'),
+          date_until: moment().format('YYYY/MM/DD 23:59:59')
+        });
 
-        this.selectedDate(this.daterange);
         break;
       }
       case 2: {
-        this.daterange = {
-          start: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
-          end: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59')
-        };
+        this.form.patchValue({
+          date_since: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
+          date_until: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59')
+        });
 
-        this.selectedDate(this.daterange);
         break;
       }
       case 3: {
-        this.daterange = {
-          start: moment().startOf('month').format('YYYY/MM/DD 00:00:00'),
-          end: moment().endOf('month').format('YYYY/MM/DD 23:59:59')
-        };
+        this.form.patchValue({
+          date_since: moment().startOf('month').format('YYYY/MM/DD 00:00:00'),
+          date_until: moment().endOf('month').format('YYYY/MM/DD 23:59:59')
+        });
 
-        this.selectedDate(this.daterange);
         break;
       }
       default: {
         break;
       }
     }
+    if(option != 4) this.onSubmit(this.form.value);
   }
 
   selectedDate(value: any, datepicker?: any) {
@@ -109,11 +125,11 @@ export class SearchFiltersComponent implements OnInit {
     }
 
     // or manupulat your own internal property
-    this.daterange.start = value.start;
-    this.daterange.end = value.end;
-    this.form.get('date_since').setValue(moment(value.start).format('YYYY/MM/DD 00:00:00'));
-    this.form.get('date_until').setValue(moment(value.end).format('YYYY/MM/DD 23:59:59'));
-  
+    this.form.patchValue({
+      date_since: moment(value.start).format('YYYY/MM/DD 00:00:00'),
+      date_until: moment(value.end).format('YYYY/MM/DD 23:59:59')
+    });
+
     this.onSubmit(this.form.value);
   }
 
@@ -144,35 +160,45 @@ export class SearchFiltersComponent implements OnInit {
     this.form.get(attr).setValue(arr);
   }
 
+  addUserFilter(selectedAttr, attr) {
+    let userId = this.form.get(attr).value;
+
+    this[selectedAttr] = this.users.find(user => user.id == userId);
+  }
+
+  removeUserFilter(selectedAttr, attr) {
+    this[selectedAttr] = this.allUser;
+    this.form.get(attr).setValue(this.allUser.id);
+    this.skipToggle = true;
+    this.onSubmit(this.form.value);
+  }
+
   resetFilter() {
-    this.daterange = {
-      start: moment().format('YYYY/MM/DD 00:00:00'),
-      end: moment().format('YYYY/MM/DD 23:59:59')
-    };
-    this.selectedDateFilter = 1;
+    this.selectedDateFilter = 2;
     this.selectedQuestionsFilter = ['All'];
     this.selectedAnswersFilter = ['All'];
-    this.selectedUserFilter = 'All';
+    this.selectedUserFilter = this.allUser;
 
     this.form = this.fb.group({
-      date_since: [this.daterange.start, Validators.required],
-      date_until: [this.daterange.end, Validators.required],
-      user: [this.selectedUserFilter, Validators.required],
+      date_since: [this.options.startDate, Validators.required],
+      date_until: [this.options.endDate, Validators.required],
+      user_id: [this.selectedUserFilter.id, Validators.required],
       questions: [this.selectedQuestionsFilter, Validators.required],
       answers: [this.selectedAnswersFilter, Validators.required],
     });
     this.onSubmit(this.form.value);
   }
 
-  toggleSearchFilter(){
-    this.openSearchFilter = !this.openSearchFilter;
+  toggleSearchFilter(value){
+    this.filterMenu = value;
   }
 
   onSubmit(values) {
     this.loading = true;
     if(!this.skipToggle) {
-      this.toggleSearchFilter();
+      this.toggleSearchFilter('out');
     }
+    values['page'] = {number: 1, size: 20};
     this.submit.emit(values);
   }
 

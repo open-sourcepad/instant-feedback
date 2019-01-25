@@ -8,23 +8,27 @@ import {PaginationInstance} from 'ngx-pagination';
   styleUrls: ['./responses.component.scss']
 })
 export class ResponsesComponent implements OnInit {
-
-  questions: any;
-  answers = ['All', 'Happy', 'Sad', 'X', 'Idle'];
-  users: any;
-  loading = false;
-  collection = [];
-  recordShownCount;
-  recordAnswerSummary;
-  queryParams;
-  order = {name: 'asc', created_at: 'desc'};
-
   paginationControls: PaginationInstance = {
     id: 'paginationResults',
     itemsPerPage: 20,
     currentPage: 1,
     totalItems: 0
   }
+
+  questions: any;
+  answers = ['All', 'Happy', 'Sad', 'X', 'Idle'];
+  users: any = [ {id: '', display_name: 'All'} ];
+  loading = false;
+  collection = [];
+  recordShownCount;
+  recordAnswerSummary;
+  queryParams = {page:
+    {
+      number: this.paginationControls['currentPage'],
+      size: this.paginationControls['itemsPerPage']
+    }
+  };
+  order = {name: 'asc', created_at: 'desc'};
 
   constructor(
     private answerApi: AnswerService,
@@ -40,10 +44,6 @@ export class ResponsesComponent implements OnInit {
   search(queryParams) {
     if (queryParams instanceof Event) {return;}
     this.queryParams = queryParams;
-    queryParams['page'] = {
-      number: this.paginationControls['currentPage'],
-      size: this.paginationControls['itemsPerPage']
-    };
     queryParams['order'] = this.order;
 
     this.answerApi.query({query: queryParams})
@@ -61,10 +61,9 @@ export class ResponsesComponent implements OnInit {
   loadUsers() {
     this.userApi.query({})
       .subscribe(res => {
-        this.users = res['collection']['data'].map(user => {
-          return user.display_name;
-        });
-        this.users.unshift('All');
+        for(let user of res['collection']['data']){
+          this.users.push(user);
+        }
       });
   }
 
@@ -80,6 +79,7 @@ export class ResponsesComponent implements OnInit {
 
   changePage(evt) {
     this.paginationControls['currentPage'] = evt;
+    this.queryParams['page']['number'] = this.paginationControls['currentPage'];
     this.search(this.queryParams);
   }
 

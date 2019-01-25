@@ -8,10 +8,15 @@ $black: #333333;
   letter-spacing: 0;
   line-height: 24px;
   background-color: $lightBrown;
+  border-color: $lightBrown;
   border-radius: 24px;
   padding: 4px 16px;
   margin-top: 8px;
   cursor: pointer;
+
+  &:active {
+    border-style: solid;
+  }
 }
 
 .btn-filter span.icon-holder {
@@ -57,22 +62,20 @@ $black: #333333;
 }
 
 .sidenav {
-  height: 100%;
-  width: 0;
+  background: #fff;
+  box-shadow: 0 0 16px 0 rgba(0,0,0,0.24);
   position: fixed;
-  z-index: 1;
+  left: auto;
   top: 0;
   right: 0;
-  background: #FFFFFF;
-  box-shadow: 0 0 16px 0 rgba(0,0,0,0.24);
+  bottom: 0;
+  z-index: 9999;
   overflow-x: hidden;
-  transition: width 0.5s cubic-bezier(0.6, -0.28, 0.74, 0.05);
-  &.open {
-    padding-top: 60px;
-    padding-left: 49px;
-    padding-right: 15px;
-    width: 392px;
-  }
+  padding-top: 60px;
+  padding-left: 49px;
+  padding-right: 15px;
+  width: 392px;
+  height: 100%;
 }
 
 #sidenav-search_filter .filter-title {
