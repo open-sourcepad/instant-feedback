@@ -79,7 +79,7 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
   }
 
   alreadySelected(question){
-    return this.selectedPoints.controls.find(x => x.value.question == question);
+    return this.selectedPoints.find(x => x.value.question == question);
   }
 
 }

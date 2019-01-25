@@ -94,7 +94,7 @@
 talking-point-menu(
   [@slideInOut]="menuState",
   [(discussionObj)]="discussionObj",
-  [(selectedPoints)]="discussions",
+  [(selectedPoints)]="discussions.controls",
   (cancel)="showTalkingPointMenu()",
   (save)="saveDiscussion($event)"
 )
