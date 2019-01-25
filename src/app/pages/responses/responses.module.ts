@@ -9,7 +9,7 @@ import { SearchFiltersComponent } from './search-filters/search-filters.componen
 import { Daterangepicker } from 'ng2-daterangepicker';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { SharedModule } from '../shared/shared.module';
-
+import { Ng2LoadingSpinnerModule } from 'ng2-loading-spinner';
 
 
 const MODULE_COMPONENTS = [
@@ -25,6 +25,7 @@ const MODULE_COMPONENTS = [
     ReactiveFormsModule,
     Daterangepicker,
     NgxPaginationModule,
+    Ng2LoadingSpinnerModule,
     SharedModule
   ],
   declarations: [

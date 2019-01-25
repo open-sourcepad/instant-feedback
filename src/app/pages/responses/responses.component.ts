@@ -45,6 +45,7 @@ export class ResponsesComponent implements OnInit {
     if (queryParams instanceof Event) {return;}
     this.queryParams = queryParams;
     queryParams['order'] = this.order;
+    this.paginationControls['currentPage'] = this.queryParams['page']['number'];
 
     this.answerApi.query({query: queryParams})
       .subscribe(res => {
@@ -78,8 +79,7 @@ export class ResponsesComponent implements OnInit {
   }
 
   changePage(evt) {
-    this.paginationControls['currentPage'] = evt;
-    this.queryParams['page']['number'] = this.paginationControls['currentPage'];
+    this.queryParams['page']['number'] = evt;
     this.search(this.queryParams);
   }
 
