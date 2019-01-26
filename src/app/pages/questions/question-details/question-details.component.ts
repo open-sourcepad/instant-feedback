@@ -149,9 +149,14 @@ export class QuestionDetailsComponent implements OnInit {
   }
 
   selectedTime(){
-    let hour = this.form.get('chosenHour').value;
-    let minute = this.form.get('chosenMinute').value;
-    this.chosenDate = moment(this.chosenDate,`YYYY-MM-DD ${hour}:${minute}:00`).format(`YYYY-MM-DD ${hour}:${minute}:00`);
+    let hour = +this.form.get('chosenHour').value;
+    let minute = +this.form.get('chosenMinute').value;
+
+    let temp = moment(this.chosenDate)
+    temp.hour(hour);
+    temp.minute(minute);
+    this.chosenDate = moment(temp).format('YYYY-MM-DD hh:mm:00');
+    this.formatedDate = new Date(this.chosenDate.replace(/-/g, "/"));
   }
 
   selectUser(user) {
@@ -218,7 +223,7 @@ export class QuestionDetailsComponent implements OnInit {
       .subscribe(
         res => {
           this.currentObj = res['data'];
-          let momentDate= moment(this.currentObj['asking_time']).tz('EST');
+          let momentDate= moment(this.currentObj['asking_datetime']).tz('EST');
           this.chosenDate = momentDate.format(`D MMMM YYYY hh:mm:00`);
           this.formatedDate = new Date(this.chosenDate.replace(/-/g, "/"));
           this.chosenDay = momentDate.format('D MMMM YYYY');
