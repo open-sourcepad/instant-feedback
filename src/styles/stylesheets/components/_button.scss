@@ -32,7 +32,7 @@ button.disabled {
 .btn-instant-feedback-primary {
   color: $white;
   background-color: $lightBrown;
-  border-color: $lightBrown;
+  border: 1px solid $lightBrown;
 }
 
 .btn-instant-feedback-muted {
@@ -47,25 +47,25 @@ button.disabled {
 .btn-instant-feedback-dark {
   color: $lightBrown;
   background-color: $black;
-  border-color: $black;
+  border: 1px solid $black;
 }
 
 .btn-instant-feedback-brown {
   color: $black;
   background-color: $lightBrown;
-  border-color: $lightBrown;
+  border: 1px solid $lightBrown;
 }
 
 .btn-instant-feedback-semi-dark {
   color: $lightBrown;
   background-color: $lightBlack;
-  border-color: $lightBlack;
+  border: 1px solid $lightBlack;
 }
 
 .btn-instant-feedback-cancel {
   color: $muted;
   background-color: transparent;
-  border-color: transparent;
+  border: 1px solid transparent;
 }
 
 .btn-circle-add {

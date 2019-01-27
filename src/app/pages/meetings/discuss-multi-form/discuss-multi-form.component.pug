@@ -1,34 +1,39 @@
-#talking-point-container.mr-auto.wrapper
-  .vertical-align.set-height
-    .table-cell
-      h1.font-bold {{ discussions[idx]?.question }}
+.wrapper
+  .conten
+    .row
+      .col-md-8
+        #talking-point-container.mr-auto
+          .vertical-align.set-height
+            .table-cell
+              h1.font-bold {{ discussions[idx]?.question }}
 
-      .employee-notes
-        ng-container(*ngIf="!discussions[idx]?.employee_notes")
-          br
-          p.text-justify {{ discussions[idx]?.employee_name }} didn't add any notes.
-        ng-container(*ngIf="discussions[idx]?.employee_notes")
-          ul.reset
-            li
-              p.font-bold.mb-1 {{ discussions[idx]?.employee_name }}'s Note
-            li
-              p.text-justify {{ discussions[idx]?.employee_notes }}
-#listItems.wrapper
-  meeting-action-items([(actionItems)]="actionItems", [(slug_id)]="slug_id", [(allowEdit)]="actionItemEditable")
+              .employee-notes
+                ng-container(*ngIf="!discussions[idx]?.employee_notes")
+                  br
+                  p.text-justify {{ discussions[idx]?.employee_name }} didn't add any notes.
+                ng-container(*ngIf="discussions[idx]?.employee_notes")
+                  ul.reset
+                    li
+                      p.font-bold.mb-1 {{ discussions[idx]?.employee_name }}'s Note
+                    li
+                      p.text-justify {{ discussions[idx]?.employee_notes }}
+      .col-md-4#listItems.set-height
+        .vertical-align
+          meeting-action-items([(actionItems)]="actionItems", [(slug_id)]="slug_id", [(allowEdit)]="actionItemEditable")
 
-#discuss-multi-form-footer
-  .row
-    .col-md-8
-      ul.reset
-        li.inline-block.point-page(*ngFor="let discuss of discussions; let i = index", [class.active]=" i == idx")
-          span {{ i + 1}}
-    .col-md-4
-      .btn-actions.text-right
-        button.btn-instant-feedback.btn-instant-feedback-cancel(*ngIf="idx == 0", (click)="cancel()")
-          span Cancel
-        button.btn-instant-feedback.btn-instant-feedback-cancel(*ngIf="idx != 0", (click)="prevPoint()")
-          span Previous
-        button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="idx != (discussions.length-1)", (click)="nextPoint()")
-          span Next
-        button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="idx == (discussions.length-1)", (click)="nextPoint()")
-          span Review Summary
+  #footer-menu.footer
+    .row
+      .col-md-8
+        ul.reset
+          li.inline-block.point-page(*ngFor="let discuss of discussions; let i = index", [class.active]=" i == idx")
+            span {{ i + 1}}
+      .col-md-4
+        .btn-actions.text-right
+          button.btn-instant-feedback.btn-instant-feedback-cancel(*ngIf="idx == 0", (click)="cancel()")
+            span Cancel
+          button.btn-instant-feedback.btn-instant-feedback-cancel(*ngIf="idx != 0", (click)="prevPoint()")
+            span Previous
+          button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="idx != (discussions.length-1)", (click)="nextPoint()")
+            span Next
+          button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="idx == (discussions.length-1)", (click)="nextPoint()")
+            span Review Summary

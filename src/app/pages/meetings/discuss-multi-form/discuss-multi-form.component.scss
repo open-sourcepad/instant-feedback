@@ -11,13 +11,18 @@
 }
 
 .wrapper {
-  min-height: 100%;
-  margin-bottom: -71px;
+  display: flex;
+  flex-direction: column;
+
+  .content {
+    flex: 1 0 auto;
+  }
+  .footer {
+    flex-shrink: 0;
+  }
 }
 
 #talking-point-container {
-  width: calc(100% - 42%);
-
   .table-cell {
     width: 75%;
     padding-left: 13%;
@@ -31,8 +36,8 @@
   }
 }
 
-#talking-point-container .set-height {
-  height: 87vh;
+.set-height {
+  height: calc(100vh - 71px);
 }
 
 #talking-point-container .employee-notes {
@@ -43,14 +48,10 @@
 #listItems {
   box-shadow: 0 0 16px 0 rgba(0,0,0,0.24);
   background-color: #fff;
-  width: 42%;
-  max-width: 575px;
-  position: fixed;
-  left: auto;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  padding: 10rem 3rem 3rem 5rem;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  padding-left: 3rem;
+  padding-right: 3rem;
   overflow-y: auto;
 }
 
@@ -110,18 +111,16 @@
   }
 }
 
-#discuss-multi-form-footer {
+#footer-menu {
   background-color: #000;
   color: #7c7b79;
   padding: 15px;
+  bottom: 0;
   position: fixed;
   width: 100%;
-  bottom: auto;
-  z-index: 9999;
-  height: 71px;
 }
 
-#discuss-multi-form-footer .point-page {
+#footer-menu .point-page {
   border-radius: 50%;
   background-color: #333;
   font-size: x-large;
@@ -136,12 +135,12 @@
   }
 }
 
-#discuss-multi-form-footer .review {
+#footer-menu .review {
   margin: 5px 15px 0;
   font-size: large;
 }
 
-#discuss-multi-form-footer .btn-actions {
+#footer-menu .btn-actions {
   margin: 0 15px;
 
   .btn-instant-feedback {
