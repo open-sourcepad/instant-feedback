@@ -82,7 +82,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
     });
     if(this.meeting) {
       this.meetingForm.addControl('employee_id', new FormControl(this.meeting['employee']['id']));
-      this.meetingForm.addControl('managerid', new FormControl(this.meeting['manager']['id']));
+      this.meetingForm.addControl('manager_id', new FormControl(this.meeting['manager']['id']));
       this.loading = false;
     }
   }
@@ -90,7 +90,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if(changes.meeting && !changes.meeting.isFirstChange()){
       this.meetingForm.addControl('employee_id', new FormControl(this.meeting['employee']['id']));
-      this.meetingForm.addControl('managerid', new FormControl(this.meeting['manager']['id']));
+      this.meetingForm.addControl('manager_id', new FormControl(this.meeting['manager']['id']));
     }
     this.loading = false;
   }
