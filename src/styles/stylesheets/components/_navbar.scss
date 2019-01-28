@@ -9,13 +9,13 @@ nav.navbar {
     line-height: 24px;
     margin-right: 13px;
 
-    a {
+    .nav-link {
       color: #fbfbfb;
       letter-spacing: 0;
       opacity: 0.3;
       cursor: pointer;
 
-      &.active {
+      &.active, &:hover, &:focus, &:active {
         color: #FFF;
         font-weight: 300;
         opacity: 1;
@@ -23,7 +23,7 @@ nav.navbar {
     }
   }
 
-  .nav-item.has-active > a.active {
+  .nav-item.has-active > .active {
     border-bottom: 7px solid  #7D7C7A;
   }
 
@@ -47,4 +47,36 @@ nav.navbar {
 
 .bg-dark-custom{
   background-color: rgb(51, 51, 51);
+}
+
+.dropdown:hover .dropdown-toggle {
+  color: #FFF !important;
+  font-weight: 300;
+  opacity: 1;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown .dropdown-menu {
+  background-color: #7D7C7A;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  margin-top: 0;
+  min-width: 190px;
+  z-index: 1;
+}
+
+.dropdown .dropdown-menu .dropdown-item {
+  padding: 12px 16px;
+  color: #F9FBF2;
+  font-family: Avenir;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 19px;
+}
+
+.dropdown .dropdown-item.active, .dropdown .dropdown-item:active, 
+.dropdown .dropdown-item:focus, .dropdown .dropdown-item:hover {
+  background-color: inherit !important;
 }
