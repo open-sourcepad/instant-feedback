@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MyMeetingService } from '../../../services/api';
+import { MyMeetingService, UserService } from '../../../services/api';
 import {PaginationInstance} from 'ngx-pagination';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-employee-meetings',
@@ -13,6 +14,7 @@ export class EmployeeMeetingsComponent implements OnInit {
   collection: any = [];
   recordCount: number = 0;
   orderParams = {scheduled_at: 'desc'};
+  employee_id: number = null;
 
   paginationControls: PaginationInstance = {
     id: 'paginationResults',
@@ -22,7 +24,9 @@ export class EmployeeMeetingsComponent implements OnInit {
   }
 
   constructor(
-    private myMeetingApi: MyMeetingService
+    private myMeetingApi: MyMeetingService,
+    private userApi: UserService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -34,12 +38,25 @@ export class EmployeeMeetingsComponent implements OnInit {
       number: this.paginationControls['currentPage'],
       size: this.paginationControls['itemsPerPage']
     };
-    this.myMeetingApi.search({order: this.orderParams, page: pageParams}).subscribe(res => {
-      this.loading = false;
-      this.collection = res['collection']['data'];
-      this.paginationControls['totalItems'] = res['metadata']['record_count'];
-    }, err => {
-      this.loading = false;
+    this.route.parent.params.subscribe(params => {
+      if(Object.keys(params).length > 0) {
+        this.employee_id = +params['id'];
+        this.userApi.meetings(this.employee_id, {order: this.orderParams, page: pageParams}).subscribe(res => {
+          this.loading = false;
+          this.collection = res['collection']['data'];
+          this.paginationControls['totalItems'] = res['metadata']['record_count'];
+        }, err => {
+          this.loading = false;
+        });
+      }else {
+        this.myMeetingApi.search({order: this.orderParams, page: pageParams}).subscribe(res => {
+          this.loading = false;
+          this.collection = res['collection']['data'];
+          this.paginationControls['totalItems'] = res['metadata']['record_count'];
+        }, err => {
+          this.loading = false;
+        });
+      }
     });
   }
 

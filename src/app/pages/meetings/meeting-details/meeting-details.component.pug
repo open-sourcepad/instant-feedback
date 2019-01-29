@@ -14,7 +14,9 @@
               | {{ meeting.manager?.display_name.split(" ")[0].charAt(0) }}
               | {{ meeting.manager?.display_name.split(" ")[1].charAt(0) }}
         .user-header
-          h1.title 1-on-1 with {{ meeting.employee?.display_name }}
+          h1.title 1-on-1 with 
+            button.btn-action.title([routerLink]="['/profile', meeting.employee?.id, 'overview']")
+              u {{ meeting.employee?.display_name }}
           h3 {{ meeting.scheduled_at | date: 'MMMM d, y' }}
           h3.font-bold(*ngIf="meetingStatus == 'done'") Actual 1-on-1 date: {{ meeting.finished_at | date: 'MMMM d, y' }}
           .user-actions(*ngIf="meetingStatus != 'done'")

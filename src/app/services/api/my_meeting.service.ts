@@ -16,11 +16,15 @@ export class MyMeetingService extends BaseService {
   }
 
   search(query) {
-    return this.http.get(`${ENDPOINT}/search?${this.buildParams(query)}`);
+    return this.http.get(`${ENDPOINT}?${this.buildParams(query)}`);
   }
 
   profile(id, query={order: {scheduled_at: 'desc'}}) {
     return this.http.get(`${ENDPOINT}/${id}?${this.buildParams(query)}`);
+  }
+
+  remove_action_items(id) {
+    return this.http.delete(`${ENDPOINT}/${id}/remove_objectives`);
   }
 
 }

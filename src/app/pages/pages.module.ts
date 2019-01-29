@@ -14,6 +14,7 @@ import { SentimentTestComponent } from './sentiment-test/sentiment-test';
 import { PagesGuard } from './pages.guard';
 import { UserQuestionsComponent } from './user-questions/user-questions.component';
 import { EmployeeMeetingDetailComponent } from './employee/employee-meeting-detail/employee-meeting-detail.component';
+import { EmployeeProfileMeetingDetailComponent } from './employee-profile-meeting-detail/employee-profile-meeting-detail.component';
 
 const PAGES_MODULE = [
   SharedModule
@@ -25,7 +26,8 @@ const PAGES_MODULE = [
     LoginComponent,
     SentimentTestComponent,
     UserQuestionsComponent,
-    EmployeeMeetingDetailComponent
+    EmployeeMeetingDetailComponent,
+    EmployeeProfileMeetingDetailComponent
   ],
   imports: [
     CommonModule,

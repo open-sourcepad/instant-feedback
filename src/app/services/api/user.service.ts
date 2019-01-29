@@ -27,15 +27,19 @@ export class UserService extends BaseService {
     return this.http.get(`${ENDPOINT}/get_specific_user?${this.buildParams(params)}`);
   }
 
-  meetings(params) {
-    return this.http.get(`${ENDPOINT}/meetings?${this.buildParams(params)}`);
+  meetings(user_id, query) {
+    return this.http.get(`${ENDPOINT}/${user_id}/meetings?${this.buildParams(query)}`);
   }
 
-  allMeetings(params) {
-    return this.http.get(`${ENDPOINT}/meetings?${this.buildParams(params)}`);
+  showMeeting(user_id, id, query={order: {scheduled_at: 'desc'}}) {
+    return this.http.get(`${ENDPOINT}/${user_id}/meetings/${id}?${this.buildParams(query)}`);
   }
 
-  traverseMeeting(meetingId: number) {
-    return this.http.get(`${ENDPOINT}/traverse_meeting?meeting_id=${meetingId}`);
+  remove_action_items(user_id, id) {
+    return this.http.delete(`${ENDPOINT}/${user_id}/meetings/${id}/remove_objectives`);
+  }
+
+  feedbacks(user_id, query) {
+    return this.http.get(`${ENDPOINT}/${user_id}/feedbacks?${this.buildParams(query)}`);
   }
 }

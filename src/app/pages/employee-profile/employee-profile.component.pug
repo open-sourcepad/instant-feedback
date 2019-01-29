@@ -1,0 +1,32 @@
+.row.m-0
+  .col-md-12.p-0.bg-white
+    .row
+      .col-md-9.m-auto
+        #user-overview
+          .avatar-user
+              .avatar-name
+                | {{ currentUser?.initials() }}
+          .inline-block.details
+            h1.text-brown.font-bold {{ currentUser?.display_name }}
+            h4.text-capitalize.ml-2 {{ currentUser?.role }} Team
+
+      .col-md-9.m-auto
+        br
+        br
+        br
+        ul.reset.user-overview-options
+          li.is-active
+            a([routerLink]="['/profile', slug_id, 'overview']" routerLinkActive="active") Overview
+          li.is-active
+            a([routerLink]="['/profile', slug_id, 'one-on-ones']" routerLinkActive="active") 1-on-1s
+          li.is-active
+            a([routerLink]="['/profile', slug_id, 'feedbacks']" routerLinkActive="active") Feedback
+  .col-md-12.p-0
+    router-outlet
+
+modal(
+  [(visible)]="showModal",
+  [(modalText)]="modalText",
+  [(buttons)]="modalButtons",
+  (modalStateChange)="modalStateChange($event)"
+)

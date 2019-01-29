@@ -7,6 +7,7 @@ import { UserQuestionsComponent } from './user-questions/user-questions.componen
 import { PagesGuard } from './pages.guard';
 import { RoleGuard } from './role.guard';
 import { EmployeeMeetingDetailComponent } from './employee/employee-meeting-detail/employee-meeting-detail.component';
+import { EmployeeProfileMeetingDetailComponent } from './employee-profile-meeting-detail/employee-profile-meeting-detail.component';
 
 export const routes: Routes = [
   {
@@ -44,8 +45,13 @@ export const routes: Routes = [
         path: 'employee',
         loadChildren: "./employee/employee.module#EmployeeModule"
       },
+      {
+        path: 'profile',
+        loadChildren: "./employee-profile/employee-profile.module#EmployeeProfileModule"
+      },
       { path: 'sentiment-test',component: SentimentTestComponent},
-      { path: 'employee/one-on-ones/:id',component: EmployeeMeetingDetailComponent}
+      { path: 'employee/one-on-ones/:id',component: EmployeeMeetingDetailComponent},
+      { path: 'profile/:employee_id/one-on-ones/:id',component: EmployeeProfileMeetingDetailComponent}
     ]
   },
 ];

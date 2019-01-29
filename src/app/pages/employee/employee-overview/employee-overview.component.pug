@@ -27,10 +27,24 @@
           h4.font-bold.text-brown.mb-5 1-on-1s
 
           #upcoming-meetings.mb-5
-            h4.font-bold.text-indigo Upcoming
+            h4.font-bold.text-indigo Upcoming {{ employee_id }}
 
             .upcoming-meeting-item.mb-3(*ngFor="let obj of upcoming_meetings | slice:0:3")
-              button([routerLink]="['/employee/one-on-ones', obj.id]")
+              button(*ngIf="!employee_id", [routerLink]="['/employee/one-on-ones', obj.id]")
+                .mr-1.inline-block
+                  .avatar-user
+                    .avatar-name
+                      | {{ obj?.employee?.display_name.split(" ")[0].charAt(0) }}
+                      | {{ obj?.employee?.display_name.split(" ")[1].charAt(0) }}
+                  .avatar-user
+                    .avatar-name
+                      | {{ obj?.manager?.display_name.split(" ")[0].charAt(0) }}
+                      | {{ obj?.manager?.display_name.split(" ")[1].charAt(0) }}
+                .inline-block.details.text-justify
+                  span.text-brown.font-bold.underline {{ past_meeting_text(obj) }}
+                  br
+                  span.date {{ obj.scheduled_at | date: 'MMMM d, y' }}
+              button(*ngIf="employee_id", [routerLink]="['/profile', employee_id, 'one-on-ones', obj.id]")
                 .mr-1.inline-block
                   .avatar-user
                     .avatar-name
@@ -48,7 +62,13 @@
             h4.font-bold.text-indigo Past
 
             .past-meeting-item(*ngFor="let obj of past_meetings | slice:0:3")
-              button([routerLink]="['/employee/one-on-ones', obj.id]")
+              button(*ngIf="!employee_id", [routerLink]="['/employee/one-on-ones', obj.id]")
+                ul.reset.list
+                  li
+                    button
+                      span.mr-3.underline.font-bold.text-brown {{ past_meeting_text(obj) }}
+                      span {{ obj.finished_at | date: 'MMMM d, y' }}
+              button(*ngIf="employee_id", [routerLink]="['/profile', employee_id, 'one-on-ones', obj.id]")
                 ul.reset.list
                   li
                     button

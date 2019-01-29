@@ -5,6 +5,8 @@ import { EmployeeComponent } from '../employee.component';
 import { FeedbackService, MeetingService, SessionService, UserService } from '../../../services/api';
 import {PaginationInstance} from 'ngx-pagination';
 import * as moment from 'moment';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-employee-feedback',
@@ -18,6 +20,7 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
   collection = [];
   selectedUser = "";
   currentTab = 'received';
+  employee_id: number = null;
 
   moodScore: number = 0;
   showMoodScore: boolean = false;
@@ -85,8 +88,16 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
       comment: ['', Validators.required]
     });
 
-    this.sub = this.route.queryParams.subscribe(params => {
-      if(Object.keys(params).length > 0) {
+    const urlParams =  combineLatest(
+      this.route.parent.params,
+      this.route.queryParams
+    ).pipe(
+        map(([params, queryParams]) => ({...params, ...queryParams}))
+    );
+
+    urlParams.subscribe(params => {
+      if(params['id']) this.employee_id = +params['id'];
+      if(Object.keys(params).length > 1) {
         this.currentTab = params.tab;
         this.daterange['start'] = params.startDate;
         this.daterange['end'] = params.endDate;
@@ -94,8 +105,6 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
         this.paginationControls['currentPage'] = params.page;
       }
     });
-
-    if(this.sub) this.sub.unsubscribe();
 
     this.loadFeedbacks();
     this.loadRequestFeedbacks();
@@ -191,7 +200,8 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
     }
 
     this.handleQueryParams();
-    this.feedbackApi.query(query)
+    if(this.employee_id){
+      this.userApi.feedbacks(this.employee_id, query)
       .subscribe(res => {
         this.loading = false;
         this.collection = res['collection']['data'];
@@ -201,6 +211,18 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
       }, err => {
         this.loading = false;
       });
+    }else {
+      this.feedbackApi.query(query)
+        .subscribe(res => {
+          this.loading = false;
+          this.collection = res['collection']['data'];
+          this.paginationControls['totalItems'] = res['metadata']['record_count'];
+          this.moodScore = this.collection.reduce((sum, obj) => sum + parseFloat(obj.sentiment_score), 0.0) / this.collection.length;
+          this.showMoodScore = this.moodScore < 0 || this.moodScore > 0.24;
+        }, err => {
+          this.loading = false;
+        });
+    }
   }
 
   handleQueryParams(){

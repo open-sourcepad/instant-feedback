@@ -2,8 +2,7 @@
   .col-md-10.m-auto.meeting-detail
     .row
       .col-md-12.mt-5
-        back-button(*ngIf="!employee_id", [backText]="'Back to 1-on-1s'", [returnUrl]="'/employee/one-on-ones'")
-        back-button(*ngIf="employee_id", [backText]="'Back to 1-on-1s'", [returnUrl]="'/profile/'+ employee_id +'/one-on-ones'")
+        back-button([backText]="'Back to 1-on-1s'", [returnUrl]="'/profile/'+ employee_id +'/one-on-ones'")
       .col-md-12
         .users-avatar
           .avatar-user
@@ -15,7 +14,7 @@
               | {{ currentObj?.manager?.display_name.split(" ")[0].charAt(0) }}
               | {{ currentObj?.manager?.display_name.split(" ")[1].charAt(0) }}
         .user-header
-          h1.title 1-on-1 with {{ currentObj?.manager?.display_name }}
+          h1.title 1-on-1 with {{ currentObj?.employee?.display_name }}
           h4 {{ currentObj?.scheduled_at | date: 'MMMM d, y' }}
           h4.font-bold(*ngIf="currentObj?.status == 'done'") Actual 1-on-1 date: {{ currentObj?.finished_at | date: 'MMMM d, y' }}
           .user-actions(*ngIf="currentObj?.status != 'done' && !employee_id")
@@ -29,12 +28,12 @@
             .inline-block.content.ml-2.mr-3
               span.text-idle.text-uppercase {{ paginate['prev']['scheduled_at'] | date: 'MMMM d' }}
               br
-              span.text-brown 1on1 with {{ paginate['prev']['manager'] }}
+              span.text-brown 1on1 with {{ paginate['prev']['employee'] }}
           ng-container(*ngIf="paginate['next']")
             .inline-block.content.ml-3.mr-2
               span.text-idle.text-uppercase {{ paginate['next']['scheduled_at'] | date: 'MMMM d' }}
               br
-              span.text-brown 1on1 with {{ paginate['next']['manager'] }}
+              span.text-brown 1on1 with {{ paginate['next']['employee'] }}
             button.inline-block(*ngIf="!employee_id", (click)="navigate('/employee/one-on-ones/' + paginate['next']['meeting_id'])")
               .icon-next-nav.icon-xs
             button.inline-block(*ngIf="employee_id", (click)="navigate('/profile/' + employee_id + '/one-on-ones/' + paginate['next']['meeting_id'])")
@@ -87,33 +86,12 @@
                     li
                       span {{ discuss.question }}
                       br
-                  ng-container(*ngIf="!discuss.employee_notes && meetingStatus != 'done'")
-                    .user-notes.mr-auto.ml-auto.w-50.text-center([hidden]="addNoteIdx != null && addNoteIdx == idx")
-                      .vertical-align.qrtr-height
-                        .table-cell
-                          button.btn.btn-instant-feedback.btn-instant-feedback-muted((click)="addNotes(idx)") Add Notes
-                    .user-notes(*ngIf="addNoteIdx == idx")
-                      textarea.form-control.form-add-talking-point.inline-block.w-75(type="text", [(ngModel)]="employeeInputNote", [class.is-invalid]="submittedNoteForm && !!employeeInputNote", (keydown.enter)="submitNote(employeeInputNote, discuss)")
-                      .inline-block.ml-2.font-size-12.text-brown(*ngIf="employeeInputNote != ''") press enter {{ submittedNoteForm }} {{ !!employeeInputNote }}
-                      .invalid-feedback(*ngIf="submittedNoteForm && !!employeeInputNote")
-                        span Please add your notes
+                  ng-container(*ngIf="!discuss.employee_notes")
+                    .user-notes.mr-auto.ml-auto.w-50.text-center
                   ng-container(*ngIf="discuss.employee_notes")
                     .user-notes
                       ul.no-list-style
                         li
-                          p.font-bold.mb-1 Your Notes
+                          p.font-bold.mb-1 {{ currentObj?.employee?.display_name }} Notes
                         li
                           p.text-justify.font-light {{ discuss.employee_notes }}
-        ng-container(*ngIf="meetingStatus != 'done'")
-          .row
-            .col-md-12
-              br
-              form#user-add-topic(novalidate, autocomplete="off", [formGroup]="talkingPointForm", (ngSubmit)="submitTopic(talkingPointForm.value)")
-                p.font-bold.font-size-18 Add any additional topic to this meeting, if you have any.
-                input.form-control.form-add-talking-point.inline-block.w-75(type="text", formControlName="custom_question", [class.is-invalid]="submittedPointForm && tp.custom_question.errors")
-                .inline-block.ml-2.font-size-12.text-brown(*ngIf="tp.custom_question.valid") press enter
-                .invalid-feedback(*ngIf="submittedPointForm && tp.custom_question.errors")
-                  span Please enter a topic
-              br
-              br
-              br

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MeetingService, SessionService, UserService, MyMeetingService } from '../../../services/api';
+import { MeetingService, MyMeetingService, UserService } from '../../../services/api';
 import { User } from '../../../models';
 import * as moment from 'moment';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-employee-overview',
@@ -19,10 +20,13 @@ export class EmployeeOverviewComponent implements OnInit {
   showModal: boolean = false;
   modalText: any = {body: ''};
   modalButtons: any = {cancel: {text: 'Cancel'}, confirm: {text: 'Yes, delete.'}};
+  employee_id: number = null;
 
   constructor(
     private meetingApi: MeetingService,
-    private myMeetingApi: MyMeetingService
+    private myMeetingApi: MyMeetingService,
+    private userApi: UserService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -31,12 +35,25 @@ export class EmployeeOverviewComponent implements OnInit {
 
   loadMeetings() {
     this.loading = true;
-    this.myMeetingApi.search({order: {scheduled_at: 'desc'}}).subscribe(res => {
-      this.loading = false;
-      this.upcoming_meetings = res['collection']['data'].filter(d => d['status'] == 'upcoming');
-      this.past_meetings = res['collection']['data'].filter(d => d['status'] == 'done');
-    }, err => {
-      this.loading = false;
+    this.route.parent.params.subscribe(params => {
+      if(Object.keys(params).length > 0) {
+        this.employee_id = +params['id'];
+        this.userApi.meetings(this.employee_id, {order: {scheduled_at: 'desc'}}).subscribe(res => {
+          this.loading = false;
+          this.upcoming_meetings = res['collection']['data'].filter(d => d['status'] == 'upcoming');
+          this.past_meetings = res['collection']['data'].filter(d => d['status'] == 'done');
+        }, err => {
+          this.loading = false;
+        });
+      }else {
+        this.myMeetingApi.search({order: {scheduled_at: 'desc'}}).subscribe(res => {
+          this.loading = false;
+          this.upcoming_meetings = res['collection']['data'].filter(d => d['status'] == 'upcoming');
+          this.past_meetings = res['collection']['data'].filter(d => d['status'] == 'done');
+        }, err => {
+          this.loading = false;
+        });
+      }
     });
   }
 
@@ -62,13 +79,23 @@ export class EmployeeOverviewComponent implements OnInit {
 
   removeItems(values){
     this.loading = true;
-    this.meetingApi.removeEmployeeActionItems(values.data.id)
-      .subscribe(res => {
-        this.loading = false;
-        this.past_meetings[values.idx]['action_items']['employee'] = [];
-      }, err => {
-        this.loading = false;
-      });
+    if(this.employee_id) {
+      this.userApi.remove_action_items(this.employee_id, values.data.id)
+        .subscribe(res => {
+          this.loading = false;
+          this.past_meetings[values.idx]['action_items']['employee'] = [];
+        }, err => {
+          this.loading = false;
+        });
+    }else {
+      this.myMeetingApi.remove_action_items(values.data.id)
+        .subscribe(res => {
+          this.loading = false;
+          this.past_meetings[values.idx]['action_items']['employee'] = [];
+        }, err => {
+          this.loading = false;
+        });
+    }
   }
 
 }

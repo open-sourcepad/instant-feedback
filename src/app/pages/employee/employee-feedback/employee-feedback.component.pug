@@ -1,4 +1,4 @@
-.col-md-12.p-0.bg-brown([ng2-loading]="loadingPending")
+.col-md-12.p-0.bg-brown(*ngIf="!employee_id", [ng2-loading]="loadingPending")
   .row
     .col-md-9.m-auto
       .mt-5
@@ -64,7 +64,8 @@
               span
                 img(*ngIf="obj.sentiment_score > 0.24", src="assets/images/happy-face.png")
                 img(*ngIf="obj.sentiment_score < 0", src="assets/images/sad-face.png")
-              span.font-bold.text-indigo You&nbsp;
+              span.font-bold.text-indigo(*ngIf="!employee_id") You&nbsp;
+              span.font-bold.text-indigo(*ngIf="employee_id") {{ obj.sender }}&nbsp;
               span said to {{ obj.recipient.name }}
               span.text-idle(*ngIf="obj.question") &nbsp;(in response to {{ obj.recipient.preposition }} feedback request)
             span :
@@ -122,7 +123,9 @@ side-menu(
     br
     br
   .form-header-text.text-idle(*ngIf="currentTab == 'received'") {{ selectedFeedback?.sender }}'s feedback:
-  .form-header-text.text-idle(*ngIf="currentTab == 'given'") Your feedback:
+  .form-header-text.text-idle(*ngIf="currentTab == 'given'")
+    span(*ngIf="!employee_id") Your feedback:
+    span(*ngIf="employee_id") {{ selectedFeedback?.sender }}'s feedback:
   br
   span.text-idle {{ selectedFeedback?.updated_at | datePrettyFormat }}
   p.feedback-comment {{ selectedFeedback?.comment }}

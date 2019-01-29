@@ -28,6 +28,7 @@
             td
               span.text-capitalize {{ obj.status }}
             td.actions
-              a([routerLink]="['/employee/one-on-ones', obj.id]") View
+              a(*ngIf="!employee_id", [routerLink]="['/employee/one-on-ones', obj.id]") View
+              a(*ngIf="employee_id", [routerLink]="['/profile', employee_id, 'one-on-ones', obj.id]") View
 
 pagination([config]="paginationControls", (pageChange)="pageChange($event)")
