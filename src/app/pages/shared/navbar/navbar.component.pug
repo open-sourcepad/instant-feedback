@@ -9,7 +9,7 @@ nav.navbar.navbar-expand-lg.bg-dark-custom
         a.nav-link([routerLink]="['/responses']" routerLinkActive="active") Responses
       li.nav-item.has-active
         a.nav-link([routerLink]="['/questions']" routerLinkActive="active") Questions
-      li.nav-item.has-active.dropdown([routerLinkActive]="['has-active']")
+      li.nav-item.dropdown([routerLinkActive]="['has-active']")
         a.nav-link.active.dropdown-toggle 1-on-1s
         .dropdown-menu
           a.dropdown-item([routerLink]="['/manager/one-on-ones']" routerLinkActive="active") My 1-on-1 Profile
