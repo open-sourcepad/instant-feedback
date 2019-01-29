@@ -77,9 +77,13 @@
             tbody
               tr(*ngFor="let meeting of meetings | paginate: paginationControls")
                 td
-                  span {{ meeting['manager']['display_name'] }}
+                  span(*ngIf="meeting['manager']['id'] == currentUser['id']") {{ meeting['manager']['display_name'] }}
+                  button.btn-action(*ngIf="meeting['manager']['id'] != currentUser['id']", [routerLink]="['/profile', meeting['manager']['id'], 'overview']")
+                    u {{ meeting['manager']['display_name'] }}
                 td
-                  span {{ meeting['employee']['display_name'] }}
+                  span(*ngIf="meeting['employee']['id'] == currentUser['id']") {{ meeting['employee']['display_name'] }}
+                  button.btn-action(*ngIf="meeting['employee']['id'] != currentUser['id']", [routerLink]="['/profile', meeting['employee']['id'], 'overview']")
+                    u {{ meeting['employee']['display_name'] }}
                 td
                   span {{ meeting['scheduled_at'] | date: 'MMMM d' }}
                 td
