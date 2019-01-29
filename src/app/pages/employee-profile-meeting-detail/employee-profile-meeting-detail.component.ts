@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/api';
 export class EmployeeProfileMeetingDetailComponent implements OnInit {
   private sub: any;
   private slug_id: number;
-  private employee_id: number = null;
+  employee_id: number = null;
 
   currentObj;
   actionItems;

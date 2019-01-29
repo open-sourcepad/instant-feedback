@@ -12,7 +12,6 @@ export class EmployeeMeetingDetailComponent implements OnInit {
 
   private sub: any;
   private slug_id: number;
-  private employee_id: number = null;
 
   currentObj;
   actionItems;
@@ -50,7 +49,6 @@ export class EmployeeMeetingDetailComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.slug_id = +params['id'];
-      if(params['employee_id']) this.employee_id = +params['employee_id'];
       if(this.slug_id){
         this.loadData(this.slug_id);
       }
@@ -70,33 +68,18 @@ export class EmployeeMeetingDetailComponent implements OnInit {
   loadData(slug_id: number) {
     this.loading = true;
 
-    if(this.employee_id){
-      this.userApi.showMeeting(this.employee_id, this.slug_id)
-        .subscribe( res => {
-          this.loading = false;
-          this.currentObj = res['data'];
-          this.meetingStatus = this.currentObj['status'];
-          this.discussions = res['data']['discussions']['data'];
-          this.actionItems = res['data']['action_items'];
-          this.paginate['prev'] = res['links']['prev'];
-          this.paginate['next'] = res['links']['next']
-        }, err => {
-          this.loading = false;
-        });
-    }else {
-      this.meetingApi.profile(slug_id)
-        .subscribe( res => {
-          this.loading = false;
-          this.currentObj = res['data'];
-          this.meetingStatus = this.currentObj['status'];
-          this.discussions = res['data']['discussions']['data'];
-          this.actionItems = res['data']['action_items'];
-          this.paginate['prev'] = res['links']['prev'];
-          this.paginate['next'] = res['links']['next']
-        }, err => {
-          this.loading = false;
-        });
-    }
+    this.meetingApi.profile(slug_id)
+      .subscribe( res => {
+        this.loading = false;
+        this.currentObj = res['data'];
+        this.meetingStatus = this.currentObj['status'];
+        this.discussions = res['data']['discussions']['data'];
+        this.actionItems = res['data']['action_items'];
+        this.paginate['prev'] = res['links']['prev'];
+        this.paginate['next'] = res['links']['next']
+      }, err => {
+        this.loading = false;
+      });
   }
 
   addNotes(idx) {

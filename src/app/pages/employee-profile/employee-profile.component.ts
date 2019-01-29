@@ -13,6 +13,9 @@ export class EmployeeProfileComponent implements OnInit {
 
   currentUser: User;
   slug_id: number;
+  showModal: boolean = false;
+  modalText: any = {body: ''};
+  modalButtons: any = {confirm: {text: 'Close'}};
 
   constructor(
     private fb: FormBuilder,
@@ -31,6 +34,10 @@ export class EmployeeProfileComponent implements OnInit {
         this.currentUser = new User(res['data']);
       });
     })
+  }
+
+  modalStateChange(value) {
+    this.showModal = value;
   }
 
 }
