@@ -27,7 +27,7 @@
           h4.font-bold.text-brown.mb-5 1-on-1s
 
           #upcoming-meetings.mb-5
-            h4.font-bold.text-indigo Upcoming {{ employee_id }}
+            h4.font-bold.text-indigo Upcoming
 
             .upcoming-meeting-item.mb-3(*ngFor="let obj of upcoming_meetings | slice:0:3")
               button(*ngIf="!employee_id", [routerLink]="['/employee/one-on-ones', obj.id]")

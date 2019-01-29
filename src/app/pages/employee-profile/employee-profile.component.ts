@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { FeedbackService, SessionService, UserService } from 'src/app/services/api';
+import { UserService } from 'src/app/services/api';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/models';
+import { RoutingState } from 'src/app/services/utils';
 
 @Component({
   selector: 'app-employee-profile',
@@ -18,11 +18,9 @@ export class EmployeeProfileComponent implements OnInit {
   modalButtons: any = {confirm: {text: 'Close'}};
 
   constructor(
-    private fb: FormBuilder,
-    private feedbackApi: FeedbackService,
-    private session: SessionService,
     private userApi: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private routingState: RoutingState
   ) {
     
   }
@@ -33,7 +31,9 @@ export class EmployeeProfileComponent implements OnInit {
       this.userApi.get(this.slug_id).subscribe(res => {
         this.currentUser = new User(res['data']);
       });
-    })
+    });
+
+    this.routingState.setPreviousUrl(null);
   }
 
   modalStateChange(value) {
