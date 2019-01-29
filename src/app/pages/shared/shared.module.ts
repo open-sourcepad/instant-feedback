@@ -9,6 +9,7 @@ import { ModalComponent } from './modal/modal.component';
 import { BackButtonComponent } from './back-button/back-button.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { SideMenuComponent } from './side-menu/side-menu.component';
+import { datePrettyFormat } from 'src/app/services/pipes/date-pretty-format.pipe';
 
 const SHARED_COMPONENTS = [
   NavbarComponent,
@@ -16,6 +17,10 @@ const SHARED_COMPONENTS = [
   BackButtonComponent,
   PaginationComponent,
   SideMenuComponent
+]
+
+const SHARED_PIPES = [
+  datePrettyFormat
 ]
 
 @NgModule({
@@ -28,9 +33,11 @@ const SHARED_COMPONENTS = [
   ],
   declarations: [
     ...SHARED_COMPONENTS,
+    ...SHARED_PIPES,
   ],
   exports: [
     ...SHARED_COMPONENTS,
+    ...SHARED_PIPES,
   ],
   providers: [
   ]
