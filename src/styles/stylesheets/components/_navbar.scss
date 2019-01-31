@@ -23,7 +23,7 @@ nav.navbar {
     }
   }
 
-  .nav-item.has-active > .active {
+  .nav-item.has-active > .active, .dropdown.has-active > .dropdown-toggle {
     border-bottom: 7px solid  #7D7C7A;
   }
 
@@ -49,10 +49,10 @@ nav.navbar {
   background-color: rgb(51, 51, 51);
 }
 
-.dropdown:hover .dropdown-toggle {
+.dropdown:hover .dropdown-toggle, .dropdown.has-active > .dropdown-toggle {
   color: #FFF !important;
   font-weight: 300;
-  opacity: 1;
+  opacity: 1 !important;
 }
 
 .dropdown:hover .dropdown-menu {
