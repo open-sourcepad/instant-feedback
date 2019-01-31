@@ -193,8 +193,7 @@ export class QuestionDetailsComponent implements OnInit {
     let params = {
       question: this.form.value,
       user_question: {
-        asking_date: this.form.get('chosenDay').value,
-        asking_time: this.chosenDate,
+        scheduled_at: this.chosenDate,
         user_ids: this.recipients.map( recipient => recipient.id)
       }
     };
@@ -223,7 +222,7 @@ export class QuestionDetailsComponent implements OnInit {
       .subscribe(
         res => {
           this.currentObj = res['data'];
-          let momentDate= moment(this.currentObj['asking_datetime']).tz('EST');
+          let momentDate= moment(this.currentObj['scheduled_at']).tz('EST');
           this.chosenDate = momentDate.format(`D MMMM YYYY hh:mm:00`);
           this.formatedDate = new Date(this.chosenDate.replace(/-/g, "/"));
           this.chosenDay = momentDate.format('D MMMM YYYY');
