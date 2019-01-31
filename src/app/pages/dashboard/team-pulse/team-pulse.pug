@@ -28,10 +28,10 @@
       .row
         .col-md-5
           #cardHappyChart.card([ng2-loading]="loading")
-            .card-content.text-center
+            .card-content.text-center([class.no-chart]="filter == 'custom'")
               br
               h5 Happiness Meter
-              .text-green.percentage {{ answerPercentage.happy }}%
+              .text-green.percentage {{ happyMeter | percent }}
             ng-container(*ngIf="filter != 'custom'")
               canvas#happyMeterChart
         .col-md-3
@@ -51,12 +51,12 @@
                         .user-details(*ngFor="let user of happyUsers")
                           .avatar-user
                             .avatar-name
-                              | {{ user.user.display_name.split(" ")[0].charAt(0) }}
-                              | {{ user.user.display_name.split(" ")[1].charAt(0) }}
+                              | {{ user.user.split(" ")[0].charAt(0) }}
+                              | {{ user.user.split(" ")[1].charAt(0) }}
                           .user-info
-                            span {{ user.user.display_name }}
+                            span {{ user.user }}
                             br
-                            span.percent {{ user.percentage }}%
+                            span.percent {{ user.happiness | percent }}
             .col-md-12.col-sm-6
               .card.card-avg-summary([ng2-loading]="loading", [style.height.px]="setHeight()")
                 .m-auto((mouseover)="onHover.sad=true", (mouseout)="onHover.sad=false")
@@ -72,24 +72,24 @@
                         .user-details(*ngFor="let user of sadUsers")
                           .avatar-user
                             .avatar-name
-                              | {{ user.user.display_name.split(" ")[0].charAt(0) }}
-                              | {{ user.user.display_name.split(" ")[1].charAt(0) }}
+                              | {{ user.user.split(" ")[0].charAt(0) }}
+                              | {{ user.user.split(" ")[1].charAt(0) }}
                           .user-info
-                            span {{ user.user.display_name }}
+                            span {{ user.user }}
                             br
-                            span.percent {{ user.percentage }}%
+                            span.percent {{ user.happiness | percent }}
         .col-md-4
           .row
             .col-md-12.col-sm-6
               .card.card-avg-summary([ng2-loading]="loading", [style.height.px]="setHeight()")
                 .m-auto
                   .card-title % of users who clicked X
-                  a.data {{ answerPercentage.x }}%
+                  a.data {{ closePercentage | percent }}
             .col-md-12.col-sm-6
               .card.card-avg-summary([ng2-loading]="loading", [style.height.px]="setHeight()")
                 .m-auto
                   .card-title % of users who did not answer
-                  a.data {{ answerPercentage.idle }}%
+                  a.data {{ idlePercentage | percent }}
     .col-md-12
       .row.equal
         .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")

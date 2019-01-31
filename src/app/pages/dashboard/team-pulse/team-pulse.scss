@@ -106,6 +106,10 @@ $darkGray: #323C47;
   }
 }
 
+#cardHappyChart .card-content.no-chart {
+  min-height: 300px;
+}
+
 .card-content .percentage {
   font-family: 'Poppins';
   font-size: 48px;

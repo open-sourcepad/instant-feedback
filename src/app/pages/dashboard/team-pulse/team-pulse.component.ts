@@ -3,6 +3,7 @@ import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { Chart } from 'chart.js';
 import { PulseService } from '../../../services/api/pulse.service';
 import * as moment from 'moment';
+import { QuestionService } from 'src/app/services/api';
 
 @Component({
   selector: 'team-pulse',
@@ -15,9 +16,12 @@ export class TeamPulseComponent implements OnInit {
   sadUsers: any;
   questionsData: any;
   questionsChart: any;
-  answerPercentage: any;
+  closePercentage: number = 0;
+  idlePercentage: number = 0;
+  happyMeter: number = 0;
   happyChart: any;
   loading = false;
+  questionStats: any = [];
 
   form: FormGroup;
   selectedDateFilter = 1;
@@ -55,14 +59,14 @@ export class TeamPulseComponent implements OnInit {
 
   constructor(
     private pulseService: PulseService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private questionApi: QuestionService
   ) {
       this.filter = 'week';
       this.happyUsers = [];
       this.sadUsers = [];
       this.questionsData = [];
       this.questionsChart = {};
-      this.answerPercentage = {x: 0, idle: 0, happy: 0};
     }
 
   ngOnInit() {
@@ -71,7 +75,12 @@ export class TeamPulseComponent implements OnInit {
       date_until: [this.daterange.end, Validators.required],
       filter: [this.filter, Validators.required]
     });
-    this.filterStats();
+    this.questionApi.getMainQuestions().subscribe(res => {
+      this.questionStats = res['collection']['data'].map( q => {
+        return {id: q.id, question: q.message, data: []}
+      });
+      this.filterStats();
+    });
   }
 
   setHeight(){
@@ -84,18 +93,50 @@ export class TeamPulseComponent implements OnInit {
     this.pulseService.query(this.form.value)
       .subscribe(res => {
         this.loading = false;
-        this.happyUsers = res['happy_users'];
-        this.sadUsers = res['sad_users'];
-        this.answerPercentage['x'] = res['answer_percentage']['x'];
-        this.answerPercentage['idle'] = res['answer_percentage']['idle'];
-        this.answerPercentage['happy'] = res['happiness_meter'].slice(-1)[0]['percentage'];
+        let keys = Object.keys(res);
+        let i = 0;
+        var happiness_meter = [];
+        // console.log(this.questionStats);
+        for(let key of keys){
+          if(i == (keys.length - 1) || key == 'current'){
+            this.happyUsers = res[key]['happy_users'];
+            this.sadUsers = res[key]['sad_users'];
+            this.closePercentage = res[key]['close_percentage'];
+            this.idlePercentage = res[key]['idle_percentage'];
+            this.happyMeter = res[key]['happiness_meter'];
+            happiness_meter.push({date: 'current', percentage: (res[key]['happiness_meter'] * 100)});
+            for(let stats of res[key]['stats_per_question']){
+              let qStatsIdx = this.questionStats.findIndex(x => x.id == stats.question.id);
+              this.questionStats[qStatsIdx]['data'].push({
+                date: 'current', percentage: stats
+              });
+            }
+          }else{
+            happiness_meter.push({date: key, percentage: (res[key]['happiness_meter'] * 100)});
+            for(let stats of res[key]['stats_per_question']){
+              let qStatsIdx = this.questionStats.findIndex(x => x.id == stats.question.id);
+              this.questionStats[qStatsIdx]['data'].push({
+                date: key, percentage: stats
+              });
+            }
+          }
+          i++;
+        }
+        console.log(happiness_meter);
+        console.log(this.questionStats);
+        // debugger;
+        // this.happyUsers = res['happy_users'];
+        // this.sadUsers = res['sad_users'];
+        // this.answerPercentage['x'] = res['answer_percentage']['x'];
+        // this.answerPercentage['idle'] = res['answer_percentage']['idle'];
+        // this.answerPercentage['happy'] = res['happiness_meter'].slice(-1)[0]['percentage'];
 
         if(this.filter != 'custom'){
-          this.generateHappyMeter(res['happiness_meter']);
+          this.generateHappyMeter(happiness_meter);
          }
 
         let idx = 1;
-        for(let question of res['stats_per_questions']){
+        for(let question of this.questionStats){
           let currentData;
           if(question['data'].length > 0){
             for(let questionStats of question['data']) {
