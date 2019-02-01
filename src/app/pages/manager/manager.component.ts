@@ -13,16 +13,22 @@ import { User } from '../../models';
 export class ManagerComponent implements OnInit {
 
   currentUser: User;
-
+  users = [];
 
   constructor(
     public session: SessionService,
     public userApi: UserService
   ) {
     this.currentUser = new User(this.session.getCurrentUser());
+    this.userApi.query({})
+      .subscribe(res => {
+        this.users = res['collection']['data'].filter(u => u['id'] != this.currentUser.id);
+      }, err => {
+    });
   }
 
   ngOnInit() {
+    
   }
 
 }

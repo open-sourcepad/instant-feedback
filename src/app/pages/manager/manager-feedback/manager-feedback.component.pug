@@ -1,1 +1,76 @@
-p manager-feedback works!
+.col-md-12.p-0.bg-brown([ng2-loading]="loadingPending")
+  .row
+    .col-md-9.m-auto
+      .mt-5
+        h3.font-bold.text-brown Requests for Feedback
+        br
+        ng-container(*ngIf="requests.length > 0")
+          .requestee-container(*ngFor="let request of requests")
+            .requestee-content.inline-block
+              span.text-muted.font-size-13 {{ request.created_at | datePrettyFormat }}
+              br
+              .requestee-give-feedback
+                span.text-indigo.font-bold {{ request.recipient.name }}&nbsp;
+                span.font-semi-bold has requested for your feedback.
+            button.btn-instant-feedback.btn-sm.btn-instant-feedback-semi-dark((click)="sideMenuState = 'in'; feedbackState = 'give'; requestedFeedback = request") Give Feedback
+        ng-container(*ngIf="requests.length < 1")
+          .requestee-container
+            .requestee-content.inline-block
+              .requestee-give-feedback
+                span.font-semi-bold.text-idle No feedback requests
+        br
+.col-md-12.p-0.bg-lightbrown([ng2-loading]="loading")
+  .row
+    .col-md-9.m-auto
+      #feedback-filters.mt-3
+        label.font-bold.text-idle Dates&nbsp;&nbsp;&nbsp;
+        .date-range.inline-block
+          span.font-bold {{ filters.date_since.value | date : 'MMMM d, y'}} - {{ filters.date_until.value | date : 'MMMM d, y'}}&nbsp;&nbsp;
+          button.btn.btn-instant-feedback.btn-daterange(daterangepicker, [options]="daterangeOpts", (selected)="selectedDate($event, daterange)")
+            span.icon-holder.ti-calendar
+            | &nbsp;
+            span.icon-holder.ti-angle-down
+
+        label.font-bold.text-idle.ml-4 User&nbsp;&nbsp;
+        select.form-control.inline-block.w-auto([(ngModel)]="selectedUser", (change)="selectUser($event.target.value)")
+          option(value="") ALL
+          option(*ngFor="let user of users", [value]="user.id") {{ user.display_name }}
+
+        #mood-score(*ngIf="showMoodScore")
+          span Feedback Mood
+          img(*ngIf="moodScore > 0.24", src="assets/images/happy-face.png")
+          img(*ngIf="moodScore < 0", src="assets/images/sad-face.png")
+      .mt-3.mb-3
+        ul.reset.user-overview-options
+          li.is-active
+            button([class.active]="filters.received.value", (click)="changeTab('received')") From Your Team
+          li.is-active
+            button([class.active]="filters.given.value", (click)="changeTab('given')") To Your Team
+
+      .mt-3.feedback-list
+        ng-container(*ngIf="feedbacks.length > 0")
+          .feedback(*ngFor="let obj of feedbacks | paginate: paginationControls")
+            span.text-idle.font-size-12 {{ obj.updated_at | datePrettyFormat }}
+            br
+            ng-container(*ngIf="filters.received.value")
+              span
+                img(*ngIf="obj.sentiment_score > 0.24", src="assets/images/happy-face.png")
+                img(*ngIf="obj.sentiment_score < 0", src="assets/images/sad-face.png")
+              span.font-bold.text-indigo {{ obj.sender }}&nbsp;
+              span said
+              span.text-idle(*ngIf="obj.question") &nbsp;(in response to your feedback request)
+            ng-container(*ngIf="filters.given.value")
+              span
+                img(*ngIf="obj.sentiment_score > 0.24", src="assets/images/happy-face.png")
+                img(*ngIf="obj.sentiment_score < 0", src="assets/images/sad-face.png")
+              span.font-bold.text-indigo You&nbsp;
+              span said to {{ obj.recipient.name }}
+              span.text-idle(*ngIf="obj.question") &nbsp;(in response to {{ obj.recipient.preposition }} feedback request)
+            span :
+            p.text-justify "{{ obj.comment }}"
+            .text-right
+              button.btn-action.font-size-14.font-bold((click)="toggleShowFeedback('in'); selectedFeedback = obj") More
+        ng-container(*ngIf="feedbacks.length < 1")
+          .feedback.text-center
+            span.font-bold No feedbacks yet.
+      pagination(*ngIf="feedbacks.length > 0", [config]="paginationControls", (pageChange)="pageChange($event)")
