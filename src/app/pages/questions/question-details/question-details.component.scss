@@ -185,14 +185,23 @@
   > li {
     border-bottom: 1px solid #E9EFF4;
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 300;
     color: #323C47;
     letter-spacing: -0.17px;
-    line-height: 27px;
-    padding: 10px 21px;
+    line-height: 4;
 
     &:last-child {
       border-bottom: 0;
+    }
+  }
+  > li a, > li span {
+    padding: 10px 21px;
+  }
+  > li a {
+    cursor: pointer;
+
+    &:hover, &:focus {
+      font-weight: bold;
     }
   }
 }

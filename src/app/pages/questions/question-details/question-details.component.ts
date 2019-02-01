@@ -99,11 +99,24 @@ export class QuestionDetailsComponent implements OnInit {
     private userService: UserService,
     private questionService: QuestionService
   ) {
+    this.searchUserTerm$.subscribe(next => {
+      this.searchName = next;
+    });
     this.userService.searchNames(this.searchUserTerm$)
       .subscribe(
         res => {
-          this.users = res['collection']['data'];
-          this.showSuggestion = !!this.searchUserTerm$;
+          if(this.recipients.length > 0){
+            this.users = res['collection']['data'].filter(d => {
+              if(this.recipients.findIndex(x => x.id == d['id']) < 0){
+                return d;
+              }
+            });
+          }else {
+            this.users = res['collection']['data'];
+          }
+
+          if(!this.searchName) this.users = [];
+          this.showSuggestion = !!this.searchName;
           this.errorMsg.addUser = "";
         }
       );
@@ -152,10 +165,10 @@ export class QuestionDetailsComponent implements OnInit {
     let hour = +this.form.get('chosenHour').value;
     let minute = +this.form.get('chosenMinute').value;
 
-    let temp = moment(this.chosenDate)
+    let temp = moment(this.chosenDate);
     temp.hour(hour);
     temp.minute(minute);
-    this.chosenDate = moment(temp).format('YYYY-MM-DD hh:mm:00');
+    this.chosenDate = temp.format('YYYY-MM-DD hh:mm:00');
     this.formatedDate = new Date(this.chosenDate.replace(/-/g, "/"));
   }
 
@@ -171,6 +184,7 @@ export class QuestionDetailsComponent implements OnInit {
         if(res['data']){
           this.recipients.push(res['data']);
           this.searchName = '';
+          this.searchUserTerm$.next('');
         }
       }, err => {
         this.errorMsg.addUser = "User not found";
@@ -223,7 +237,7 @@ export class QuestionDetailsComponent implements OnInit {
         res => {
           this.currentObj = res['data'];
           let momentDate= moment(this.currentObj['scheduled_at']).tz('EST');
-          this.chosenDate = momentDate.format(`D MMMM YYYY hh:mm:00`);
+          this.chosenDate = momentDate.format(`YYYY-MM-DD hh:mm:00`);
           this.formatedDate = new Date(this.chosenDate.replace(/-/g, "/"));
           this.chosenDay = momentDate.format('D MMMM YYYY');
           this.datepickeroptions.startDate = this.chosenDay ;
