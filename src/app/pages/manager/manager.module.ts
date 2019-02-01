@@ -11,13 +11,13 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ManagerComponent } from './manager.component';
 import { ManagerOverviewComponent } from './manager-overview/manager-overview.component';
 import { ManagerMeetingsComponent } from './manager-meetings/manager-meetings.component';
-//import { ManagerFeedbackComponent } from './manager-feedback/manager-feedback.component';
+import { ManagerFeedbackComponent } from './manager-feedback/manager-feedback.component';
 
 const MODULE_COMPONENTS = [
   ManagerComponent,
   ManagerOverviewComponent,
   ManagerMeetingsComponent,
-  //ManagerFeedbackComponent
+  ManagerFeedbackComponent
 ]
 
 @NgModule({
