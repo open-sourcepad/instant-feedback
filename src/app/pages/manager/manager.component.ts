@@ -16,7 +16,7 @@ export class ManagerComponent implements OnInit {
   currentUser: User;
   users = [];
   feedBackState: string = 'out';
-  feedback = {ask: false, give: false};
+  feedback = {ask: false, give: false, request: false, show: false};
   submitted: boolean = false;
   loading: boolean = false;
   modalText: any = {body: ''};

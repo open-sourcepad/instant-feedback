@@ -12,7 +12,7 @@
               .requestee-give-feedback
                 span.text-indigo.font-bold {{ request.recipient.name }}&nbsp;
                 span.font-semi-bold has requested for your feedback.
-            button.btn-instant-feedback.btn-sm.btn-instant-feedback-semi-dark((click)="sideMenuState = 'in'; feedbackState = 'give'; requestedFeedback = request") Give Feedback
+            button.btn-instant-feedback.btn-sm.btn-instant-feedback-semi-dark((click)="toggleFeedback('request', 'in'); requestedFeedback = request") Give Feedback
         ng-container(*ngIf="requests.length < 1")
           .requestee-container
             .requestee-content.inline-block
@@ -56,7 +56,8 @@
               span
                 img(*ngIf="obj.sentiment_score > 0.24", src="assets/images/happy-face.png")
                 img(*ngIf="obj.sentiment_score < 0", src="assets/images/sad-face.png")
-              span.font-bold.text-indigo {{ obj.sender }}&nbsp;
+              button.btn-action([routerLink]="['/profile', obj.sender.id, 'overview']")
+                span.font-bold.text-indigo {{ obj.sender.display_name }}&nbsp;
               span said
               span.text-idle(*ngIf="obj.question") &nbsp;(in response to your feedback request)
             ng-container(*ngIf="filters.given.value")
@@ -64,13 +65,77 @@
                 img(*ngIf="obj.sentiment_score > 0.24", src="assets/images/happy-face.png")
                 img(*ngIf="obj.sentiment_score < 0", src="assets/images/sad-face.png")
               span.font-bold.text-indigo You&nbsp;
-              span said to {{ obj.recipient.name }}
+              span said to&nbsp;
+              button.btn-action([routerLink]="['/profile', obj.recipient.id, 'overview']")
+                u {{ obj.recipient.name }}
+
               span.text-idle(*ngIf="obj.question") &nbsp;(in response to {{ obj.recipient.preposition }} feedback request)
             span :
             p.text-justify "{{ obj.comment }}"
             .text-right
-              button.btn-action.font-size-14.font-bold((click)="toggleShowFeedback('in'); selectedFeedback = obj") More
+              button.btn-action.font-size-14.font-bold((click)="toggleFeedback('show', 'in'); selectedFeedback = obj") More
         ng-container(*ngIf="feedbacks.length < 1")
           .feedback.text-center
             span.font-bold No feedbacks yet.
       pagination(*ngIf="feedbacks.length > 0", [config]="paginationControls", (pageChange)="pageChange($event)")
+
+modal(
+  [(visible)]="showModal",
+  [(modalText)]="modalText",
+  [(buttons)]="modalButtons",
+  (modalStateChange)="togglePopupModal($event)"
+)
+
+feedback-menu([(menuState)]="feedBackState")
+  div(feedback-content)
+    ng-container(*ngIf="feedback['request']")
+      form([formGroup]="requestForm", novalidate, autocomplete="off", (ngSubmit)="submitFeedback(requestForm.value)")
+        span.text-muted.font-size-13 {{ requestedFeedback?.created_at | datePrettyFormat }}
+        .form-header-text {{ requestedFeedback?.recipient.name }} requested you to give feedback with this question:
+        br
+        h2.font-bold.text-brown {{ requestedFeedback?.question }}
+        br
+        br
+        .form-group-box
+          textarea.form-control.form-control-line([class.is-invalid]="submitted && rf.comment.errors", type="text", formControlName="comment")
+          label Your feedback
+          .invalid-feedback
+            span Please enter your feedback
+        br
+        br
+        br
+    ng-container(*ngIf="feedback['show']")
+      ng-container(*ngIf="selectedFeedback?.question")
+        span.text-idle {{ selectedFeedback?.created_at | datePrettyFormat }}
+        .form-header-text(*ngIf="filters.received.value") You requested&nbsp;
+          span.text-indigo.font-bold {{ selectedFeedback?.sender }}&nbsp;
+          | to give you feedback with this question:
+        .form-header-text(*ngIf="filters.given.value") {{ selectedFeedback?.recipient.name }} requested&nbsp;
+          span.text-indigo.font-bold you&nbsp;
+          | to give your feedback with this question:
+        br
+        span.feedback-question.text-brown {{ selectedFeedback?.question }}
+        br
+        br
+        br
+      .form-header-text.text-idle(*ngIf="filters.received.value") {{ selectedFeedback?.sender }}'s feedback:
+      .form-header-text.text-idle(*ngIf="filters.given.value")
+        span(*ngIf="!employee_id") Your feedback:
+        span(*ngIf="employee_id") {{ selectedFeedback?.sender }}'s feedback:
+      br
+      ng-container(*ngIf="selectedFeedback?.comment")
+        span.text-idle {{ selectedFeedback?.updated_at | datePrettyFormat }}
+        p.feedback-comment {{ selectedFeedback?.comment }}
+      ng-container(*ngIf="!selectedFeedback?.comment")
+        i.feedback-comment.text-idle.font-size-16 No feedback yet
+      br
+      br
+  div(feedback-footer)
+    ng-container(*ngIf="feedback['request']")
+      button.btn.btn-round.btn-instant-feedback-cancel((click)="toggleFeedback('request', 'out')")
+        u Cancel
+      button.btn.btn-round.btn-instant-feedback-brown((click)="submitFeedback(requestForm.value)")
+        span Submit
+    ng-container(*ngIf="feedback['show']")
+      button.btn.btn-round.btn-instant-feedback-brown((click)="toggleFeedback('show', 'out')")
+        span Close

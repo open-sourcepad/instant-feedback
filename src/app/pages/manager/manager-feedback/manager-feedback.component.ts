@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { PaginationInstance } from 'ngx-pagination';
 import { FeedbackService, SessionService, UserService } from 'src/app/services/api';
 import * as moment from 'moment';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ManagerComponent } from '../manager.component';
+import { ContentValidator } from 'src/app/custom-validators/content-validator';
 
 @Component({
   selector: 'app-manager-feedback',
@@ -26,9 +27,9 @@ export class ManagerFeedbackComponent extends ManagerComponent implements OnInit
   loadingPending: boolean = false;
   requests = [];
   requestedFeedback = null;
+  requestForm: FormGroup;
 
   //show feedback
-  showFeedback: string = 'out';
   selectedFeedback = null;
 
   paginationControls: PaginationInstance = {
@@ -78,6 +79,7 @@ export class ManagerFeedbackComponent extends ManagerComponent implements OnInit
   }
 
   get filters() { return this.searchForm.controls; }
+  get rf() { return this.requestForm.controls; }
 
   ngOnInit() {
     this.searchForm = this.fb.group({
@@ -89,36 +91,101 @@ export class ManagerFeedbackComponent extends ManagerComponent implements OnInit
       given: [false]
     });
 
+    this.requestForm = this.fb.group({
+      comment: ['', [Validators.required, ContentValidator.IsBlank]]
+    });
+
     this.loadRequestFeedbacks();
 
     this.route.queryParams.subscribe(params => {
       let keys = Object.keys(params);
-      if(keys.length > 0){
-        for(let key of keys.filter(e => e !== 'page')){
-          let value = params[key]
-          if(key == 'received' || key == 'given') value = (params[key] == 'true');
-          if((key == 'received_from' || key == 'given_to') && params[key]) value = +params[key];
-          this.searchForm.get(key).setValue(value);
-        }
-        this.selectedUser = params['received_from'];
-        this.paginationControls['currentPage'] = params['page'];
 
-        this.loadFeedbacks(this.searchForm.value);
-      } else {
+      if(keys.length > 0){
+        if(keys.findIndex(x => x == 'show_feedback') > -1){
+          return;
+        }else if(keys.findIndex(x => x == 'give_feedback') > -1){
+          return;
+        }else {
+          for(let key of keys.filter(e => e !== 'page')){
+            let value = params[key]
+            if(key == 'received' || key == 'given') value = (params[key] == 'true');
+            if((key == 'received_from' || key == 'given_to') && params[key]) value = +params[key];
+            this.searchForm.get(key).setValue(value);
+          }
+          this.selectedUser = params['received_from'];
+          this.paginationControls['currentPage'] = params['page'];
+
+          this.loadFeedbacks(this.searchForm.value);
+        }
+      }else {
         this.loadFeedbacks(this.searchForm.value);
       }
     });
   }
-
+  
+  getFeedback(id) {
+    this.loading = true;
+    this.feedbackApi.get(id).subscribe(res => {
+      this.loading = false;
+      this.selectedFeedback = res['data'];
+    }, err => {
+      this.loading = false;
+    });
+  }
   //request feedbacks
   loadRequestFeedbacks() {
     this.loadingPending = true;
     this.feedbackApi.pending().subscribe(res => {
       this.loadingPending = false;
       this.requests = res['collection']['data'];
+      let sub = this.route.queryParams.subscribe(params => {
+        let keys = Object.keys(params);
+  
+        if(keys.length > 0){
+          if(keys.findIndex(x => x == 'show_feedback') > -1){
+            this.getFeedback(+params['show_feedback']);
+            this.toggleFeedback('show', 'in');
+          }else if(keys.findIndex(x => x == 'give_feedback') > -1){
+            let idx = this.requests.findIndex(x => x.id == +params['give_feedback']);
+
+            if(idx > -1){
+            this.toggleFeedback('request', 'in');
+              this.requestedFeedback = this.requests[idx];
+            }else {
+              this.togglePopupModal(true);
+              this.modalText['body'] = "Request feedback has already been answered or does not exist";
+            }
+          }
+        }
+      });
+      sub.unsubscribe();
+      this.loadFeedbacks(this.searchForm.value);
     }, err => {
       this.loadingPending = false;
     });
+  }
+
+  submitFeedback(values) {
+    this.loading = true;
+    this.submitted = true;
+
+    if(this.requestForm.invalid) {
+      this.loading = false;
+      return;
+    }
+
+    this.feedbackApi.update(this.requestedFeedback.id, values).subscribe(res => {
+      this.loading = false;
+      this.toggleFeedback('request', 'out');
+      this.togglePopupModal(true);
+      this.modalText['body'] = "Thank you for giving your feedback";
+      let idx = this.requests.findIndex(x => x.id == this.requestedFeedback.id);
+      this.requests.splice(idx, 1);
+      this.requestedFeedback = null;
+    }, err => {
+      this.loading = false;
+    });
+
   }
 
   // answered feedbacks
