@@ -93,10 +93,14 @@ feedback-menu([(menuState)]="feedBackState")
             span Please enter your feedback
 
   div(feedback-footer)
-    button.btn.btn-round.btn-instant-feedback-cancel((click)="toggleFeedback('ask', 'out')")
-      u Cancel
-    button.btn.btn-round.btn-instant-feedback-brown(*ngIf="feedback['ask']", (click)="submit(askForm.value)")
-      span(*ngIf="!af.questionFormat.value") Continue
-      span(*ngIf="af.questionFormat.value") Submit
-    button.btn.btn-round.btn-instant-feedback-brown(*ngIf="feedback['give']", (click)="submit(giveForm.value)")
-      span Submit
+    ng-container(*ngIf="feedback['ask']")
+      button.btn.btn-round.btn-instant-feedback-cancel((click)="toggleFeedback('ask', 'out'); submitted=false")
+        u Cancel
+      button.btn.btn-round.btn-instant-feedback-brown((click)="submit(askForm.value)")
+        span(*ngIf="!af.questionFormat.value") Continue
+        span(*ngIf="af.questionFormat.value") Submit
+    ng-container(*ngIf="feedback['give']")
+      button.btn.btn-round.btn-instant-feedback-cancel((click)="toggleFeedback('give', 'out'); submitted=false")
+        u Cancel
+      button.btn.btn-round.btn-instant-feedback-brown((click)="submit(giveForm.value)")
+        span Submit

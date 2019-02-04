@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FeedbackService, MeetingService, SessionService, UserService } from '../../services/api';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FeedbackService, SessionService, UserService } from '../../services/api';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from '../../models';
+import { ContentValidator } from 'src/app/custom-validators/content-validator';
 
 
 @Component({
@@ -12,20 +13,16 @@ import { User } from '../../models';
 export class EmployeeComponent implements OnInit {
 
   currentUser: User;
-  sideMenuState: string = 'out';
-  //feedbackState: string = null;
-  feedbackState: string = 'ask';
-  users: object[] = [];
-  usersForQuestionForm: object[] = [];
-  chosenUsers = [];
-  loading: boolean = false;
+  users = [];
+  feedBackState: string = 'out';
+  feedback = {ask: false, give: false, request: false, show: false};
   submitted: boolean = false;
-  showModal: boolean = false;
+  loading: boolean = false;
   modalText: any = {body: ''};
   modalButtons: any = {confirm: {text: 'Close'}};
-  questionFormat: string;
-
-  feedbackForm: FormGroup;
+  showModal: boolean = false;
+  giveForm: FormGroup;
+  askForm: FormGroup;
   existingQs = [
     "What's one thing that I'm doing well with and should carry on doing?",
     "What's one thing that I could do to be more effective?",
@@ -33,110 +30,99 @@ export class EmployeeComponent implements OnInit {
     "What can I do to be more helpful to people on the team?",
     "What knowledge or skills do you think I may need to develop to meet my goals in this job?"
   ]
-  questionForm: object;
 
   constructor(
     public fb: FormBuilder,
-    public feedbackApi: FeedbackService,
     public session: SessionService,
-    public userApi: UserService
+    public userApi: UserService,
+    public feedbackApi: FeedbackService
   ) {
     this.currentUser = new User(this.session.getCurrentUser());
     this.userApi.query({})
       .subscribe(res => {
-        this.loading = false;
         this.users = res['collection']['data'].filter(u => u['id'] != this.currentUser.id);
       }, err => {
-        this.loading = false;
-      });
-  }
-
-  get f() { return this.feedbackForm.controls; }
-
-  ngOnInit() {
-    this.loading = true;
-
-    this.questionForm = {
-      errors: {},
-      question: '',
-      chosen_question: this.existingQs[0],
-    }
-
-    this.feedbackForm = this.fb.group({
-      recipient_id: ['', Validators.required],
-      sender_id: [this.currentUser.id, Validators.required],
-      comment: ['', Validators.required]
     });
   }
 
-  toggleSideMenuState(value) {
-    this.sideMenuState = value;
+  get gf() { return this.giveForm.controls; }
+  get af() { return this.askForm.controls; }
+
+  ngOnInit() {
+    this.askForm = this.fb.group({
+      recipient_id: [this.currentUser.id, Validators.required],
+      sender_ids: ['', Validators.required],
+      question: ['', [Validators.required, ContentValidator.IsBlank]],
+      questionFormat: ['', Validators.required]
+    });
+
+    this.giveForm = this.fb.group({
+      recipient_id: ['', Validators.required],
+      sender_id: [this.currentUser.id, Validators.required],
+      comment: ['', [Validators.required, ContentValidator.IsBlank]]
+    });
   }
 
-  modalStateChange(value) {
+  toggleFeedback(type, state) {
+    this.feedBackState = state;
+    this.feedback[type] = !this.feedback[type];
+  }
+
+  togglePopupModal(value) {
     this.showModal = value;
   }
 
+  assignQuestion(value) {
+    this.af.question.setValue(value);
+  }
+
   submit(values) {
-    if (this.feedbackState == 'ask') {
-      this.submitQuestion();
-    } else {
-      this.submitFeedback(values);
-    }
-  }
-
-  submitQuestion() {
     this.submitted = true;
     this.loading = true;
 
-    let values = this.questionForm;
+    if(this.feedback['ask']) {
+      if(this.askForm.invalid){
+        this.loading = false;
+        return;
+      }else {
+        values['sender_ids'] = values['sender_ids'].map(u => u['id']);
+        this.feedbackApi.batchCreate(values).subscribe(res => {
+          this.loading = false;
+          this.submitted = false;
+          this.toggleFeedback('ask','out');
+          this.togglePopupModal(true);
+          this.modalText['body'] = 'Thank you for asking feedback';
 
-    if (this.questionFormat == 'existingQ') {
-      values['question'] = values['chosen_question'];
+          this.askForm.patchValue({
+            sender_ids: [],
+            question: '',
+            questionFormat: ''
+          });
+        }, err => {
+          this.loading = false;
+        });
+      }
+    }else{
+      if(this.giveForm.invalid){
+        this.loading = false;
+        return;
+      }else {
+        this.feedbackApi.create(values).subscribe(res => {
+          this.loading = false;
+          this.submitted = false;
+          this.toggleFeedback('give','out');
+          this.togglePopupModal(true);
+          this.modalText['body'] = "Thank you for giving your feedback";
+
+          this.giveForm.patchValue({
+            recipient_id: '',
+            comment: ''
+          });
+        }, err => {
+          this.loading = false;
+        });
+      }
     }
-
-    // validation
-    values['errors'] = {};
-    if (this.chosenUsers.length < 1) values['errors']['no sender'] = true
-    if (values['question'].trim() == '') values['errors']['no question'] = true;
-    if (Object.keys(values['errors']).length > 1) return;
-
-    values['sender_ids'] = this.chosenUsers.map(u => u['id']);
-    values['recipient_id'] = this.currentUser.id;
-
-    this.feedbackApi.batchCreate(values).subscribe(res => {
-      this.loading = false;
-      this.toggleSideMenuState('out');
-      this.modalStateChange(true);
-      this.modalText['body'] = 'Thank you for asking feedback';
-
-      this.questionForm = {
-        question: '',
-        chosen_question: this.existingQs[0],
-      };
-    }, err => {
-      this.loading = false;
-    });
-  }
-
-  submitFeedback(values) {
-    this.submitted = true;
-    this.loading = true;
-
-    if(values.comment.trim() == '') this.f.comment.setValue('');
-    if(this.feedbackForm.invalid) {
-      this.loading = false;
-      return;
-    }
-
-    this.feedbackApi.create(values).subscribe(res => {
-      this.loading = false;
-      this.toggleSideMenuState('out');
-      this.modalStateChange(true);
-      this.modalText['body'] = "Thank you for giving your feedback";
-    }, err => {
-      this.loading = false;
-    });
   }
 
 }

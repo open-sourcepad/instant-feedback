@@ -108,7 +108,7 @@ feedback-menu([(menuState)]="feedBackState")
       ng-container(*ngIf="selectedFeedback?.question")
         span.text-idle {{ selectedFeedback?.created_at | datePrettyFormat }}
         .form-header-text(*ngIf="filters.received.value") You requested&nbsp;
-          span.text-indigo.font-bold {{ selectedFeedback?.sender }}&nbsp;
+          span.text-indigo.font-bold {{ selectedFeedback?.sender.display_name }}&nbsp;
           | to give you feedback with this question:
         .form-header-text(*ngIf="filters.given.value") {{ selectedFeedback?.recipient.name }} requested&nbsp;
           span.text-indigo.font-bold you&nbsp;
@@ -118,10 +118,9 @@ feedback-menu([(menuState)]="feedBackState")
         br
         br
         br
-      .form-header-text.text-idle(*ngIf="filters.received.value") {{ selectedFeedback?.sender }}'s feedback:
+      .form-header-text.text-idle(*ngIf="filters.received.value") {{ selectedFeedback?.sender.display_name }}'s feedback:
       .form-header-text.text-idle(*ngIf="filters.given.value")
-        span(*ngIf="!employee_id") Your feedback:
-        span(*ngIf="employee_id") {{ selectedFeedback?.sender }}'s feedback:
+        span Your feedback:
       br
       ng-container(*ngIf="selectedFeedback?.comment")
         span.text-idle {{ selectedFeedback?.updated_at | datePrettyFormat }}

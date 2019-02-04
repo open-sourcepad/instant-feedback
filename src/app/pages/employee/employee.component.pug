@@ -10,9 +10,9 @@
             h1.text-brown.font-bold {{ currentUser.display_name }}
             h4.text-capitalize.ml-2 {{ currentUser.role }} Team
             br
-            button.btn.btn-instant-feedback.btn-instant-feedback-link((click)="sideMenuState = 'in'; feedbackState = 'ask'") Ask for Feedback
+            button.btn.btn-instant-feedback.btn-instant-feedback-link((click)="toggleFeedback('ask', 'in')") Ask for Feedback
             | &nbsp; &nbsp;
-            button.btn.btn-instant-feedback.btn-instant-feedback-link((click)="sideMenuState = 'in'; feedbackState = 'give'") Give Feedback
+            button.btn.btn-instant-feedback.btn-instant-feedback-link((click)="toggleFeedback('give', 'in')") Give Feedback
 
       .col-md-9.m-auto
         br
@@ -32,64 +32,76 @@ modal(
   [(visible)]="showModal",
   [(modalText)]="modalText",
   [(buttons)]="modalButtons",
-  (modalStateChange)="modalStateChange($event)"
+  (modalStateChange)="togglePopupModal($event)"
 )
 
-side-menu(
-  [(menuState)]="sideMenuState",
-  [(feedbackState)]="feedbackState",
-  [(form)]="feedbackForm",
-  (cancel)="toggleSideMenuState($event)",
-  (submitFeedback)="submit($event)"
-)
+feedback-menu([(menuState)]="feedBackState")
+  div(feedback-content)
+    ng-container(*ngIf="feedback['ask']")
+      form#question-form(feedback="give", [formGroup]="askForm", novalidate, autocomplete="off", (ngSubmit)="submit(askForm.value)")
+        .form-header-text Ask for feedback from
+        br
+        ng-select(class="custom",
+          [items]="users",
+          [multiple]="true",
+          [closeOnSelect]="false",
+          [hideSelected]="true",
+          bindLabel="display_name",
+          placeholder="Choose a User",
+          formControlName="sender_ids",
+          [class.ng-has-error]="submitted && af.sender_ids.errors")
+        br
+        br
+        .bordered-bottom([class.is-invalid]="submitted && af.questionFormat.errors")
+          div
+            .float-left
+              label(for="existingQ") Choose an existing feedback question
+            .float-right
+              input#existingQ.form-check-input(type="radio", formControlName="questionFormat", value="existingQ", (change)="assignQuestion('')")
+            .spacer &nbsp;
+          #existing-questions([class.hidden]="af.questionFormat.value != 'existingQ'")
+            .choice(*ngFor="let q of existingQs", (click)="assignQuestion(q)", [class.selected]="af.question.value==q") {{ q }}
+            .choice
+              br
+        .bordered-bottom([class.no-border]="af.questionFormat.value", [class.is-invalid]="submitted && af.questionFormat.errors")
+          div
+            .float-left
+              label(for="customQ") Add your own
+            .float-right
+              input#customQ.form-check-input(type="radio", formControlName="questionFormat", value="customQ", (change)="assignQuestion('')")
+            .spacer &nbsp;
+          #custom-question([class.hidden]="af.questionFormat.value != 'customQ'")
+            br
+            .form-group-box
+              textarea.form-control.form-control-line([class.is-invalid]="submitted && af.question.errors", type="text", formControlName="question")
+              label Your Feedback Question
+              .invalid-feedback
+                span Please enter your feedback question
 
-  #question-form(feedback="ask")
-    .form-header-text Ask for feedback from
-    br
-    ng-select(class="custom",
-      [items]="users",
-      [multiple]="true",
-      [closeOnSelect]="false",
-      [hideSelected]="true",
-      bindLabel="display_name",
-      placeholder="Choose a User",
-      [class.ng-invalid]="questionForm['errors']['no sender']",
-      [(ngModel)]="chosenUsers")
-    br
-    br
-    .bordered-bottom([class.is-invalid]="questionForm['errors']['no question']")
-      div
-        .float-left
-          label(for="existingQ") Choose an existing feedback question
-        .float-right
-          input#existingQ.form-check-input(type="radio", [(ngModel)]="questionFormat", value="existingQ")
-        .spacer &nbsp;
-      #existing-questions([class.hidden]="questionFormat!='existingQ'")
-        .choice(*ngFor="let q of existingQs", (click)="questionForm['chosen_question']=q", [class.selected]="questionForm['chosen_question']==q") {{ q }}
-        .choice
-          br
-    .bordered-bottom([class.is-invalid]="questionForm['errors']['no question']")
-      div
-        .float-left
-          label(for="customQ") Add your own
-        .float-right
-          input#customQ.form-check-input(type="radio", [(ngModel)]="questionFormat", value="customQ")
-        .spacer &nbsp;
-      #custom-question([class.hidden]="questionFormat!='customQ'")
-        strong Your Feedback Question
-        textarea.form-control(type="text", [class.is-invalid]="questionForm['errors']['no question']", [(ngModel)]="questionForm['question']")
+    ng-container(*ngIf="feedback['give']")
+      form(feedback="give", [formGroup]="giveForm", novalidate, autocomplete="off", (ngSubmit)="submit(giveForm.value)")
+        .form-header-text Help and improve
+          select.form-control.inline-block(formControlName="recipient_id", [class.is-invalid]="submitted && gf.recipient_id.errors")
+            option(value="", disabled="true") Choose a User
+            option(*ngFor="let user of users", [value]="user.id") {{ user.display_name }}
+          | with your feedback:
+        br
+        br
+        .form-group-box
+          textarea.form-control.form-control-line([class.is-invalid]="submitted && gf.comment.errors", type="text", formControlName="comment")
+          label Your feedback
+          .invalid-feedback
+            span Please enter your feedback
 
-
-  form(feedback="give", [formGroup]="feedbackForm", novalidate, autocomplete="off", (ngSubmit)="submitFeedback(feedbackForm.value)")
-    .form-header-text Help and improve
-      select.form-control.inline-block(formControlName="recipient_id", [class.is-invalid]="submitted && f.recipient_id.errors")
-        option(value="", disabled="true") Choose a User
-        option(*ngFor="let user of users", [value]="user.id") {{ user.display_name }}
-      | with your feedback:
-    br
-    br
-    .form-group-box
-      textarea.form-control.form-control-line([class.is-invalid]="submitted && f.comment.errors", type="text", formControlName="comment")
-      label Your feedback
-      .invalid-feedback
-        span Please enter your feedback
+  div(feedback-footer)
+    ng-container(*ngIf="feedback['ask']")
+      button.btn.btn-round.btn-instant-feedback-cancel((click)="toggleFeedback('ask', 'out'); submitted=false")
+        u Cancel
+      button.btn.btn-round.btn-instant-feedback-brown((click)="submit(askForm.value)")
+        span(*ngIf="!af.questionFormat.value") Continue
+        span(*ngIf="af.questionFormat.value") Submit
+    ng-container(*ngIf="feedback['give']")
+      button.btn.btn-round.btn-instant-feedback-cancel((click)="toggleFeedback('give', 'out'); submitted=false")
+        u Cancel
+      button.btn.btn-round.btn-instant-feedback-brown((click)="submit(giveForm.value)")
+        span Submit

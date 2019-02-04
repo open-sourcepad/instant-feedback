@@ -12,14 +12,12 @@ import { ManagerComponent } from './manager.component';
 import { ManagerOverviewComponent } from './manager-overview/manager-overview.component';
 import { ManagerMeetingsComponent } from './manager-meetings/manager-meetings.component';
 import { ManagerFeedbackComponent } from './manager-feedback/manager-feedback.component';
-import { FeedbackMenuComponent } from './feedback-menu/feedback-menu.component';
 
 const MODULE_COMPONENTS = [
   ManagerComponent,
   ManagerOverviewComponent,
   ManagerMeetingsComponent,
-  ManagerFeedbackComponent,
-  FeedbackMenuComponent
+  ManagerFeedbackComponent
 ]
 
 @NgModule({

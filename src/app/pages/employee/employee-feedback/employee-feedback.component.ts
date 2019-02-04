@@ -7,6 +7,7 @@ import {PaginationInstance} from 'ngx-pagination';
 import * as moment from 'moment';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ContentValidator } from 'src/app/custom-validators/content-validator';
 
 @Component({
   selector: 'app-employee-feedback',
@@ -15,23 +16,21 @@ import { map } from 'rxjs/operators';
 })
 export class EmployeeFeedbackComponent extends EmployeeComponent implements OnInit  {
 
-  feedbackForm: FormGroup;
-  searchForm: FormGroup;
-  collection = [];
-  selectedUser = "";
-  currentTab = 'received';
-  employee_id: number = null;
-
+  loading: boolean = false;
+  feedbacks: any = [];
+  queryParams = {page: 1};
   moodScore: number = 0;
   showMoodScore: boolean = false;
+  selectedUser = '';
+  employee_id: number = null;
 
   //request feedback
   loadingPending: boolean = false;
   requests = [];
   requestedFeedback = null;
+  requestForm: FormGroup;
 
   //show feedback
-  showFeedback: string = 'out';
   selectedFeedback = null;
 
   paginationControls: PaginationInstance = {
@@ -41,14 +40,9 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
     totalItems: 0
   }
 
-  daterange = {
-    start: moment().startOf('isoWeek').format('YYYY/MM/DD'),
-    end: moment().endOf('isoWeek').format('YYYY/MM/DD')
-  };
-  //daterangepicker options
-  options: any = {
+  daterangeOpts: any = {
     locale: {
-      format: 'MM/DD/YYYY',
+      format: 'YYYY/MM/DD',
       monthNames: [
         "January",
         "February",
@@ -68,25 +62,41 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
     autoApply: true,
     autoUpdateInput: true,
     opens: 'right',
-    startDate: moment().startOf('isoWeek').format('MM/DD/YYYY'),
-    endDate: moment().endOf('isoWeek').format('MM/DD/YYYY')
+    startDate: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
+    endDate: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59')
   };
 
-  private sub: any;
+  searchForm: FormGroup;
 
-  constructor(public fb: FormBuilder,
-    public feedbackApi: FeedbackService,
+  constructor(
+    public fb: FormBuilder,
     public session: SessionService,
     public userApi: UserService,
+    public feedbackApi: FeedbackService,
     private route: ActivatedRoute,
-    private router: Router) {
-    super(fb, feedbackApi, session, userApi);
+    private router: Router
+  ) {
+    super(fb, session, userApi, feedbackApi);
   }
 
+  get filters() { return this.searchForm.controls; }
+  get rf() { return this.requestForm.controls; }
+
   ngOnInit() {
-    this.feedbackForm = this.fb.group({
-      comment: ['', Validators.required]
+    this.searchForm = this.fb.group({
+      date_since: [this.daterangeOpts.startDate],
+      date_until: [this.daterangeOpts.endDate],
+      received_from: [''],
+      given_to: [''],
+      received: [true],
+      given: [false]
     });
+
+    this.requestForm = this.fb.group({
+      comment: ['', [Validators.required, ContentValidator.IsBlank]]
+    });
+
+    this.loadRequestFeedbacks();
 
     const urlParams =  combineLatest(
       this.route.parent.params,
@@ -97,40 +107,31 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
 
     urlParams.subscribe(params => {
       if(params['id']) this.employee_id = +params['id'];
-      if(Object.keys(params).length > 1) {
-        this.currentTab = params.tab;
-        this.daterange['start'] = params.startDate;
-        this.daterange['end'] = params.endDate;
-        this.selectedUser = params.user;
-        this.paginationControls['currentPage'] = params.page;
-      }
-    });
+      let keys = Object.keys(params);
 
-    this.loadFeedbacks();
-    this.loadRequestFeedbacks();
-  }
-
-  handleRouteParams() {
-    this.route.queryParams.subscribe(params => {
-      var action = Object.keys(params)[0];
-      if(action == "show_feedback"){
-        this.getFeedback(+params[action]);
-        this.toggleShowFeedback('in');
-      }else if(action == "give_feedback"){
-        let idx = this.requests.findIndex(x => x.id == +params[action]);
-
-        if(idx > -1){
-          this.sideMenuState = 'in';
-          this.feedbackState = 'give';
-          this.requestedFeedback = this.requests[idx];
+      if(keys.length > 0){
+        if(keys.findIndex(x => x == 'show_feedback') > -1){
+          return;
+        }else if(keys.findIndex(x => x == 'give_feedback') > -1){
+          return;
         }else {
-          this.modalStateChange(true);
-          this.modalText['body'] = "Request feedback has already been answered or does not exist";
+          for(let key of keys.filter(e => e !== 'page' && e !== 'id')){
+            let value = params[key]
+            if(key == 'received' || key == 'given') value = (params[key] == 'true');
+            if((key == 'received_from' || key == 'given_to') && params[key]) value = +params[key];
+            this.searchForm.get(key).setValue(value);
+          }
+          this.selectedUser = params['received_from'];
+          this.paginationControls['currentPage'] = params['page'];
+
+          this.loadFeedbacks(this.searchForm.value);
         }
+      }else {
+        this.loadFeedbacks(this.searchForm.value);
       }
     });
   }
-
+  
   getFeedback(id) {
     this.loading = true;
     this.feedbackApi.get(id).subscribe(res => {
@@ -140,33 +141,52 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
       this.loading = false;
     });
   }
-
   //request feedbacks
   loadRequestFeedbacks() {
     this.loadingPending = true;
     this.feedbackApi.pending().subscribe(res => {
       this.loadingPending = false;
       this.requests = res['collection']['data'];
-      this.handleRouteParams();
+      let sub = this.route.queryParams.subscribe(params => {
+        let keys = Object.keys(params);
+  
+        if(keys.length > 0){
+          if(keys.findIndex(x => x == 'show_feedback') > -1){
+            this.getFeedback(+params['show_feedback']);
+            this.toggleFeedback('show', 'in');
+          }else if(keys.findIndex(x => x == 'give_feedback') > -1){
+            let idx = this.requests.findIndex(x => x.id == +params['give_feedback']);
+
+            if(idx > -1){
+            this.toggleFeedback('request', 'in');
+              this.requestedFeedback = this.requests[idx];
+            }else {
+              this.togglePopupModal(true);
+              this.modalText['body'] = "Request feedback has already been answered or does not exist";
+            }
+          }
+        }
+      });
+      sub.unsubscribe();
+      this.loadFeedbacks(this.searchForm.value);
     }, err => {
       this.loadingPending = false;
     });
   }
 
   submitFeedback(values) {
-    this.submitted = true;
     this.loading = true;
+    this.submitted = true;
 
-    if(values.comment.trim() == '') this.f.comment.setValue('');
-    if(this.feedbackForm.invalid) {
+    if(this.requestForm.invalid) {
       this.loading = false;
       return;
     }
 
     this.feedbackApi.update(this.requestedFeedback.id, values).subscribe(res => {
       this.loading = false;
-      this.toggleSideMenuState('out');
-      this.modalStateChange(true);
+      this.toggleFeedback('request', 'out');
+      this.togglePopupModal(true);
       this.modalText['body'] = "Thank you for giving your feedback";
       let idx = this.requests.findIndex(x => x.id == this.requestedFeedback.id);
       this.requests.splice(idx, 1);
@@ -174,93 +194,77 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
     }, err => {
       this.loading = false;
     });
+
   }
 
-
-  //answered feedbacks
-  loadFeedbacks() {
+  // answered feedbacks
+  loadFeedbacks(query) {
     this.loading = true;
-    let query = {
-      date_since: `${this.daterange.start} 00:00:00`,
-      date_until: `${this.daterange.end} 23:59:59`,
-      page: {
-        number: this.paginationControls['currentPage'],
-        size: this.paginationControls['itemsPerPage']
-      }
-    };
-    query[this.currentTab] = true;
-    delete query['received_from'];
-    delete query['given_to'];
-    if(this.selectedUser) {
-      if(this.currentTab == 'received') {
-        query['received_from'] = this.selectedUser;
-      }else {
-        query['given_to'] = this.selectedUser;
-      }
-    }
-
-    this.handleQueryParams();
     if(this.employee_id){
       this.userApi.feedbacks(this.employee_id, query)
       .subscribe(res => {
         this.loading = false;
-        this.collection = res['collection']['data'];
+        this.feedbacks = res['collection']['data'];
         this.paginationControls['totalItems'] = res['metadata']['record_count'];
-        this.moodScore = this.collection.reduce((sum, obj) => sum + parseFloat(obj.sentiment_score), 0.0) / this.collection.length;
+        this.moodScore = this.feedbacks.reduce((sum, obj) => sum + parseFloat(obj.sentiment_score), 0.0) / this.feedbacks.length;
         this.showMoodScore = this.moodScore < 0 || this.moodScore > 0.24;
       }, err => {
         this.loading = false;
       });
     }else {
       this.feedbackApi.query(query)
-        .subscribe(res => {
-          this.loading = false;
-          this.collection = res['collection']['data'];
-          this.paginationControls['totalItems'] = res['metadata']['record_count'];
-          this.moodScore = this.collection.reduce((sum, obj) => sum + parseFloat(obj.sentiment_score), 0.0) / this.collection.length;
-          this.showMoodScore = this.moodScore < 0 || this.moodScore > 0.24;
-        }, err => {
-          this.loading = false;
-        });
+      .subscribe(res => {
+        this.loading = false;
+        this.feedbacks = res['collection']['data'];
+        this.paginationControls['totalItems'] = res['metadata']['record_count'];
+        this.moodScore = this.feedbacks.reduce((sum, obj) => sum + parseFloat(obj.sentiment_score), 0.0) / this.feedbacks.length;
+        this.showMoodScore = this.moodScore < 0 || this.moodScore > 0.24;
+      }, err => {
+        this.loading = false;
+      });
     }
   }
 
-  handleQueryParams(){
-    let queryParams = {
-      tab: this.currentTab,
-      startDate: this.daterange.start,
-      endDate: this.daterange.end,
-      user: this.selectedUser,
-      page: this.paginationControls['currentPage']
+  onSearch(values) {
+    for(let key of Object.keys(values)){
+      this.queryParams[key] = values[key];
     }
-    this.router.navigate([], {queryParams: queryParams, queryParamsHandling: "merge"});
-  }
+    this.queryParams['page'] = this.paginationControls['currentPage'];
 
-  toggleShowFeedback(value){
-    this.showFeedback = value;
+    this.router.navigate([], { queryParams: this.queryParams});
   }
 
   changeTab(tab) {
-    this.currentTab = tab;
-    this.paginationControls['currentPage'] = 1;
-    this.loadFeedbacks();
-  }
-
-  selectedDate(value: any, datepicker?: any) {
-    if(datepicker){
-      datepicker.start = value.start;
-      datepicker.end = value.end;
+    if(tab == 'received'){
+      this.searchForm.patchValue({
+        received: true,
+        given: false
+      });
+    }else {
+      this.searchForm.patchValue({
+        received: false,
+        given: true
+      });
     }
-
-    this.daterange.start = moment(value.start).format('YYYY/MM/DD');
-    this.daterange.end = moment(value.end).format('YYYY/MM/DD');
-  
-    this.loadFeedbacks();
+    this.paginationControls['currentPage'] = 1;
+    this.onSearch(this.searchForm.value);
   }
 
-  pageChange(evt) {
-    this.paginationControls['currentPage'] = evt;
-    this.loadFeedbacks();
+  selectedDate(value: any) {
+    this.searchForm.patchValue({ 
+      date_since: moment(value.start).format('YYYY/MM/DD 00:00:00'),
+      date_until: moment(value.end).format('YYYY/MM/DD 23:59:59')
+    });
+  
+    this.onSearch(this.searchForm.value);
+  }
+
+  selectUser(value){
+    this.searchForm.patchValue({
+      received_from: value,
+      given_to: value
+    });
+    this.onSearch(this.searchForm.value);
   }
 
 
