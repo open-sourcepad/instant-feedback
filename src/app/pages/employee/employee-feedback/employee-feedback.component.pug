@@ -26,7 +26,7 @@
         label.font-bold.text-idle Dates&nbsp;&nbsp;&nbsp;
         .date-range.inline-block
           span.font-bold {{ filters.date_since.value | date : 'MMMM d, y'}} - {{ filters.date_until.value | date : 'MMMM d, y'}}&nbsp;&nbsp;
-          button.btn.btn-instant-feedback.btn-daterange(daterangepicker, [options]="daterangeOpts", (selected)="selectedDate($event, daterange)")
+          button.btn.btn-instant-feedback.btn-daterange(daterangepicker, [options]="daterangeOpts", (selected)="selectedDate($event)")
             span.icon-holder.ti-calendar
             | &nbsp;
             span.icon-holder.ti-angle-down
