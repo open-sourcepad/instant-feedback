@@ -10,13 +10,15 @@ import { BackButtonComponent } from './back-button/back-button.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { SideMenuComponent } from './side-menu/side-menu.component';
 import { datePrettyFormat } from 'src/app/services/pipes/date-pretty-format.pipe';
+import { FeedbackMenuComponent } from './feedback-menu/feedback-menu.component';
 
 const SHARED_COMPONENTS = [
   NavbarComponent,
   ModalComponent,
   BackButtonComponent,
   PaginationComponent,
-  SideMenuComponent
+  SideMenuComponent,
+  FeedbackMenuComponent
 ]
 
 const SHARED_PIPES = [
