@@ -1,0 +1,13 @@
+#side-menu-form([@slideInOut]="menuState")
+  .side-menu-content
+    .container
+      .row
+        .col-md-10.mr-auto.ml-auto
+          .row
+            .col-md-12.mr-auto.ml-auto
+              .vertical-align.almost-full-height
+                .table-cell
+                  ng-content(select="[feedback-content]")
+    .actions
+      .m-auto.text-center
+        ng-content(select="[feedback-footer]")

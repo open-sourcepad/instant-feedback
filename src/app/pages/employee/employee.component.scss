@@ -131,10 +131,24 @@
   }
   .spacer { height: 45px; }
 
-  textarea {
-    resize: none;
-    border-radius: 8px;
-    margin-top: 12px;
+  .form-group-box label {
+    color: #000000;
+    font-weight: bold;
+  }
+
+  .form-group-box textarea.form-control-line {
+    height: 117px;
+    border: 1px solid $lightBrown;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 6px;
+
+    &:focus {
+      border-width: 2px;
+    }
+  }
+
+  .form-group-box {
     margin-bottom: 50px;
   }
 

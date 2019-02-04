@@ -65,7 +65,6 @@
 }
 
 .form-group-box .form-control-line:focus + label {
-  // opacity: 0;
   transform: translateY(1rem);
-  font-size: small;
+  font-size: small !important;
 }

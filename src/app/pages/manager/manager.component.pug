@@ -9,6 +9,10 @@
           .inline-block.details
             h1.text-brown.font-bold {{ currentUser.display_name }}
             h4.text-capitalize {{ currentUser.role }} Team
+            br
+            button.btn.btn-instant-feedback.btn-instant-feedback-link((click)="toggleFeedback('ask', 'in')") Ask for Feedback
+            | &nbsp; &nbsp;
+            button.btn.btn-instant-feedback.btn-instant-feedback-link((click)="toggleFeedback('give', 'in')") Give Feedback
       .col-md-9.m-auto
         br
         br
@@ -22,3 +26,77 @@
             a([routerLink]="['/manager/feedbacks']" routerLinkActive="active") Feedback
   .col-md-12.p-0
     router-outlet
+
+modal(
+  [(visible)]="showModal",
+  [(modalText)]="modalText",
+  [(buttons)]="modalButtons",
+  (modalStateChange)="togglePopupModal($event)"
+)
+
+feedback-menu([(menuState)]="feedBackState")
+  div(feedback-content)
+    ng-container(*ngIf="feedback['ask']")
+      form#question-form(feedback="give", [formGroup]="askForm", novalidate, autocomplete="off", (ngSubmit)="submit(askForm.value)")
+        .form-header-text Ask for feedback from
+        br
+        ng-select(class="custom",
+          [items]="users",
+          [multiple]="true",
+          [closeOnSelect]="false",
+          [hideSelected]="true",
+          bindLabel="display_name",
+          placeholder="Choose a User",
+          formControlName="sender_ids",
+          [class.ng-has-error]="submitted && af.sender_ids.errors")
+        br
+        br
+        .bordered-bottom([class.is-invalid]="submitted && af.questionFormat.errors")
+          div
+            .float-left
+              label(for="existingQ") Choose an existing feedback question
+            .float-right
+              input#existingQ.form-check-input(type="radio", formControlName="questionFormat", value="existingQ", (change)="assignQuestion('')")
+            .spacer &nbsp;
+          #existing-questions([class.hidden]="af.questionFormat.value != 'existingQ'")
+            .choice(*ngFor="let q of existingQs", (click)="assignQuestion(q)", [class.selected]="af.question.value==q") {{ q }}
+            .choice
+              br
+        .bordered-bottom([class.no-border]="af.questionFormat.value", [class.is-invalid]="submitted && af.questionFormat.errors")
+          div
+            .float-left
+              label(for="customQ") Add your own
+            .float-right
+              input#customQ.form-check-input(type="radio", formControlName="questionFormat", value="customQ", (change)="assignQuestion('')")
+            .spacer &nbsp;
+          #custom-question([class.hidden]="af.questionFormat.value != 'customQ'")
+            br
+            .form-group-box
+              textarea.form-control.form-control-line([class.is-invalid]="submitted && af.question.errors", type="text", formControlName="question")
+              label Your Feedback Question
+              .invalid-feedback
+                span Please enter your feedback question
+
+    ng-container(*ngIf="feedback['give']")
+      form(feedback="give", [formGroup]="giveForm", novalidate, autocomplete="off", (ngSubmit)="submit(giveForm.value)")
+        .form-header-text Help and improve
+          select.form-control.inline-block(formControlName="recipient_id", [class.is-invalid]="submitted && gf.recipient_id.errors")
+            option(value="", disabled="true") Choose a User
+            option(*ngFor="let user of users", [value]="user.id") {{ user.display_name }}
+          | with your feedback:
+        br
+        br
+        .form-group-box
+          textarea.form-control.form-control-line([class.is-invalid]="submitted && gf.comment.errors", type="text", formControlName="comment")
+          label Your feedback
+          .invalid-feedback
+            span Please enter your feedback
+
+  div(feedback-footer)
+    button.btn.btn-round.btn-instant-feedback-cancel((click)="toggleFeedback('ask', 'out')")
+      u Cancel
+    button.btn.btn-round.btn-instant-feedback-brown(*ngIf="feedback['ask']", (click)="submit(askForm.value)")
+      span(*ngIf="!af.questionFormat.value") Continue
+      span(*ngIf="af.questionFormat.value") Submit
+    button.btn.btn-round.btn-instant-feedback-brown(*ngIf="feedback['give']", (click)="submit(giveForm.value)")
+      span Submit

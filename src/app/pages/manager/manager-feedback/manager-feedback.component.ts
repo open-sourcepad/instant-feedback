@@ -67,14 +67,14 @@ export class ManagerFeedbackComponent extends ManagerComponent implements OnInit
   searchForm: FormGroup;
 
   constructor(
+    public fb: FormBuilder,
     public session: SessionService,
     public userApi: UserService,
-    private fb: FormBuilder,
-    private feedbackApi: FeedbackService,
+    public feedbackApi: FeedbackService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    super(session, userApi);
+    super(fb, session, userApi, feedbackApi);
   }
 
   get filters() { return this.searchForm.controls; }
@@ -83,8 +83,8 @@ export class ManagerFeedbackComponent extends ManagerComponent implements OnInit
     this.searchForm = this.fb.group({
       date_since: [this.daterangeOpts.startDate],
       date_until: [this.daterangeOpts.endDate],
-      received_from: [null],
-      given_to: [null],
+      received_from: [''],
+      given_to: [''],
       received: [true],
       given: [false]
     });
@@ -97,7 +97,7 @@ export class ManagerFeedbackComponent extends ManagerComponent implements OnInit
         for(let key of keys.filter(e => e !== 'page')){
           let value = params[key]
           if(key == 'received' || key == 'given') value = (params[key] == 'true');
-          if(key == 'received_from' || key == 'given_to') value = +params[key];
+          if((key == 'received_from' || key == 'given_to') && params[key]) value = +params[key];
           this.searchForm.get(key).setValue(value);
         }
         this.selectedUser = params['received_from'];
@@ -123,6 +123,7 @@ export class ManagerFeedbackComponent extends ManagerComponent implements OnInit
 
   // answered feedbacks
   loadFeedbacks(query) {
+    this.loading = true;
     this.feedbackApi.query(query)
       .subscribe(res => {
         this.loading = false;

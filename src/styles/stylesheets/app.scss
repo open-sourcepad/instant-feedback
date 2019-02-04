@@ -19,6 +19,7 @@
 @import 'components/form';
 @import 'components/list';
 @import 'components/meeting-detail';
+@import 'components/side-menu';
 @import 'libs/main';
 
 
@@ -29,6 +30,8 @@
 
 
 .custom.ng-select {
+  padding-bottom: 0;
+
   &.ng-select-multiple .ng-select-container .ng-value-container {
     .ng-value {
       border-radius: 6px;
@@ -36,10 +39,19 @@
     }
   }
 
-  &.ng-invalid .ng-select-container {
+  &.ng-invalid.ng-has-error {
     border-bottom: 1px solid #d1211a;
     &:after { border: none; }
   }
+
+  &.ng-invalid {
+    border-bottom: 1px solid #C3BAAA;
+    &:after { border: none; }
+  }
+}
+
+.custom.ng-select .ng-select-container:after{
+  border-bottom: 0;
 }
 
 .clickable {
