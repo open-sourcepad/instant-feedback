@@ -1,6 +1,6 @@
 .table-instant-feedback th, .table-instant-feedback td {
-  padding-left: 5rem;
-  padding-right: 5rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 .table-instant-feedback th {
   border-top: 0;
@@ -16,8 +16,12 @@
     font-weight: inherit;
 
     > .icon-holder {
-      margin-left: 3px;
+      margin-left: 1px;
     }
+  }
+
+  > span, > button {
+    padding: 2px 7px;
   }
 }
 
@@ -29,16 +33,18 @@
   border-top: 0;
   border-bottom: 1px solid #c3baaa5c;
 
+  span {
+    padding: 2px 7px;
+  }
+
   &.schedule {
-    padding-left: 3rem;
-    padding-right: 3rem;
     text-align: center;
   }
 
   span.schedule {
     padding: 4px 18px;
     border-radius: 4px;
-    width: 125px;
+    width: 123px;
 
     &.due {
       background-color: $darkRed;

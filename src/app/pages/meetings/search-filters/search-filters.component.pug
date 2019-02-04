@@ -49,7 +49,7 @@
       .col-md-9
         .search-terms
           button.btn-filter.btn-terms
-            span {{ daterange.start | date: 'MM/dd/yyyy' }} - {{ daterange.end | date: 'MM/dd/yyyy' }}
+            span {{ f.date_since.value | date: 'MM/dd/yyyy' }} - {{ f.date_until.value | date: 'MM/dd/yyyy' }}
 
           ng-container(*ngIf="selectedStatusesFilter.length > 0")
             ng-container(*ngFor="let q of selectedStatusesFilter; let idx = index")

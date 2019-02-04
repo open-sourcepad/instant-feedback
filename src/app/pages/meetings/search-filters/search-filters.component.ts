@@ -47,10 +47,10 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   filterState = 'in';
   skipToggle = true;
   form: FormGroup;
-  daterange = {
-    start: moment().format('YYYY/MM/DD'),
-    end: moment().format('YYYY/MM/DD')
-  };
+  // daterange = {
+  //   start: moment().format('YYYY/MM/DD'),
+  //   end: moment().format('YYYY/MM/DD')
+  // };
   options: any = {
     locale: {
       format: 'YYYY/MM/DD',
@@ -73,8 +73,8 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     autoApply: true,
     autoUpdateInput: true,
     opens: 'left',
-    startDate: this.daterange['start'],
-    endDate: this.daterange['end']
+    startDate: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
+    endDate: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59')
   };
   dateOpts = [
     {id: 1, label: 'Today'},
@@ -84,15 +84,15 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   ]
 
   allUser = {id: '', display_name: 'All'};
-  selectedDateFilter: number = this.dateOpts[0]['id'];
+  selectedDateFilter: number = this.dateOpts[1]['id'];
   selectedManagerFilter = this.allUser;
   selectedUserFilter = this.allUser;
   selectedStatusesFilter = ['All'];
 
   queryParams = {
     dateFilter: this.selectedDateFilter,
-    startDate: this.daterange.start,
-    endDate: this.daterange.end,
+    startDate: this.options.startDate,
+    endDate: this.options.endDate,
     employee_id: this.selectedUserFilter['id'],
     manager_id: this.selectedManagerFilter['id'],
     status: this.selectedStatusesFilter[0],
@@ -112,8 +112,8 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.form = this.fb.group({
-      date_since: [`${this.daterange.start} 00:00:00`, Validators.required],
-      date_until: [`${this.daterange.end} 23:59:59`, Validators.required],
+      date_since: [this.options.startDate, Validators.required],
+      date_until: [this.options.endDate, Validators.required],
       employee_id: [this.selectedUserFilter.id, Validators.required],
       manager_id: [this.selectedManagerFilter.id, Validators.required],
       'status': [this.selectedStatusesFilter, Validators.required],
@@ -195,18 +195,14 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   }
 
   resetFilter() {
-    this.daterange = {
-      start: moment().format('YYYY/MM/DD'),
-      end: moment().format('YYYY/MM/DD')
-    };
     this.selectedDateFilter = 1;
     this.selectedUserFilter = this.allUser;
     this.selectedManagerFilter = this.allUser;
     this.selectedStatusesFilter = ['All'];
 
     this.form.patchValue({
-      date_since: `${this.daterange.start} 00:00:00`,
-      date_until: `${this.daterange.end} 23:59:59`,
+      date_since: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
+      date_until: moment().startOf('isoWeek').format('YYYY/MM/DD 23:59:59'),
       employee_id: this.selectedUserFilter,
       manager_id: this.selectedManagerFilter,
       'status':  this.selectedStatusesFilter
@@ -218,30 +214,30 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     this.selectedDateFilter = option;
     switch(option){
       case 1: {
-        this.daterange = {
-          start: moment().format('YYYY/MM/DD'),
-          end: moment().format('YYYY/MM/DD')
-        };
+        this.form.patchValue({
+          date_since: moment().format('YYYY/MM/DD 00:00:00'),
+          date_until: moment().format('YYYY/MM/DD 23:59:59')
+        });
 
-        this.selectedDate(this.daterange);
+        // this.selectedDate(this.daterange);
         break;
       }
       case 2: {
-        this.daterange = {
-          start: moment().startOf('isoWeek').format('YYYY/MM/DD'),
-          end: moment().endOf('isoWeek').format('YYYY/MM/DD')
-        };
+        this.form.patchValue({
+          date_since: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
+          date_until: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59')
+        });
 
-        this.selectedDate(this.daterange);
+        // this.selectedDate(this.daterange);
         break;
       }
       case 3: {
-        this.daterange = {
-          start: moment().startOf('month').format('YYYY/MM/DD'),
-          end: moment().endOf('month').format('YYYY/MM/DD')
-        };
+        this.form.patchValue({
+          date_since: moment().startOf('month').format('YYYY/MM/DD 00:00:00'),
+          date_until: moment().endOf('month').format('YYYY/MM/DD 23:59:59')
+        });
 
-        this.selectedDate(this.daterange);
+        // this.selectedDate(this.daterange);
         break;
       }
       default: {
@@ -258,8 +254,6 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     }
 
     // or manipulate your own internal property
-    this.daterange.start = moment(value.start).format('YYYY/MM/DD');
-    this.daterange.end = moment(value.end).format('YYYY/MM/DD');
     this.form.get('date_since').setValue(moment(value.start).format('YYYY/MM/DD 00:00:00'));
     this.form.get('date_until').setValue(moment(value.end).format('YYYY/MM/DD 23:59:59'));
   }
@@ -282,8 +276,8 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   }
 
   handleQueryParams() {
-    this.queryParams['startDate'] = this.daterange['start'];
-    this.queryParams['endDate'] = this.daterange['end'];
+    this.queryParams['startDate'] = this.f.date_since.value;
+    this.queryParams['endDate'] = this.f.date_until.value;
     this.queryParams['dateFilter'] = this.selectedDateFilter;
     this.queryParams['status'] = this.selectedStatusesFilter[0];
     this.queryParams['employee_id'] = this.f.employee_id.value;
