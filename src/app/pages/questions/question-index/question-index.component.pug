@@ -19,16 +19,17 @@
           th
             span
       tbody
-        tr(*ngFor="let question of questions; let idx = index")
+        tr(*ngFor="let question of questions | paginate: paginationControls; let idx = index")
           td
             span {{ question.message }}
           td
             span.text-capitalize {{ question.frequency }}
           td
-            span([innerHtml]="question.asking_datetime ? formatTime(question.asking_datetime) + ' EST' : '-'")
+            span([innerHtml]="(question.category == 'custom' && question.scheduled_at) ? (question.scheduled_at | date: 'HH:mm' : '-0500')+ ' EST' : '-'")
           td.actions
             ng-container(*ngIf="question.allow_changes")
               a([routerLink]="['/questions', question.id]")
                 .icon-edit.icon-sm.icon-holder
               a((click)="remove(question.id, idx)")
                 .icon-remove.icon-sm.icon-holder
+    pagination([config]="paginationControls", (pageChange)="pageChange($event)")

@@ -11,6 +11,8 @@ import { QuestionIndexComponent } from './question-index/question-index.componen
 
 
 import { DateSuffix } from '../../services/pipes/date-suffix.pipe';
+import { SharedModule } from '../shared/shared.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -27,7 +29,9 @@ const MODULE_COMPONENTS = [
     FormsModule,
     ReactiveFormsModule,
     Daterangepicker,
-    Ng2LoadingSpinnerModule
+    Ng2LoadingSpinnerModule,
+    NgxPaginationModule,
+    SharedModule
   ],
   declarations: [
     ...MODULE_COMPONENTS,
