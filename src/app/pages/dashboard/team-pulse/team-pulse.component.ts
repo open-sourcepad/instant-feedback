@@ -96,7 +96,9 @@ export class TeamPulseComponent implements OnInit {
         let keys = Object.keys(res);
         let i = 0;
         var happiness_meter = [];
-        // console.log(this.questionStats);
+        for(let obj of this.questionStats){
+          obj['data'] = [];
+        }
         for(let key of keys){
           if(i == (keys.length - 1) || key == 'current'){
             this.happyUsers = res[key]['happy_users'];
@@ -107,6 +109,7 @@ export class TeamPulseComponent implements OnInit {
             happiness_meter.push({date: 'current', percentage: (res[key]['happiness_meter'] * 100)});
             for(let stats of res[key]['stats_per_question']){
               let qStatsIdx = this.questionStats.findIndex(x => x.id == stats.question.id);
+              delete(stats['question']);
               this.questionStats[qStatsIdx]['data'].push({
                 date: 'current', percentage: stats
               });
@@ -115,6 +118,7 @@ export class TeamPulseComponent implements OnInit {
             happiness_meter.push({date: key, percentage: (res[key]['happiness_meter'] * 100)});
             for(let stats of res[key]['stats_per_question']){
               let qStatsIdx = this.questionStats.findIndex(x => x.id == stats.question.id);
+              delete(stats['question']);
               this.questionStats[qStatsIdx]['data'].push({
                 date: key, percentage: stats
               });
@@ -122,14 +126,6 @@ export class TeamPulseComponent implements OnInit {
           }
           i++;
         }
-        console.log(happiness_meter);
-        console.log(this.questionStats);
-        // debugger;
-        // this.happyUsers = res['happy_users'];
-        // this.sadUsers = res['sad_users'];
-        // this.answerPercentage['x'] = res['answer_percentage']['x'];
-        // this.answerPercentage['idle'] = res['answer_percentage']['idle'];
-        // this.answerPercentage['happy'] = res['happiness_meter'].slice(-1)[0]['percentage'];
 
         if(this.filter != 'custom'){
           this.generateHappyMeter(happiness_meter);
@@ -141,14 +137,24 @@ export class TeamPulseComponent implements OnInit {
           if(question['data'].length > 0){
             for(let questionStats of question['data']) {
               if(questionStats['date'] == 'current') {
-                currentData = questionStats['percentage'];
+                let ansPct = {};
+                for(let key of Object.keys(questionStats['percentage'])){
+                  ansPct[key] = Math.trunc(questionStats['percentage'][key]);
+                }
+
+                currentData = ansPct;
               }
             }
             if(this.filter != 'custom'){
               this.generateQuestionChart(question, idx);
             }
           }
-          this.questionsData.push({id: question['id'], question: question['question'], answers: currentData});
+          let qIdx = this.questionsData.findIndex(el => el.id == question['id']);
+          if(qIdx > -1){
+            this.questionsData[qIdx]['answers'] = currentData;
+          }else {
+            this.questionsData.push({id: question['id'], question: question['question'], answers: currentData});
+          }
           idx++;
         }
     });
