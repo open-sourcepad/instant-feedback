@@ -28,7 +28,7 @@ export class ResponsesComponent implements OnInit {
       size: this.paginationControls['itemsPerPage']
     }
   };
-  order = {name: 'asc', created_at: 'desc'};
+  order: any = {answered_at: 'desc'};
 
   constructor(
     private answerApi: AnswerService,
@@ -100,7 +100,13 @@ export class ResponsesComponent implements OnInit {
   }
 
   changeOrder(key, val){
-    this.order[key] = val;
+    let key_exists = Object.keys(this.order).some(k => k == key);
+    if(key_exists){
+      this.order[key] = val;
+    } else {
+      this.order = {};
+      this.order[key] = val;
+    }
     this.search(this.queryParams);
   }
 

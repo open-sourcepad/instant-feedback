@@ -39,14 +39,18 @@
         thead
           tr
             td
-              ng-container(*ngIf="order['name'] == 'asc'")
+              ng-container(*ngIf="!order['name']")
                 button((click)="changeOrder('name', 'desc')")
                   span.name Name
-                  span.icon-holder.ti-arrow-up
-              ng-container(*ngIf="order['name'] == 'desc'")
-                button((click)="changeOrder('name', 'asc')")
-                  span.name Name
-                  span.icon-holder.ti-arrow-down
+              ng-container(*ngIf="order['name']")
+                ng-container(*ngIf="order['name'] == 'asc'")
+                  button((click)="changeOrder('name', 'desc')")
+                    span.name Name
+                    span.icon-holder.ti-arrow-up
+                ng-container(*ngIf="order['name'] == 'desc'")
+                  button((click)="changeOrder('name', 'asc')")
+                    span.name Name
+                    span.icon-holder.ti-arrow-down
             td
               button
                 span.name Question
@@ -54,14 +58,18 @@
               button
                 span.name Answer
             td
-              ng-container(*ngIf="order['created_at'] == 'asc'")
-                button((click)="changeOrder('created_at', 'desc')")
+              ng-container(*ngIf="!order['answered_at']")
+                button((click)="changeOrder('answered_at', 'desc')")
                   span.name Date
-                  span.icon-holder.ti-arrow-up
-              ng-container(*ngIf="order['created_at'] == 'desc'")
-                button((click)="changeOrder('created_at', 'asc')")
-                  span.name Date
-                  span.icon-holder.ti-arrow-down
+              ng-container(*ngIf="order['answered_at']")
+                ng-container(*ngIf="order['answered_at'] == 'asc'")
+                  button((click)="changeOrder('answered_at', 'desc')")
+                    span.name Date
+                    span.icon-holder.ti-arrow-up
+                ng-container(*ngIf="order['answered_at'] == 'desc'")
+                  button((click)="changeOrder('answered_at', 'asc')")
+                    span.name Date
+                    span.icon-holder.ti-arrow-down
         tbody
           ng-container(*ngIf="collection.length <= 0")
             tr
@@ -83,7 +91,7 @@
                 ng-container(*ngIf="obj.answer == 'x'")
                   span NO ANSWER - X
               td
-                span {{ obj.created_at | date: 'MM/dd/yyyy' : '-0500' }}
+                span {{ obj.answered_at | date: 'MM/dd/yyyy' : '-0500' }}
     .col-md-12.text-right(*ngIf="collection.length > 0")
       pagination([config]="paginationControls", (pageChange)="changePage($event)")
 
