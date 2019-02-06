@@ -35,7 +35,7 @@ modal(
 )
 
 feedback-menu([(menuState)]="feedBackState")
-  div(feedback-content)
+  div([ng2-loading]="loading", feedback-content)
     ng-container(*ngIf="feedback['ask']")
       form#question-form(feedback="give", [formGroup]="askForm", novalidate, autocomplete="off", (ngSubmit)="submit(askForm.value)")
         .form-header-text Ask for feedback from
@@ -92,7 +92,7 @@ feedback-menu([(menuState)]="feedBackState")
           .invalid-feedback
             span Please enter your feedback
 
-  div(feedback-footer)
+  div([ng2-loading]="loading", feedback-footer)
     ng-container(*ngIf="feedback['ask']")
       button.btn.btn-round.btn-instant-feedback-cancel((click)="toggleFeedback('ask', 'out'); submitted=false")
         u Cancel
