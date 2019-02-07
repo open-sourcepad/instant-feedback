@@ -8,6 +8,7 @@ import { PagesGuard } from './pages.guard';
 import { RoleGuard } from './role.guard';
 import { EmployeeMeetingDetailComponent } from './employee/employee-meeting-detail/employee-meeting-detail.component';
 import { EmployeeProfileMeetingDetailComponent } from './employee-profile-meeting-detail/employee-profile-meeting-detail.component';
+import { NeedAuthGuard } from './need-auth.guard';
 
 export const routes: Routes = [
   {
@@ -33,16 +34,18 @@ export const routes: Routes = [
       },
       {
         path: 'one-on-ones',
-        canActivate: [RoleGuard],
+        canActivate: [RoleGuard, NeedAuthGuard],
         loadChildren: "./meetings/meetings.module#MeetingsModule"
       },
       { path: 'assigned-questions', component: UserQuestionsComponent, canActivate: [RoleGuard]},
       {
         path: 'manager',
+        canActivate: [NeedAuthGuard],
         loadChildren: "./manager/manager.module#ManagerModule"
       },
       {
         path: 'employee',
+        canActivate: [NeedAuthGuard],
         loadChildren: "./employee/employee.module#EmployeeModule"
       },
       {

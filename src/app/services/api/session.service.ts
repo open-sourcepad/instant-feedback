@@ -43,4 +43,8 @@ export class SessionService {
     this.router.navigate(['login']);
   }
 
+  isLogged() {
+    return this.storage.getObject('currentUser') != null;
+  }
+
 }
