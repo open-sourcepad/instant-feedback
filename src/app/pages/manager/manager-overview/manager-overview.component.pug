@@ -52,3 +52,60 @@
                   br
                   span.date-day {{ obj.scheduled_at | date: 'EEEE ' | uppercase }}
                   span.date {{ obj.scheduled_at | date: 'MMMM d' | uppercase }}
+
+        #my-team-pulse.col-md-12.mb-5
+          .row
+            .col-md-6
+              h3.header-title My Team's Pulse
+            .col-md-6.text-right
+              #date-range
+                span.font-bold {{ daterange.date_since | date : 'MMM d'}} - {{ daterange.date_until | date : 'MMM d'}}&nbsp;&nbsp;
+                button.btn.btn-instant-feedback.btn-daterange(type="button", daterangepicker, [options]="daterangeOpts", (selected)="selectedDate($event)")
+                  .icon-calendar.icon-sm.inline-block
+                  .icon-down-nav.icon-xs.inline-block
+            .col-md-12
+              .mt-2
+                .row
+                  .col-md-4
+                    .card.h-100([ng2-loading]="pulseLoading")
+                      .card-body
+                        h4 Happy
+                        hr
+                        .card-content(*ngFor="let user of pulseHappy")
+                          span(*ngIf="user['user']['id'] == currentUser['id']") {{ user['user']['display_name'] }}
+                          button.btn-action(*ngIf="user['user']['id'] != currentUser['id']", [routerLink]="['/profile', user['user']['id'], 'overview']")
+                            u {{ user['user']['display_name'] }}
+                          span.ti-arrow-up.text-green.float-right(*ngIf="user.mood == 'up'")
+                        .text-center(*ngIf="pulseHappy.length < 1")
+                          h6 No happy users
+                  .col-md-4
+                    .card.h-100([ng2-loading]="pulseLoading")
+                      .card-body
+                        h4 Sad
+                        hr
+                        .card-content(*ngFor="let user of pulseSad")
+                          span(*ngIf="user['user']['id'] == currentUser['id']") {{ user['user']['display_name'] }}
+                          button.btn-action(*ngIf="user['user']['id'] != currentUser['id']", [routerLink]="['/profile', user['user']['id'], 'overview']")
+                            u {{ user['user']['display_name'] }}
+                          span.ti-arrow-down.text-red.float-right(*ngIf="user.mood == 'down'")
+                        .text-center(*ngIf="pulseSad.length < 1")
+                          h6 No sad users
+
+            .col-md-12
+              .mt-2
+                .row
+                  .col-md-4(*ngFor="let question of pulseQuestions")
+                    .card.h-100([ng2-loading]="pulseLoading")
+                      .card-body
+                        h4.text-center {{ question.message }}
+                        hr
+                        .card-content(*ngFor="let user of question.users")
+                          span(*ngIf="user['user']['id'] == currentUser['id']") {{ user['user']['display_name'] }}
+                          button.btn-action(*ngIf="user['user']['id'] != currentUser['id']", [routerLink]="['/profile', user['user']['id'], 'overview']")
+                            u {{ user['user']['display_name'] }}
+                          span.mr-1.ti-layout-line-solid.mr-1.float-right(*ngIf="!user.mood")
+                          img.float-right(*ngIf="user.mood == 'happy'", src="assets/images/happy-face.png")
+                          img.float-right(*ngIf="user.mood == 'sad'", src="assets/images/sad-face.png")
+                        .text-center(*ngIf="question.users.length < 1")
+                          h6 No users
+                    .mb-5

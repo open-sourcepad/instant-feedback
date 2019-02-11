@@ -42,4 +42,8 @@ export class UserService extends BaseService {
   feedbacks(user_id, query) {
     return this.http.get(`${ENDPOINT}/${user_id}/feedbacks?${this.buildParams(query)}`);
   }
+
+  teamPulse(user_id, query) {
+    return this.http.get(`${ENDPOINT}/${user_id}/my_team_pulse?${this.buildParams(query)}`);
+  }
 }

@@ -38,9 +38,6 @@
 
   .due-label {
     color: #D0021B;
-    //font-weight: normal;
-    //font-size: 20px;
-    //line-height: 24px;
   }
 
   .blue {
@@ -107,4 +104,59 @@
     margin-left: 6px;
     font-weight: bold;
   }
+}
+
+#my-team-pulse .header-title{
+  color: #C3BAAA;
+  font-family: Chivo !important;
+}
+
+#my-team-pulse .card-body {
+  box-shadow: 0 2px 9px 0 rgba(0,0,0,0.02);
+  border-radius: 6px;
+  height: 100%;
+}
+
+#my-team-pulse .card {
+  padding: 0;
+  background-clip: padding-box;
+  border: 10px solid transparent;
+}
+
+#my-team-pulse .card-body > h4 {
+  color: #496584;
+  font-family: Karla !important;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+#my-team-pulse .card-body > .card-content > span, #my-team-pulse .card-body > .card-content > button {
+  color: #4A4A4A;
+  font-size: 16px;
+  letter-spacing: 0.44px;
+  line-height: 1.8;
+
+  &.text-red {color: #D0021B;}
+  &.text-green {color: #7ED321;}
+}
+
+#my-team-pulse .card-body > .card-content > img {
+
+}
+
+#date-range > .btn-daterange {
+  background-color: transparent;
+  margin-bottom: 0;
+  padding-left: 2px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+#date-range > .btn-daterange .icon-calendar {
+  height: 16.17px;
+  width: 24px;
+}
+#date-range > .btn-daterange .icon-down-nav {
+  width: 6.78px;
+  background-position: center;
 }
