@@ -135,7 +135,7 @@ export class UserQuestionsComponent implements OnInit {
 
   update(obj, idx){
     this.loading = true;
-    this.userQuestonApi.update(obj.id, {asking_date: this.new_schedule})
+    this.userQuestonApi.update(obj.id, {scheduled_at: this.new_schedule})
       .subscribe(res => {
         this.loading = false;
         this.currentObj = null;
