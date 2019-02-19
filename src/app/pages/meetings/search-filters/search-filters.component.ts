@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { trigger, state, style, transition, animate, query, stagger, keyframes} from '@angular/animations';
 import * as moment from 'moment';
 import { Router, ActivatedRoute } from '@angular/router';
+import { isArray } from 'util';
 
 @Component({
   selector: 'search-filters',
@@ -95,7 +96,7 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     endDate: this.options.endDate,
     employee_id: this.selectedUserFilter['id'],
     manager_id: this.selectedManagerFilter['id'],
-    status: this.selectedStatusesFilter[0],
+    status: this.selectedStatusesFilter,
     page: 1,
     sort: 'scheduled_at',
     order: 'asc'
@@ -126,8 +127,13 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
         this.selectedDate({start: params.startDate, end: params.endDate});
         this.options.startDate = params.startDate;
         this.options.endDate = params.endDate;
-        this.addFilter(this.selectedStatusesFilter, params['status'], 'status');
-        
+        if(isArray(params["status"])) {
+          for(let s of params["status"]) {
+            this.addFilter(this.selectedStatusesFilter, s, 'status');
+          }
+        }else {
+          this.addFilter(this.selectedStatusesFilter, params["status"], 'status');
+        }
         if(params.employee_id) this.f.employee_id.setValue(+params.employee_id);
         if(params.manager_id) this.f.manager_id.setValue(+params.manager_id);
       
@@ -279,7 +285,7 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     this.queryParams['startDate'] = this.f.date_since.value;
     this.queryParams['endDate'] = this.f.date_until.value;
     this.queryParams['dateFilter'] = this.selectedDateFilter;
-    this.queryParams['status'] = this.selectedStatusesFilter[0];
+    this.queryParams['status'] = this.selectedStatusesFilter;
     this.queryParams['employee_id'] = this.f.employee_id.value;
     this.queryParams['manager_id'] = this.f.manager_id.value;
 
