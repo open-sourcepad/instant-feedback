@@ -112,6 +112,8 @@ export class ManagerFeedbackComponent extends ManagerComponent implements OnInit
             if((key == 'received_from' || key == 'given_to') && params[key]) value = +params[key];
             this.searchForm.get(key).setValue(value);
           }
+          this.daterangeOpts.startDate = params['date_since'];
+          this.daterangeOpts.endDate = params['date_until'];
           this.selectedUser = params['received_from'];
           this.paginationControls['currentPage'] = params['page'];
 
@@ -233,6 +235,9 @@ export class ManagerFeedbackComponent extends ManagerComponent implements OnInit
       date_since: moment(value.start).format('YYYY/MM/DD 00:00:00'),
       date_until: moment(value.end).format('YYYY/MM/DD 23:59:59')
     });
+
+    this.daterangeOpts['startDate'] = this.filters.date_since.value;
+    this.daterangeOpts['endDate'] = this.filters.date_until.value;
   
     this.onSearch(this.searchForm.value);
   }
@@ -242,6 +247,11 @@ export class ManagerFeedbackComponent extends ManagerComponent implements OnInit
       received_from: value,
       given_to: value
     });
+    this.onSearch(this.searchForm.value);
+  }
+
+  pageChange(evt) {
+    this.paginationControls['currentPage'] = evt;
     this.onSearch(this.searchForm.value);
   }
 
