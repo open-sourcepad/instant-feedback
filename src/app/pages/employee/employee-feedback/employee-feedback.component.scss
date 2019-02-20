@@ -34,12 +34,17 @@
 }
 
 .feedback-list > .feedback p {
-  line-height: 1.5;
-  margin-bottom: 0.5rem;
-  width: 100ch;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: #4A4A4A;
+  font-family: "MADE Evolve Sans";
+  font-size: 18px;
+  line-height: 25px;
+}
+
+.feedback-list > .feedback .btn-action {
+  font-family: "MADE Evolve Sans";
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 16px;
 }
 
 .btn-daterange {

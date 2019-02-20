@@ -11,6 +11,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { SideMenuComponent } from './side-menu/side-menu.component';
 import { datePrettyFormat } from 'src/app/services/pipes/date-pretty-format.pipe';
 import { FeedbackMenuComponent } from './feedback-menu/feedback-menu.component';
+import { limitChar } from 'src/app/services/pipes/limit-char.pipe';
 
 const SHARED_COMPONENTS = [
   NavbarComponent,
@@ -22,7 +23,8 @@ const SHARED_COMPONENTS = [
 ]
 
 const SHARED_PIPES = [
-  datePrettyFormat
+  datePrettyFormat,
+  limitChar
 ]
 
 @NgModule({
