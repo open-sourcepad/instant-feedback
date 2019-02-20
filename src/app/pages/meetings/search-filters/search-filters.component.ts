@@ -209,8 +209,8 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     this.form.patchValue({
       date_since: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
       date_until: moment().startOf('isoWeek').format('YYYY/MM/DD 23:59:59'),
-      employee_id: this.selectedUserFilter,
-      manager_id: this.selectedManagerFilter,
+      employee_id: this.selectedUserFilter['id'],
+      manager_id: this.selectedManagerFilter['id'],
       'status':  this.selectedStatusesFilter
     });
     this.onSubmit(this.form.value);
@@ -284,8 +284,8 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   handleQueryParams() {
     this.queryParams['startDate'] = this.f.date_since.value;
     this.queryParams['endDate'] = this.f.date_until.value;
-    this.queryParams['dateFilter'] = this.selectedDateFilter;
-    this.queryParams['status'] = this.selectedStatusesFilter;
+    this.queryParams['dateFilter'] = this.selectedDateFilter['id'];
+    this.queryParams['status'] = this.selectedStatusesFilter['id'];
     this.queryParams['employee_id'] = this.f.employee_id.value;
     this.queryParams['manager_id'] = this.f.manager_id.value;
 
