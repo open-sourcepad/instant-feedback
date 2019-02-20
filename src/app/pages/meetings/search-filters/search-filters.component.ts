@@ -131,8 +131,6 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
           for(let s of params["status"]) {
             this.addFilter(this.selectedStatusesFilter, s, 'status');
           }
-        }else {
-          this.addFilter(this.selectedStatusesFilter, params["status"], 'status');
         }
         if(params.employee_id) this.f.employee_id.setValue(+params.employee_id);
         if(params.manager_id) this.f.manager_id.setValue(+params.manager_id);
