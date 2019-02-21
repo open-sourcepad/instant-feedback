@@ -86,6 +86,7 @@ feedback-menu([(menuState)]="feedBackState")
           | with your feedback:
         br
         br
+        .alert.alert-danger(*ngIf="isError") {{ errorMsg }}
         .form-group-box
           textarea.form-control.form-control-line([class.is-invalid]="submitted && gf.comment.errors", type="text", formControlName="comment")
           label Your feedback
