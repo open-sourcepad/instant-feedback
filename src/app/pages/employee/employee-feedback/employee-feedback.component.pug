@@ -36,6 +36,9 @@
           option(value="") ALL
           option(*ngFor="let user of users", [value]="user.id") {{ user.display_name }}
 
+        ng-container(*ngIf="!defaultFilters")
+          span &nbsp;&nbsp;&nbsp;
+          button.btn-action.font-size-14.text-idle((click)="resetFilters()") Clear Filters
         #mood-score(*ngIf="showMoodScore")
           span Feedback Mood
           img(*ngIf="moodScore > 0.24", src="assets/images/happy-face.png")

@@ -23,6 +23,7 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
   showMoodScore: boolean = false;
   selectedUser = '';
   employee_id: number = null;
+  defaultFilters: boolean = true;
 
   //request feedback
   loadingPending: boolean = false;
@@ -253,6 +254,7 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
   }
 
   selectedDate(value: any) {
+    this.defaultFilters = false;
     this.searchForm.patchValue({ 
       date_since: moment(value.start).format('YYYY/MM/DD 00:00:00'),
       date_until: moment(value.end).format('YYYY/MM/DD 23:59:59')
@@ -265,6 +267,7 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
   }
 
   selectUser(value){
+    this.defaultFilters = false;
     this.searchForm.patchValue({
       received_from: value,
       given_to: value
@@ -274,6 +277,19 @@ export class EmployeeFeedbackComponent extends EmployeeComponent implements OnIn
 
   pageChange(evt) {
     this.paginationControls['currentPage'] = evt;
+    this.onSearch(this.searchForm.value);
+  }
+
+  resetFilters() {
+    this.daterangeOpts["startDate"] = moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00');
+    this.daterangeOpts["endDate"] = moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59');
+
+    this.searchForm.patchValue({
+      date_since: this.daterangeOpts.startDate,
+      date_until: this.daterangeOpts.endDate,
+      received_from: '',
+      given_to: ''
+    });
     this.onSearch(this.searchForm.value);
   }
 
