@@ -4,6 +4,8 @@ import { trigger, state, style, transition, animate, query, stagger, keyframes} 
 import * as moment from 'moment';
 import { Router, ActivatedRoute } from '@angular/router';
 import { isArray } from 'util';
+import { SessionService } from 'src/app/services/api';
+import { User } from 'src/app/models';
 
 @Component({
   selector: 'search-filters',
@@ -48,10 +50,8 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   filterState = 'in';
   skipToggle = true;
   form: FormGroup;
-  // daterange = {
-  //   start: moment().format('YYYY/MM/DD'),
-  //   end: moment().format('YYYY/MM/DD')
-  // };
+  currentUser: User;
+
   options: any = {
     locale: {
       format: 'YYYY/MM/DD',
@@ -88,7 +88,7 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   selectedDateFilter: number = this.dateOpts[1]['id'];
   selectedManagerFilter = this.allUser;
   selectedUserFilter = this.allUser;
-  selectedStatusesFilter = ['All'];
+  selectedStatusesFilter = ['Due & Upcoming'];
 
   queryParams = {
     dateFilter: this.selectedDateFilter,
@@ -108,15 +108,18 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute
-  ) { }
+    private route: ActivatedRoute,
+    private session: SessionService
+  ) {
+    this.currentUser = new User(this.session.getCurrentUser());
+  }
 
   ngOnInit() {
     this.form = this.fb.group({
       date_since: [this.options.startDate, Validators.required],
       date_until: [this.options.endDate, Validators.required],
-      employee_id: [this.selectedUserFilter.id, Validators.required],
-      manager_id: [this.selectedManagerFilter.id, Validators.required],
+      employee_id: [this.currentUser.id, Validators.required],
+      manager_id: [this.currentUser.id, Validators.required],
       'status': [this.selectedStatusesFilter, Validators.required],
     });
 
@@ -199,16 +202,16 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   }
 
   resetFilter() {
-    this.selectedDateFilter = 1;
-    this.selectedUserFilter = this.allUser;
-    this.selectedManagerFilter = this.allUser;
-    this.selectedStatusesFilter = ['All'];
+    this.selectedDateFilter = 2;
+    this.selectedUserFilter = this.currentUser;
+    this.selectedManagerFilter = this.currentUser;
+    this.selectedStatusesFilter = ['Due & Upcoming'];
 
     this.form.patchValue({
       date_since: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
-      date_until: moment().startOf('isoWeek').format('YYYY/MM/DD 23:59:59'),
-      employee_id: this.selectedUserFilter['id'],
-      manager_id: this.selectedManagerFilter['id'],
+      date_until: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59'),
+      employee_id: this.currentUser['id'],
+      manager_id: this.currentUser['id'],
       'status':  this.selectedStatusesFilter
     });
     this.onSubmit(this.form.value);
@@ -282,8 +285,8 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   handleQueryParams() {
     this.queryParams['startDate'] = this.f.date_since.value;
     this.queryParams['endDate'] = this.f.date_until.value;
-    this.queryParams['dateFilter'] = this.selectedDateFilter['id'];
-    this.queryParams['status'] = this.selectedStatusesFilter['id'];
+    this.queryParams['dateFilter'] = this.selectedDateFilter;
+    this.queryParams['status'] = this.selectedStatusesFilter;
     this.queryParams['employee_id'] = this.f.employee_id.value;
     this.queryParams['manager_id'] = this.f.manager_id.value;
 
