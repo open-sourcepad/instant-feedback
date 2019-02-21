@@ -30,6 +30,8 @@ export class EmployeeComponent implements OnInit {
     "What can I do to be more helpful to people on the team?",
     "What knowledge or skills do you think I may need to develop to meet my goals in this job?"
   ]
+  isError = false;
+  errorMsg = '';
 
   constructor(
     public fb: FormBuilder,
@@ -119,6 +121,8 @@ export class EmployeeComponent implements OnInit {
             comment: ''
           });
         }, err => {
+          this.isError = true;
+          this.errorMsg = err.error.errors[0];
           this.loading = false;
         });
       }
