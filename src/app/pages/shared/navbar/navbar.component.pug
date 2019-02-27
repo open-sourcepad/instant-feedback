@@ -9,13 +9,13 @@ nav.navbar.navbar-expand-lg.bg-dark-custom
         a.nav-link([routerLink]="['/responses']" routerLinkActive="active") Responses
       li.nav-item.has-active
         a.nav-link([routerLink]="['/questions']" routerLinkActive="active") Questions
-      li.nav-item.dropdown([routerLinkActive]="['has-active']")
-        a.nav-link.dropdown-toggle 1-on-1s
-        .dropdown-menu
-          a.dropdown-item([routerLink]="['/manager/one-on-ones']" routerLinkActive="active") My 1-on-1 Profile
-          a.dropdown-item([routerLink]="['/one-on-ones']" routerLinkActive="active") 1-on-1s List
-      li.nav-item.has-active
-        a.nav-link([routerLink]="['/assigned-questions']" routerLinkActive="active") Assigned Questions
+      //- li.nav-item.dropdown([routerLinkActive]="['has-active']")
+      //-   a.nav-link.dropdown-toggle 1-on-1s
+      //-   .dropdown-menu
+      //-     a.dropdown-item([routerLink]="['/manager/one-on-ones']" routerLinkActive="active") My 1-on-1 Profile
+      //-     a.dropdown-item([routerLink]="['/one-on-ones']" routerLinkActive="active") 1-on-1s List
+      //- li.nav-item.has-active
+      //-   a.nav-link([routerLink]="['/assigned-questions']" routerLinkActive="active") Assigned Questions
     ul.navbar-nav.mr-auto(*ngIf="userLogged && !isManager")
       li.nav-item([routerLinkActive]="['has-active']")
         a.nav-link.active([routerLink]="['/employee/overview']") Overview
