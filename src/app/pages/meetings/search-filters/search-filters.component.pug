@@ -44,35 +44,35 @@
     .row
       .col-md-2
         button.btn-filter([disabled]="openSearchFilter", (click)="toggleSearchFilter('in')")
-          span Add Filter&nbsp;
-          span.icon-holder.ti-plus
+          span Edit Filter&nbsp;
+          span.icon-holder.ti-pencil
       .col-md-9
         .search-terms
-          button.btn-filter.btn-terms
+          button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
             span {{ f.date_since.value | date: 'MM/dd/yyyy' }} - {{ f.date_until.value | date: 'MM/dd/yyyy' }}
 
           ng-container(*ngIf="selectedStatusesFilter.length > 0")
             ng-container(*ngFor="let q of selectedStatusesFilter; let idx = index")
               ng-container(*ngIf="q == 'All'")
-                button.btn-filter.btn-terms
+                button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
                   span S: {{ q }}
               ng-container(*ngIf="q != 'All'")
-                button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter(selectedStatusesFilter, idx, 'status'); onSubmit(form.value)")
+                button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)=" onSubmit(form.value);toggleSearchFilter('in')")
                   span S: {{ q }}
-                  span.icon-holder.ti-close
+                  span.icon-holder.ti-close((click)="removeFilter(selectedStatusesFilter, idx, 'status')")
 
           ng-container(*ngIf="selectedManagerFilter.display_name == 'All'")
-            button.btn-filter.btn-terms
+            button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
               span M: All
           ng-container(*ngIf="selectedManagerFilter.display_name != 'All'")
-            button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter2('selectedManagerFilter', 'manager_id')")
+            button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)=" toggleSearchFilter('in')")
               span M: {{ selectedManagerFilter.display_name }}
-              span.icon-holder.ti-close
+              span.icon-holder.ti-close((click)="removeFilter2('selectedManagerFilter', 'manager_id')")
 
           ng-container(*ngIf="selectedUserFilter.display_name == 'All'")
-            button.btn-filter.btn-terms
+            button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
               span E: All
           ng-container(*ngIf="selectedUserFilter.display_name != 'All'")
-            button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="removeFilter2('selectedUserFilter', 'employee_id')")
+            button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)=" toggleSearchFilter('in')")
               span E: {{ selectedUserFilter.display_name }}
-              span.icon-holder.ti-close
+              span.icon-holder.ti-close((click)="removeFilter2('selectedUserFilter', 'employee_id');")
