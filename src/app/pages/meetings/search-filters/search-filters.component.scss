@@ -35,6 +35,13 @@ $black: #333333;
     background-color: $lightBrown;
     color: $white;
   }
+
+  .ti-close {
+    &:hover {
+      color: $black;
+      font-weight: bold;
+    }
+  }
 }
 
 #btn-add-filter {
