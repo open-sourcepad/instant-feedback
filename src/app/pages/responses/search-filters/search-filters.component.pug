@@ -14,10 +14,10 @@
           ng-container(*ngFor="let opt of dateOpts")
             button.btn-filter.btn-terms.mr-2([class.active]="selectedDateFilter == opt.id", (click)="chooseDateRange(opt.id)")
               span {{opt.label}}
-        ng-container(*ngIf="selectedDateFilter == 4")
+        ng-container(*ngIf="showDateRangePicker")
           .opts-group-filter
             h5.filter-title.sub Date Range
-            input.form-control(type="text" name="dateRangeInput" daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
+            input#dateRangeInput.form-control(type="text" name="dateRangeInput" daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
       .col-md-12
         .opts-group-filter
           h5.filter-title.sub Questions
@@ -49,7 +49,7 @@
           span.icon-holder.ti-pencil
       .col-md-9
         .search-terms
-          button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
+          button.btn-filter.btn-terms((click)="toggleSearchFilter('in'); toggleDateRangePicker()")
             span {{ filters.date_since.value | date: 'MM/dd/yyyy' }} - {{ filters.date_until.value | date: 'MM/dd/yyyy' }}
           ng-container(*ngIf="selectedQuestionsFilter.length > 0")
             ng-container(*ngFor="let q of selectedQuestionsFilter; let idx = index")
