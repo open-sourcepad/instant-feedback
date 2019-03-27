@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import $ from 'jquery';
 
 @Component({
   selector: 'search-filters',
@@ -73,6 +74,7 @@ export class SearchFiltersComponent implements OnInit {
   selectedQuestionsFilter: any;
   selectedAnswersFilter: any;
   selectedUserFilter: any;
+  showDateRangePicker = false;
 
   constructor(private fb: FormBuilder) { }
 
@@ -110,11 +112,18 @@ export class SearchFiltersComponent implements OnInit {
 
         break;
       }
+      case 4: {
+        this.showDateRangePicker = true;
+        break;
+      }
       default: {
         break;
       }
     }
-    if(option != 4) this.onSubmit(this.form.value);
+    if(option != 4) {
+      this.onSubmit(this.form.value);
+      this.showDateRangePicker = false;
+    }
   }
 
   selectedDate(value: any, datepicker?: any) {
@@ -147,6 +156,7 @@ export class SearchFiltersComponent implements OnInit {
       this.form.get(attr).setValue(arr);
     }
     this.onSubmit(this.form.value);
+    this.showDateRangePicker = false;
   }
 
   removeFilter(arr, idx, attr) {
@@ -191,6 +201,15 @@ export class SearchFiltersComponent implements OnInit {
 
   toggleSearchFilter(value){
     this.filterMenu = value;
+  }
+
+  toggleDateRangePicker() {
+    // $('#dateRangeInput').on('hide.daterangepicker', function(ev, picker) {
+    //   $('#dateRangeInput').click();
+    // });
+    this.showDateRangePicker = true;
+
+    $('#dateRangeInput').click();
   }
 
   onSubmit(values) {

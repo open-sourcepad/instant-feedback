@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { isArray } from 'util';
 import { SessionService } from 'src/app/services/api';
 import { User } from 'src/app/models';
+import $ from 'jquery';
 
 @Component({
   selector: 'search-filters',
@@ -89,6 +90,7 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
   selectedManagerFilter = this.allUser;
   selectedUserFilter = this.allUser;
   selectedStatusesFilter = ['Due & Upcoming'];
+  showDateRangePicker = false;
 
   queryParams = {
     dateFilter: this.selectedDateFilter,
@@ -137,7 +139,7 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
         }
         if(params.employee_id) this.f.employee_id.setValue(+params.employee_id);
         if(params.manager_id) this.f.manager_id.setValue(+params.manager_id);
-      
+
         this.queryParams['page'] = params.page;
       }
     });
@@ -175,6 +177,7 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
       }
 
       this.form.get(attr).setValue(arr);
+      this.showDateRangePicker = false;
     }
   }
 
@@ -182,6 +185,7 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     let userId = this.form.get(attr).value;
 
     this[selectedAttr] = this.users.find(user => user.id == userId);
+    this.showDateRangePicker = false;
   }
 
   removeFilter(arr, idx, attr) {
@@ -247,9 +251,16 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
         // this.selectedDate(this.daterange);
         break;
       }
+      case 4: {
+        this.showDateRangePicker = true;
+        break;
+      }
       default: {
         break;
       }
+    }
+    if(option != 4) {
+      this.showDateRangePicker = false;
     }
   }
 
@@ -290,6 +301,15 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     this.queryParams['employee_id'] = this.f.employee_id.value;
     this.queryParams['manager_id'] = this.f.manager_id.value;
 
-    this.router.navigate([], {queryParams: this.queryParams, queryParamsHandling: "merge"});  
+    this.router.navigate([], {queryParams: this.queryParams, queryParamsHandling: "merge"});
+  }
+
+  toggleDateRangePicker() {
+    // $('#dateRangeInput').on('hide.daterangepicker', function(ev, picker) {
+    //   $('#dateRangeInput').click();
+    // });
+    this.showDateRangePicker = true;
+
+    $('#dateRangeInput').click();
   }
 }

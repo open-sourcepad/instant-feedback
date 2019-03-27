@@ -14,7 +14,7 @@
           ng-container(*ngFor="let opt of dateOpts")
             button.btn-filter.btn-terms.mr-2([class.active]="selectedDateFilter == opt.id", (click)="onSelectDateOpt(opt.id)")
               span {{opt.label}}
-        ng-container(*ngIf="selectedDateFilter == 4")
+        ng-container(*ngIf="showDateRangePicker")
           .opts-group-filter
             h5.filter-title.sub Date Range
             input.form-control(type="text" name="dateRangeInput" daterangepicker, [options]="options", (selected)="selectedDate($event, daterange); onSubmit(form.value)")
@@ -48,7 +48,7 @@
           span.icon-holder.ti-pencil
       .col-md-9
         .search-terms
-          button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
+          button.btn-filter.btn-terms((click)="toggleSearchFilter('in'); ; toggleDateRangePicker()")
             span {{ f.date_since.value | date: 'MM/dd/yyyy' }} - {{ f.date_until.value | date: 'MM/dd/yyyy' }}
 
           ng-container(*ngIf="selectedStatusesFilter.length > 0")
@@ -57,9 +57,9 @@
                 button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
                   span S: {{ q }}
               ng-container(*ngIf="q != 'All'")
-                button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)=" onSubmit(form.value);toggleSearchFilter('in')")
+                button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="toggleSearchFilter('in')")
                   span S: {{ q }}
-                  span.icon-holder.ti-close((click)="removeFilter(selectedStatusesFilter, idx, 'status')")
+                  span.icon-holder.ti-close((click)=" onSubmit(form.value); removeFilter(selectedStatusesFilter, idx, 'status')")
 
           ng-container(*ngIf="selectedManagerFilter.display_name == 'All'")
             button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
