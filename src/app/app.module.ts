@@ -24,6 +24,7 @@ import {
 import { HttpService, LocalStorage, CommonService, AppSettings, RoutingState } from './services/utils';
 import { HttpClientModule } from '@angular/common/http';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 const APP_SERVICES = [
@@ -63,7 +64,8 @@ const APP_PROVIDERS = [
     PagesModule,
     AppRoutingModule,
     SharedModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
 
   ],
   providers: [

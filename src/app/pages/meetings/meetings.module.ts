@@ -17,6 +17,7 @@ import { ReviewSummaryComponent } from './review-summary/review-summary.componen
 import { MeetingActionItemsComponent } from './meeting-action-items/meeting-action-items.component';
 import { SearchFiltersComponent } from './search-filters/search-filters.component';
 import { RescheduleModalComponent } from './reschedule-modal/reschedule-modal.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -42,7 +43,8 @@ const MODULE_COMPONENTS = [
     Daterangepicker,
     Ng2LoadingSpinnerModule,
     NgxPaginationModule,
-    SharedModule
+    SharedModule,
+    NgbModule
   ],
   declarations: [
     ...MODULE_COMPONENTS,

@@ -4,7 +4,7 @@
       .text-center(*ngIf="action == 'schedule'")
         h2.font-bold All done! Your next 1-on-1 with {{ meeting?.employee?.display_name?.split(' ')[0] }} is scheduled on
         h1.font-bold.text-brown(*ngIf="!editSchedule")
-          span {{ m.scheduled_at.value | date: 'MMMM d, yyyy'}}
+          span {{ m.scheduled_at.value | date: 'MMMM d, yyyy hh:mm a'}}
           button#edit-date-icon.btn-action((click)="editSchedule = true")
             span.icon-holder.ti-pencil.text-brown
 
@@ -14,6 +14,15 @@
             .input-group-text
               button.btn
                 span.icon-holder.ti-calendar.text-brown
+        br
+        br
+        .input-group.time-picker(*ngIf="editSchedule")
+          ngb-timepicker([(ngModel)]="time", [meridian]="false", [spinners]="false")
+        br
+        br
+        .btn-actions(*ngIf="editSchedule")
+          button.btn-instant-feedback.btn-instant-feedback-brown( (click)="doneEdit(meetingForm.value)")
+            span Done
 
       ng-container(*ngIf="action == 'review'")
         meeting-action-items([(actionItems)]="actionItems", [(slug_id)]="slug_id", [(allowEdit)]="actionItemEditable", [(allowReviewEdit)]="actionItemEditable")

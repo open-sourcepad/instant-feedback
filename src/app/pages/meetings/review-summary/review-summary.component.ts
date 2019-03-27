@@ -23,6 +23,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   new_schedule: string = moment().add(2, 'w').format('D MMMM YYYY');
   loading: boolean = false;
   editSchedule: boolean = false;
+  time;
 
   meetingForm: FormGroup;
 
@@ -78,7 +79,8 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.loading = true;
     this.meetingForm = this.fb.group({
-      'scheduled_at': [this.options.startDate, Validators.required]
+      'scheduled_at': [this.options.startDate, Validators.required],
+      'time': [Validators.required],
     });
     if(this.meeting) {
       this.meetingForm.addControl('employee_id', new FormControl(this.meeting['employee']['id']));
@@ -91,8 +93,17 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
     if(changes.meeting && !changes.meeting.isFirstChange()){
       this.meetingForm.addControl('employee_id', new FormControl(this.meeting['employee']['id']));
       this.meetingForm.addControl('manager_id', new FormControl(this.meeting['manager']['id']));
+      this.meetingForm.get('time').patchValue(this.time);
     }
     this.loading = false;
+  }
+
+  extractTime(date) {
+    let time = {
+      hour: parseInt(moment(date).format('HH')),
+      minute: parseInt(moment(date).format('mm')),
+    }
+    return time
   }
 
 
@@ -118,7 +129,11 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
     this.new_schedule = moment(value.start).format('D MMMM YYYY');
     this.meetingForm.get('scheduled_at').setValue(this.new_schedule);
     this.meetingForm.get('scheduled_at').updateValueAndValidity();
+  }
+
+  doneEdit(values) {
     this.editSchedule = false;
+    this.meetingForm.get('scheduled_at').setValue(this.formatDateTime(values));
   }
 
   createMeeting(values){
@@ -131,6 +146,9 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   }
 
   finishMeeting(createVal){
+    let datetime = this.formatDateTime(createVal);
+    createVal["scheduled_at"] = datetime;
+
     this.loading = true;
     this.meetingApi.update(this.slug_id, {status: 'done', finished_at: moment().format('YYYY-MM-DD')})
       .subscribe(res => {
@@ -138,6 +156,14 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
       }, err => {
         this.loading = false;
       });
+  }
+
+  formatDateTime(values) {
+    let time = this.time["hour"] + ':' + this.time["minute"];
+    let date = moment(values["scheduled_at"]).format("YYYY-MM-DD")
+    let datetime = date + ' ' + time;
+    datetime = moment(datetime).format()
+    return datetime
   }
 
 }
