@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api_url: "https://if-api.spsuite.co"
+  api_url: "https://instant-feedback-api.spstage.com"
 };
