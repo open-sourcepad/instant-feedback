@@ -22,7 +22,7 @@ SSHKit::Backend::Netssh.configure do |ssh|
 end
 
 run_locally do
-  execute 'ng build --prod'
+  execute 'ng build --stag'
   execute 'env GZIP=-9 tar -zcvf dist.tar.gz dist'
 end
 
