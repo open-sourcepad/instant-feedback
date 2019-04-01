@@ -59,7 +59,7 @@
               ng-container(*ngIf="q != 'None'")
                 button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="toggleSearchFilter('in')")
                   span S: {{ q }}
-                  span.icon-holder.ti-close((click)=" onSubmit(form.value); removeFilter(selectedStatusesFilter, idx, 'status')")
+                  span.icon-holder.ti-close((click)="removeFilter(selectedStatusesFilter, idx, 'status'); onSubmit(form.value)")
 
           ng-container(*ngIf="selectedManagerFilter.display_name == 'None'")
             button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
