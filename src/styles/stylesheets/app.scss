@@ -61,3 +61,15 @@
 .clickable {
   cursor: pointer;
 }
+
+// Override Angular time picker's css
+.time-picker {
+  .btn-outline-primary, .btn-outline-primary:focus, .btn-outline-primary:active  {
+    color: #000 !important;
+    background-color: #C3BAAA !important;
+    border-color: #C3BAAA !important;
+    font-weight: bold;
+    box-shadow: none !important;
+    margin: 0;
+  }
+}
