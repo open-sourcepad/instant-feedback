@@ -129,6 +129,11 @@ export class MeetingDetailsComponent implements OnInit {
 
   saveDiscussion(obj) {
     this.loading = true;
+
+    if(obj.values.meeting_objective_type == 'default') {
+      obj.values['is_question_locked'] = true;
+    }
+
     var params = Object.assign(obj.values, {meeting_id: this.slug_id});
     if(obj.action == "create") {
       this.discussionApi.create(params)
