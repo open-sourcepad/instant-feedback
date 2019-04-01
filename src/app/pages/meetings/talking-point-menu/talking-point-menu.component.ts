@@ -13,6 +13,9 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
   @Input() selectedPoints;
   @Output() cancel = new EventEmitter<object>();
   @Output() save = new EventEmitter<object>();
+  @Input() showEditLockedQuestion;
+  @Input() editMode;
+
 
   form: FormGroup;
   loading: boolean = false;
@@ -49,6 +52,12 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
         meeting_objective_type: this.discussionObj.discuss_type,
         question: this.discussionObj.question
       });
+    } else if(this.discussionObj == 'reset'){
+      this.form.patchValue({
+        meeting_objective_type: 'custom',
+        question: ''
+      });
+      this.showEditLockedQuestion = false;
     }
   }
 
@@ -76,6 +85,7 @@ export class TalkingPointMenuComponent implements OnInit, OnChanges {
 
   onCancel(){
     this.cancel.emit();
+    this.form.patchValue({question: ''});
   }
 
   alreadySelected(question){

@@ -6,31 +6,44 @@
           .mr-auto.ml-auto
             .vertical-align.almost-full-height
               .table-cell
-                h2.font-bold Choose an existing Talking Point or enter your own
+                h2.font-bold(*ngIf="!editMode") Choose an existing Talking Point or enter your own
+                h2.font-bold(*ngIf="editMode") Edit your own or existing talking point
                 br
                 form(novalidate, autocomplete="off", [formGroup]="form")
                   ul
-                    li.talking-point-types
-                      label Add your own&nbsp;
+                    //- CUSTOM QUESTIONS
+                    li.talking-point-types(*ngIf="!showEditLockedQuestion")
+                      label(*ngIf="!editMode") Add your own&nbsp;
                         input(type="radio", value="custom", formControlName="meeting_objective_type", (change)="updateFormQuestion('')")
                       hr
                       ng-container(*ngIf="f.meeting_objective_type.value == 'custom'")
                         .custom-question
-                          h5.font-bold Your Talking Point
+                          h5.font-bold(*ngIf="!editMode") Your Talking Point
+                          h5.font-bold(*ngIf="editMode") Edit Existing Talking Point
                           textarea.form-control(type="text", formControlName="question", [class.is-invalid]="submitted && f.question.errors")
                           .invalid-feedback
                             span Please enter a Talking Point
-                    li.talking-point-types
-                      label Choose an existing talking point&nbsp;
+                    //- EXISTING QUESTIONS
+                    li.talking-point-types(*ngIf="(!editMode && !showEditLockedQuestion) || (editMode && showEditLockedQuestion)")
+                      label(*ngIf="!editMode") Choose an existing talking point&nbsp;
                         input(type="radio", value="default", formControlName="meeting_objective_type", (change)="updateFormQuestion('')")
+                        
                       hr
-                      ng-container(*ngIf="f.meeting_objective_type.value == 'default'")
+                      ng-container(*ngIf="f.meeting_objective_type.value == 'default' && !showEditLockedQuestion")
                         .invalid-feedback([class.d-block]="submitted && f.question.errors")
                           span.font-bold Please choose a Talking Point
                         ul.talking-point-options
                           li(*ngFor="let talkingPoint of talkingPoints")
                             button([class.selected]="f.question.value == talkingPoint.question", [class.disabled]="alreadySelected(talkingPoint.question)", (click)="updateFormQuestion(talkingPoint.question)")
                               span {{ talkingPoint.question }}
+
+                      ng-container(*ngIf="f.meeting_objective_type.value == 'default' && showEditLockedQuestion")
+                        .custom-question
+                          h5.font-bold(*ngIf="!editMode") Your Talking Point
+                          h5.font-bold(*ngIf="editMode") Edit Your Own Talking Point
+                          textarea.form-control(type="text", formControlName="question", [class.is-invalid]="submitted && f.question.errors")
+                          .invalid-feedback
+                            span Please enter a Talking Point
   .talking-point-actions
     .m-auto.text-center
       button.btn.btn-round.btn-instant-feedback-cancel((click)="onCancel()")
@@ -41,4 +54,3 @@
       ng-container(*ngIf="discussionObj")
         button.btn.btn-round.btn-instant-feedback-brown((click)="onSubmit(form.value, 'edit')")
           span Save
-

@@ -61,6 +61,8 @@ export class MeetingDetailsComponent implements OnInit {
   showRemoveModal: boolean = false;
   modalText: any = {body: 'Are you sure you want to delete it?'};
   modalButtons: any = {cancel: {text: 'Cancel'}, confirm: {text: 'Yes, delete.'}};
+  showEditLockedQuestion: boolean = false;
+  editMode: boolean = false;;
 
   constructor(
     private fb: FormBuilder,
@@ -78,7 +80,7 @@ export class MeetingDetailsComponent implements OnInit {
   get tp() { return this.talkingPointForm.controls; }
   get discussions() { return <FormArray>this.discussionForm.controls['discussions']; }
   get discussionFormData() { return this.discussionForm.get('discussions')['controls']; }
-  
+
   ngOnInit() {
     this.discussionForm = this.fb.group({
       discussions: this.fb.array([])
@@ -120,6 +122,8 @@ export class MeetingDetailsComponent implements OnInit {
     this.menuState = this.menuState === 'out' ? 'in' : 'out';
     if(this.menuState === 'out'){
       this.discussionObj = null;
+      this.showEditLockedQuestion = false;
+      this.editMode = false;
     }
   }
 
@@ -149,6 +153,10 @@ export class MeetingDetailsComponent implements OnInit {
 
   editDiscussion(obj) {
     this.discussionObj = obj;
+    if(obj.is_question_locked) {
+      this.showEditLockedQuestion = true;
+    }
+    this.editMode = true;
     this.showTalkingPointMenu();
   }
 
@@ -207,7 +215,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.submittedNoteForm = true;
 
     if(this.discussions.controls[this.addNoteIdx].invalid) {
-      this.loading = false;   
+      this.loading = false;
       return;
     }else {
       this.discussionApi.update(values.id, values)
@@ -262,6 +270,7 @@ export class MeetingDetailsComponent implements OnInit {
       .subscribe( res => {
         this.loading = false;
         this.discussions.removeAt(idx)
+        this.discussionObj = 'reset';
       }, err => {
         this.loading = false;
       });
