@@ -53,26 +53,26 @@
 
           ng-container(*ngIf="selectedStatusesFilter.length > 0")
             ng-container(*ngFor="let q of selectedStatusesFilter; let idx = index")
-              ng-container(*ngIf="q == 'All'")
+              ng-container(*ngIf="q == 'None'")
                 button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
-                  span S: {{ q }}
-              ng-container(*ngIf="q != 'All'")
+                  span S: None
+              ng-container(*ngIf="q != 'None'")
                 button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)="toggleSearchFilter('in')")
                   span S: {{ q }}
                   span.icon-holder.ti-close((click)=" onSubmit(form.value); removeFilter(selectedStatusesFilter, idx, 'status')")
 
-          ng-container(*ngIf="selectedManagerFilter.display_name == 'All'")
+          ng-container(*ngIf="selectedManagerFilter.display_name == 'None'")
             button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
-              span M: All
-          ng-container(*ngIf="selectedManagerFilter.display_name != 'All'")
+              span M: None
+          ng-container(*ngIf="selectedManagerFilter.display_name != 'None'")
             button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)=" toggleSearchFilter('in')")
               span M: {{ selectedManagerFilter.display_name }}
               span.icon-holder.ti-close((click)="removeFilter2('selectedManagerFilter', 'manager_id')")
 
-          ng-container(*ngIf="selectedUserFilter.display_name == 'All'")
+          ng-container(*ngIf="selectedUserFilter.display_name == 'None'")
             button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
-              span E: All
-          ng-container(*ngIf="selectedUserFilter.display_name != 'All'")
+              span E: None
+          ng-container(*ngIf="selectedUserFilter.display_name != 'None'")
             button.btn-filter.btn-terms([disabled]="openSearchFilter", (click)=" toggleSearchFilter('in')")
               span E: {{ selectedUserFilter.display_name }}
               span.icon-holder.ti-close((click)="removeFilter2('selectedUserFilter', 'employee_id');")

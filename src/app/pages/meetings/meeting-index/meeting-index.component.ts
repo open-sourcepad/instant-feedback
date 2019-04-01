@@ -14,7 +14,7 @@ export class MeetingIndexComponent implements OnInit {
   loading = false;
   users = [];
   managers = [];
-  statuses = ['All', 'Due & Upcoming', 'Past'];
+  statuses = ['None', 'Due & Upcoming', 'Past'];
   collection = [];
   sort_by: any;
   recordCount: number = 0;
@@ -86,8 +86,8 @@ export class MeetingIndexComponent implements OnInit {
   loadUsers() {
     this.userApi.query({})
       .subscribe(res => {
-        this.users = [ {id: '', display_name: 'All'} ];
-        this.managers = [ {id: '', display_name: 'All'} ];
+        this.users = [ {id: '', display_name: 'None'} ];
+        this.managers = [ {id: '', display_name: 'None'} ];
         res['collection']['data'].forEach(user => {
           this.users.push(user);
           user.is_manager && this.managers.push(user);

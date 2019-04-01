@@ -85,7 +85,7 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     {id: 4, label: 'Date Range'},
   ]
 
-  allUser = {id: '', display_name: 'All'};
+  allUser = {id: '', display_name: 'None'};
   selectedDateFilter: number = this.dateOpts[1]['id'];
   selectedManagerFilter = this.allUser;
   selectedUserFilter = this.allUser;
@@ -169,10 +169,10 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     if(arr.indexOf(value) < 0) {
       arr.push(value);
 
-      if(arr.indexOf('All') > -1 && value != 'All') {
-        let idx = arr.indexOf('All');
+      if(arr.indexOf('None') > -1 && value != 'None') {
+        let idx = arr.indexOf('None');
         this.removeFilter(arr, idx, attr);
-      }else if(value == 'All'){
+      }else if(value == 'None'){
         arr.splice(0,arr.length-1);
       }
 
@@ -192,7 +192,7 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     arr.splice(idx, 1);
     if(arr.length < 1) {
       this.skipToggle = true;
-      this.addFilter(arr, 'All', attr);
+      this.addFilter(arr, 'None', attr);
       this.skipToggle = false;
     }
     this.form.get(attr).setValue(arr);
