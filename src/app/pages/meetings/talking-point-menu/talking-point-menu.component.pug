@@ -8,7 +8,6 @@
               .table-cell
                 h2.font-bold(*ngIf="!editMode") Choose an existing Talking Point or enter your own
                 h2.font-bold(*ngIf="editMode") Edit your own or existing talking point
-                p {{f.meeting_objective_type.value}} {{showEditLockedQuestion}}
                 br
                 form(novalidate, autocomplete="off", [formGroup]="form")
                   ul
