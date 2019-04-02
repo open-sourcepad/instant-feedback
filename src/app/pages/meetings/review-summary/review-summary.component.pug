@@ -4,7 +4,7 @@
       .text-center(*ngIf="action == 'schedule'")
         h2.font-bold All done! Your next 1-on-1 with {{ meeting?.employee?.display_name?.split(' ')[0] }} is scheduled on
         h1.font-bold.text-brown(*ngIf="!editSchedule")
-          span {{ m.scheduled_at.value | date: 'MMMM d, yyyy hh:mm a'}}
+          span {{ m.scheduled_at.value | date: 'MMMM d, yyyy hh:mm a'}} (EST)
           button#edit-date-icon.btn-action((click)="editSchedule = true")
             span.icon-holder.ti-pencil.text-brown
 

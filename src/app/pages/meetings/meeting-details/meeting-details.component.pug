@@ -17,8 +17,8 @@
           h1.title 1-on-1 with 
             button.btn-action.title([routerLink]="['/profile', meeting.employee?.id, 'overview']")
               u {{ meeting.employee?.display_name }}
-          h3 {{ meeting.scheduled_at | date: 'MMMM d, y h:mm a' }}
-          h3.font-bold(*ngIf="meetingStatus == 'done'") Actual 1-on-1 date: {{ meeting.finished_at | date: 'MMMM d, y h:mm a' }}
+          h3 {{ meeting.scheduled_at | date: 'MMMM d, y h:mm a' }} (EST)
+          h3.font-bold(*ngIf="meetingStatus == 'done'") Actual 1-on-1 date: {{ meeting.finished_at | date: 'MMMM d, y h:mm a' }} (EST)
           .user-actions(*ngIf="meetingStatus != 'done'")
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3(*ngIf="(userIsManager && currentUser.id == meeting.manager?.id)", (click)="showReschedModal=true") Reschedule
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready

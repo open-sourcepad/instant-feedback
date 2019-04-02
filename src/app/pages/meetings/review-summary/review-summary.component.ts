@@ -150,7 +150,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
     createVal["scheduled_at"] = datetime;
 
     this.loading = true;
-    this.meetingApi.update(this.slug_id, {status: 'done', finished_at: moment().format('YYYY-MM-DD')})
+    this.meetingApi.update(this.slug_id, {status: 'done', finished_at: moment().format('YYYY-MM-DD HH:mm')})
       .subscribe(res => {
         this.createMeeting(createVal);
       }, err => {
