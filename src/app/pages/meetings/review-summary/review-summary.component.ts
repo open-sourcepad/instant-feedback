@@ -161,8 +161,9 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   formatDateTime(values) {
     let time = "00:00"
     if(!!this.time) {
-      let time = this.time["hour"] + ':' + this.time["minute"];
+      time = this.time["hour"] + ':' + this.time["minute"];
     }
+
     let date = moment(values["scheduled_at"]).format("YYYY-MM-DD")
     let datetime = date + ' ' + time;
     datetime = moment(datetime).format()
