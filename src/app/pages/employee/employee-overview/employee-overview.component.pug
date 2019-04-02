@@ -4,8 +4,9 @@
       .row
         .col-md-6
           h4.font-bold.text-brown.mb-5 Action Items
-
-          .action-items-scroll
+          .no-content(*ngIf="past_meetings?.length == 0")
+            span.text-muted No action items yet.
+          .action-items-scroll(*ngIf="past_meetings?.length > 1")
             .action-items-box(*ngFor="let obj of past_meetings; let idx = index", [ng2-loading]="loading")
               div((mouseover)="hoverActionItemIdx=idx", (mouseout)="hoverActionItemIdx=null")
                 h4.font-bold.inline-block {{ obj.finished_at | date: 'MMMM d, y'}}
@@ -28,6 +29,9 @@
 
           #upcoming-meetings.mb-5
             h4.font-bold.text-indigo Upcoming
+
+            .no-content(*ngIf="upcoming_meetings?.length == 0")
+              span.text-muted No upcoming 1-on-1 meeting.
 
             .upcoming-meeting-item.mb-3(*ngFor="let obj of upcoming_meetings | slice:0:3")
               button(*ngIf="!employee_id", [routerLink]="['/employee/one-on-ones', obj.id]")
@@ -60,6 +64,9 @@
                   span.date {{ obj.scheduled_at | date: 'MMMM d, y' }}
           #past-meetings
             h4.font-bold.text-indigo Past
+
+            .no-content(*ngIf="past_meetings?.length == 0")
+              span.text-muted No past 1-on-1 meeting.
 
             .past-meeting-item(*ngFor="let obj of past_meetings | slice:0:3")
               button(*ngIf="!employee_id", [routerLink]="['/employee/one-on-ones', obj.id]")
