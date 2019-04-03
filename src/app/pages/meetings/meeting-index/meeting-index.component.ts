@@ -111,6 +111,9 @@ export class MeetingIndexComponent implements OnInit {
 
   changePage(evt) {
     this.paginationControls['currentPage'] = evt;
+    if(this.queryParams["status"].includes("upcoming") && this.queryParams["status"].includes("due")) {
+      this.queryParams["status"] = 'Due & Upcoming';
+    }
     this.search(this.queryParams);
   }
 
