@@ -52,12 +52,31 @@
   transform: rotate(-90deg);
 }
 
+.icon-delete {
+  background-image: url("../icons/delete.png");
+}
+
+.icon-arrow-up {
+  background-image: url("../icons/up.png");
+}
+
+.icon-arrow-down {
+  background-image: url("../icons/down.png");
+}
+
 .icon-xs {
   height: 12.2px;
   width: auto;
   background-size: contain;
   background-repeat: no-repeat;
   background-position-x: 0.35rem;
+}
+
+.icon-20 {
+  height: 20px;
+  width: auto;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .icon-sm {

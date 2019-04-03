@@ -50,13 +50,13 @@
                     .card-actions(*ngIf="meetingStatus != 'done'")
                       div(*ngIf="userIsManager && currentUser.id == meeting.manager?.id", [hidden]="showActionsIdx != idx")
                         button((click)="moveDown(discuss.value, idx)", [disabled]="idx === (discussions.length - 1)")
-                          span.ti-arrow-down
+                          img.icon-20(src="src/styles/icons/down.png")
                         button((click)="moveUp(discuss.value, idx)", [disabled]="idx === 0")
-                          span.ti-arrow-up
+                          img.icon-20(src="src/styles/icons/up.png")
                         button((click)="editDiscussion(discuss.value)")
-                          span.ti-pencil
+                          img.icon-20(src="src/styles/icons/edit.png")
                         button((click)="removeDiscussion(discuss.value)", [hidden]="discuss.value.is_question_locked")
-                          span.ti-trash
+                          img.icon-20(src="src/styles/icons/delete.png")
                     ul.listStyle
                       li
                         span {{ discuss.value.question }}
