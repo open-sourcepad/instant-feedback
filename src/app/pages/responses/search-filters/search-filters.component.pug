@@ -53,27 +53,27 @@
             span {{ filters.date_since.value | date: 'MM/dd/yyyy' }} - {{ filters.date_until.value | date: 'MM/dd/yyyy' }}
           ng-container(*ngIf="selectedQuestionsFilter.length > 0")
             ng-container(*ngFor="let q of selectedQuestionsFilter; let idx = index")
-              ng-container(*ngIf="q == 'All'")
+              ng-container(*ngIf="q == 'None'")
                 button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
                   span Q: {{ q }}
-              ng-container(*ngIf="q != 'All'")
+              ng-container(*ngIf="q != 'None'")
                 button.btn-filter.btn-terms([disabled]="filterMenu == 'in'", (click)=" toggleSearchFilter('in')")
                   span Q: {{ q }}
                   span.icon-holder.ti-close((click)="removeFilter(selectedQuestionsFilter, idx, 'questions')")
           ng-container(*ngIf="selectedAnswersFilter.length > 0")
             ng-container(*ngFor="let a of selectedAnswersFilter; let idx = index")
-              ng-container(*ngIf="a == 'All'")
+              ng-container(*ngIf="a == 'None'")
                 button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
                   span A: {{ a }}
-              ng-container(*ngIf="a != 'All'")
+              ng-container(*ngIf="a != 'None'")
                 button.btn-filter.btn-terms([disabled]="filterMenu == 'in'", (click)=" toggleSearchFilter('in')")
                   span(*ngIf="answer != 'X' && answer != 'Idle'") A: {{ a }}
                   span(*ngIf="answer == 'X' || answer == 'Idle'") A: No Answer - {{ a }}
                   span.icon-holder.ti-close((click)="removeFilter(selectedAnswersFilter, idx, 'answers')")
-          ng-container(*ngIf="selectedUserFilter.display_name == 'All'")
+          ng-container(*ngIf="selectedUserFilter.display_name == 'None'")
             button.btn-filter.btn-terms((click)="toggleSearchFilter('in')")
-              span U: All
-          ng-container(*ngIf="selectedUserFilter.display_name != 'All'")
+              span U: None
+          ng-container(*ngIf="selectedUserFilter.display_name != 'None'")
             button.btn-filter.btn-terms([disabled]="filterMenu == 'in'", (click)=" toggleSearchFilter('in')")
               span U: {{ selectedUserFilter.display_name }}
               span.icon-holder.ti-close((click)="removeUserFilter('selectedUserFilter', 'user_id')")

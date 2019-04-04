@@ -67,7 +67,7 @@ export class SearchFiltersComponent implements OnInit {
   filterMenu = 'out';
   skipToggle = true;
   form: FormGroup;
-  allUser = {id: '', display_name: 'All'};
+  allUser = {id: '', display_name: 'None'};
 
   //selected search filters
   selectedDateFilter: number;
@@ -146,10 +146,10 @@ export class SearchFiltersComponent implements OnInit {
     if(arr.indexOf(value) < 0) {
       arr.push(value);
 
-      if(arr.indexOf('All') > -1 && value != 'All') {
-        let idx = arr.indexOf('All');
+      if(arr.indexOf('None') > -1 && value != 'None') {
+        let idx = arr.indexOf('None');
         this.removeFilter(arr, idx, attr);
-      }else if(value == 'All'){
+      }else if(value == 'None'){
         arr.splice(0,arr.length-1);
       }
 
@@ -164,7 +164,7 @@ export class SearchFiltersComponent implements OnInit {
     arr.splice(idx, 1);
     if(arr.length < 1) {
       this.skipToggle = true;
-      this.addFilter(arr, 'All', attr);
+      this.addFilter(arr, 'None', attr);
       this.skipToggle = false;
     }
     this.form.get(attr).setValue(arr);
@@ -185,8 +185,8 @@ export class SearchFiltersComponent implements OnInit {
 
   resetFilter() {
     this.selectedDateFilter = 2;
-    this.selectedQuestionsFilter = ['All'];
-    this.selectedAnswersFilter = ['All'];
+    this.selectedQuestionsFilter = ['None'];
+    this.selectedAnswersFilter = ['None'];
     this.selectedUserFilter = this.allUser;
 
     this.form = this.fb.group({

@@ -13,7 +13,7 @@
             (submit)="search($event)"
           )
         .col-md-3
-          ng-container(*ngIf="queryParams['answers'][0] == 'All' && !!recordAnswerSummary")
+          ng-container(*ngIf="queryParams['answers'][0] == 'None' && !!recordAnswerSummary")
             #answer-summary-count.row
               .col-md-3
                 span Happy
@@ -94,4 +94,3 @@
                 span {{ obj.answered_at | date: 'MM/dd/yyyy' : '-0500' }}
     .col-md-12.text-right(*ngIf="collection.length > 0")
       pagination([config]="paginationControls", (pageChange)="changePage($event)")
-

@@ -16,8 +16,8 @@ export class ResponsesComponent implements OnInit {
   }
 
   questions: any;
-  answers = ['All', 'Happy', 'Sad', 'X', 'Idle'];
-  users: any = [ {id: '', display_name: 'All'} ];
+  answers = ['None', 'Happy', 'Sad', 'X', 'Idle'];
+  users: any = [ {id: '', display_name: 'None'} ];
   loading = false;
   collection = [];
   recordShownCount;
@@ -74,7 +74,7 @@ export class ResponsesComponent implements OnInit {
         this.questions = res['collection']['data'].map(question => {
           return question.category;
         });
-        this.questions.unshift('All');
+        this.questions.unshift('None');
       });
   }
 
