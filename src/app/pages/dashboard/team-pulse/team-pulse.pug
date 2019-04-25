@@ -60,7 +60,7 @@
             .col-md-12.col-sm-6
               .card.card-avg-summary([ng2-loading]="loading", [style.height.px]="setHeight()")
                 .m-auto((mouseover)="onHover.sad=true", (mouseout)="onHover.sad=false")
-                  .card-title Sad
+                  .card-title Not Happy
                   a.data {{ sadUsers.length }}
                   .hovered-box([hidden]="!onHover.sad")
                     .data-hovered
@@ -107,7 +107,7 @@
                     br
                     span.text-green {{ questionsData[0]?.answers?.happy }}%
                   .col-md-3
-                    span Sad
+                    span Not Happy
                     br
                     span.text-red {{ questionsData[0]?.answers?.sad }}%
                   .col-md-6
@@ -132,7 +132,7 @@
                     br
                     span.text-green {{ questionsData[1]?.answers?.happy }}%
                   .col-md-3
-                    span Sad
+                    span Not Happy
                     br
                     span.text-red {{ questionsData[1]?.answers?.sad }}%
                   .col-md-6
@@ -157,7 +157,7 @@
                     br
                     span.text-green {{ questionsData[2]?.answers?.happy }}%
                   .col-md-3
-                    span Sad
+                    span Not Happy
                     br
                     span.text-red {{ questionsData[2]?.answers?.sad }}%
                   .col-md-6
@@ -182,7 +182,7 @@
                     br
                     span.text-green {{ questionsData[3]?.answers?.happy }}%
                   .col-md-3
-                    span Sad
+                    span Not Happy
                     br
                     span.text-red {{ questionsData[3]?.answers?.sad }}%
                   .col-md-6
@@ -207,7 +207,7 @@
                     br
                     span.text-green {{ questionsData[4]?.answers?.happy }}%
                   .col-md-3
-                    span Sad
+                    span Not Happy
                     br
                     span.text-red {{ questionsData[4]?.answers?.sad }}%
                   .col-md-6
@@ -217,3 +217,55 @@
                     span.text-idle {{ questionsData[4]?.answers?.x }}% / {{ questionsData[4]?.answers?.idle }}%
               ng-container(*ngIf="filter != 'custom'")
                 canvas#canvas5
+
+        .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
+          .card-box
+            .card-title {{ questionsData[5]?.question }}
+            .stats-summary.container
+              ng-container(*ngIf="!questionsData[5]?.answers")
+                .row.summary-count
+                  .col-md-12
+                    span No data available
+              ng-container(*ngIf="questionsData[5]?.answers")
+                .row.summary-count
+                  .col-md-3
+                    span Happy
+                    br
+                    span.text-green {{ questionsData[5]?.answers?.happy }}%
+                  .col-md-3
+                    span Not Happy
+                    br
+                    span.text-red {{ questionsData[5]?.answers?.sad }}%
+                  .col-md-6
+                    span No Answer&nbsp;
+                    span.text-idle.font-light (X / Idle)
+                    br
+                    span.text-idle {{ questionsData[5]?.answers?.x }}% / {{ questionsData[5]?.answers?.idle }}%
+              ng-container(*ngIf="filter != 'custom'")
+                canvas#canvas6
+
+        .col-md-4.col-sm-6.card.card-questions([ng2-loading]="loading")
+          .card-box
+            .card-title {{ questionsData[6]?.question }}
+            .stats-summary.container
+              ng-container(*ngIf="!questionsData[6]?.answers")
+                .row.summary-count
+                  .col-md-12
+                    span No data available
+              ng-container(*ngIf="questionsData[6]?.answers")
+                .row.summary-count
+                  .col-md-3
+                    span Happy
+                    br
+                    span.text-green {{ questionsData[6]?.answers?.happy }}%
+                  .col-md-3
+                    span Not Happy
+                    br
+                    span.text-red {{ questionsData[6]?.answers?.sad }}%
+                  .col-md-6
+                    span No Answer&nbsp;
+                    span.text-idle.font-light (X / Idle)
+                    br
+                    span.text-idle {{ questionsData[6]?.answers?.x }}% / {{ questionsData[6]?.answers?.idle }}%
+              ng-container(*ngIf="filter != 'custom'")
+                canvas#canvas7

@@ -16,7 +16,7 @@ export class ResponsesComponent implements OnInit {
   }
 
   questions: any;
-  answers = ['None', 'Happy', 'Sad', 'X', 'Idle'];
+  answers = ['None', 'Happy', 'Not Happy', 'X', 'Idle'];
   users: any = [ {id: '', display_name: 'None'} ];
   loading = false;
   collection = [];

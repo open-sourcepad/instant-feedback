@@ -310,6 +310,6 @@ export class SearchFiltersComponent implements OnInit, OnChanges {
     // });
     this.showDateRangePicker = true;
 
-    $('#dateRangeInput').click();
+    // $('#dateRangeInput').click();
   }
 }

@@ -214,7 +214,7 @@ export class TeamPulseComponent implements OnInit {
     this.daterange.end = value.end;
     this.form.get('date_since').setValue(moment(value.start).format('YYYY/MM/DD 00:00:00'));
     this.form.get('date_until').setValue(moment(value.end).format('YYYY/MM/DD 23:59:59'));
-  
+
     this.filterStats();
   }
 

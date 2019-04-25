@@ -209,7 +209,7 @@ export class SearchFiltersComponent implements OnInit {
     // });
     this.showDateRangePicker = true;
 
-    $('#dateRangeInput').click();
+    // $('#dateRangeInput').click();
   }
 
   onSubmit(values) {

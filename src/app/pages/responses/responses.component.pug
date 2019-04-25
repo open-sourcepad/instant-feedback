@@ -19,11 +19,11 @@
                 span Happy
                 br
                 span.answer.text-green {{ recordAnswerSummary['happy_count'] }}
-              .col-md-3
-                span Sad
+              .col-md-4
+                span Not Happy
                 br
                 span.answer.text-red {{ recordAnswerSummary['sad_count'] }}
-              .col-md-6
+              .col-md-5
                 span No Answer (X / idle)
                 br
                 span.answer.text-idle {{ recordAnswerSummary['x_count'] }} / {{ recordAnswerSummary['idle_count'] }}
@@ -81,11 +81,13 @@
                 span {{obj.user}}
               td
                 span {{ obj.question }}
-              td.text-center
+              td.text-center.capitalize
+                ng-container(*ngIf="obj.answer != 'happy' && obj.answer != 'sad' && obj.answer != 'idle' && obj.answer != 'x'")
+                  span {{ obj.answer }}
                 ng-container(*ngIf="obj.answer == 'happy'")
-                  .answer.icon-happy.icon-sm
+                  span great
                 ng-container(*ngIf="obj.answer == 'sad'")
-                  .answer.icon-sad.icon-sm
+                  span terrible
                 ng-container(*ngIf="obj.answer == 'idle'")
                   span NO ANSWER - IDLE
                 ng-container(*ngIf="obj.answer == 'x'")
