@@ -92,6 +92,11 @@ export class QuestionDetailsComponent implements OnInit {
   currentObj = null;
   isUpdate = false;
 
+  questionTypes = [
+    { value: 'slider', label: 'Slider' },
+    { value: 'happy/sad', label: 'Happy/Sad' }
+  ]
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -141,7 +146,8 @@ export class QuestionDetailsComponent implements OnInit {
       'chosenHour': [0, Validators.required],
       'chosenMinute': [0, Validators.required],
       'chosenDay': [this.chosenDay],
-      'recipient_type': [this.recipientTypes[0].value, Validators.required]
+      'recipient_type': [this.recipientTypes[0].value, Validators.required],
+      'question_type': [this.questionTypes[0].value, Validators.required]
     });
 
     this.activeRoute.params.subscribe(params => {
@@ -151,7 +157,7 @@ export class QuestionDetailsComponent implements OnInit {
         this.loadData(this.slug_id);
       }
     });
-    
+
   }
 
   selectedDate(value, datepicker=null){
@@ -249,7 +255,8 @@ export class QuestionDetailsComponent implements OnInit {
             recipient_type: this.currentObj['recipient_type'],
             chosenDay: this.chosenDay,
             chosenHour: momentDate.hour(),
-            chosenMinute: momentDate.minute()
+            chosenMinute: momentDate.minute(),
+            question_type: this.currentObj['question_type'],
           });
         }
       );

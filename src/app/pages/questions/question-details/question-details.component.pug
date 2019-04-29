@@ -42,6 +42,13 @@
               .icon-check-green.icon-sm
               span.text-information &nbsp;This question will be shown {{ form.get('trigger_schedule').value }} on the {{ (formatedDate | date: 'd') | dateSuffix }} of {{ formatedDate | date: 'MMMM yyyy' }} at {{ formatedDate | date: 'HH:mm a' }}.
             .form-group
+              label.input-label QUESTION TYPE
+              br
+              .checkbox-group.border-lightgray.form-check.form-check-inline
+                ng-container(*ngFor="let type of questionTypes")
+                  input.form-check-input(type="radio", formControlName="question_type", [value]="type.value")
+                  label.form-check-label {{ type.label }}
+            .form-group
               label.input-label RECIPIENTS
               br
               .checkbox-group.border-lightgray.form-check.form-check-inline
@@ -82,4 +89,3 @@
             span Save
           button.btn.btn-instant-feedback.btn-instant-feedback-muted([routerLink]="['/questions']")
             span Cancel
-
