@@ -131,6 +131,17 @@ feedback-menu([(menuState)]="feedBackState")
         i.feedback-comment.text-idle.font-size-16 No feedback yet
       br
       br
+      .form-header-text.text-idle(*ngIf="selectedFeedback?.recipient.display_name")
+        span {{ selectedFeedback?.recipient.display_name }}'s comment to feedback:
+      .form-header-text.text-idle(*ngIf="!selectedFeedback?.recipient.display_name")
+        span Comment to feedback:
+      br
+      ng-container(*ngIf="selectedFeedback?.recipient_reply")
+        span.text-idle {{ selectedFeedback?.replied_at | datePrettyFormat }}
+        p.feedback-comment {{ selectedFeedback?.recipient_reply }}
+      ng-container(*ngIf="!selectedFeedback?.recipient_reply")
+        i.feedback-comment.text-idle.font-size-16 No comment to feedback.
+        
   div(feedback-footer)
     ng-container(*ngIf="feedback['request']")
       button.btn.btn-round.btn-instant-feedback-cancel((click)="toggleFeedback('request', 'out')")

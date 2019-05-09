@@ -4,6 +4,8 @@
       .row
         .col-md-8
           h4.section-heading.text-brown.mb-5 Action Items
+          .no-content(*ngIf="meets?.length == 0")
+            span.text-muted No action items yet.
           .action-items-scroll
             .action-items-box(*ngFor="let obj of meets | paginate: paginationControls")
               div
@@ -22,6 +24,8 @@
 
         .col-md-4
           h4.section-heading.text-brown.mb-5 1-on-1s This Week
+          .no-content(*ngIf="meetsThisWeek?.length == 0")
+            span.text-muted No upcoming 1-on-1 meeting.
           #upcoming-meetings.mb-5
             .upcoming-meeting(*ngFor="let obj of meetsThisWeek")
               .clickable([routerLink]="['/one-on-ones', obj.id]")
@@ -39,6 +43,10 @@
 
           #past-meetings
             h4.section-heading.due-label Due
+            .no-content(*ngIf="meetsOnDue?.length == 0")
+              br
+              br
+              span.text-muted No due meetings yet.
             .due-meeting(*ngFor="let obj of meetsOnDue")
               .clickable([routerLink]="['/one-on-ones', obj.id]")
                 .avatar-user
@@ -52,6 +60,7 @@
                   br
                   span.date-day {{ obj.scheduled_at | date: 'EEEE ' | uppercase }}
                   span.date {{ obj.scheduled_at | date: 'MMMM d' | uppercase }}
+            br
 
         #my-team-pulse.col-md-12.mb-5
           .row
