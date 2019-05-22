@@ -1,6 +1,6 @@
 :host {
   background: #e1dcd9;
-  
+
   position: fixed;
   right: auto;
   top: 0;
@@ -142,6 +142,7 @@
 
 #footer-menu .btn-actions {
   margin: 0 15px;
+  font-family: 'Karla';
 
   .btn-instant-feedback {
     font-size: large;
@@ -152,5 +153,87 @@
   .btn-instant-feedback-cancel {
     color: #fff;
     font-weight: 300;
+  }
+}
+
+#footer-menu {
+  li.menu-item {
+    font-family: "MADE Evolve Sans";
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    line-height: 19px;
+    margin: 10px 20px;
+    &.active {
+      color: #C3BAAA;
+    }
+  }
+}
+
+
+#prev-action-items-container {
+
+  .table-cell {
+    width: 75%;
+    padding-left: 10%;
+    padding-right: 5%;
+
+    .prev-item-title {
+      color: #979797;
+      font-family: "MADE Evolve Sans";
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.56px;
+      line-height: 48px;
+    }
+    .previous-items {
+      height: 50vh;
+      width: 100%;
+      overflow-y: hidden;
+      font-family: "MADE Evolve Sans";
+      padding-right: 20px;
+      &:hover {
+        overflow-y: scroll;
+      }
+      .user-items{
+        span {
+          font-size: 20px;
+          font-family: "MADE Evolve Sans" !important;
+        }
+        .items {
+          color: #4A4A4A;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+
+  ::-webkit-scrollbar {
+      width: 5px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px gray;
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+      display: none;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+      background: gray;
+      -webkit-box-shadow: inset 0 0 6px #C3BAAA;
+  }
+  ::-webkit-scrollbar-thumb:window-inactive {
+  	background: gray;
+  }
+
+  .table-cell h1 {
+    font-size: 2.5rem;
+    color: #4a4a4a;
+    line-height: 1.3;
   }
 }

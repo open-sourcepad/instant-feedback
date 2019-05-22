@@ -1,7 +1,7 @@
 .wrapper
   .conten
     .row
-      .col-md-8
+      .col-md-8(*ngIf="isTalkingPoint(action)")
         #talking-point-container.mr-auto
           .vertical-align.set-height
             .table-cell
@@ -17,6 +17,24 @@
                       p.font-bold.mb-1 {{ discussions[idx]?.employee_name }}'s Note
                     li
                       p.text-justify {{ discussions[idx]?.employee_notes }}
+                      
+      .col-md-8(*ngIf="action == 'follow-up' && followUps()")
+        #prev-action-items-container.mr-auto
+          .vertical-align.set-height
+            .table-cell
+              .prev-item-title Action Items from {{ previousMeeting.created_at | date: 'MMMM d' }}
+              .previous-items
+                .user-items(*ngIf="prevActionItems?.employee.items.data.length != 0")
+                  span {{ prevActionItems.employee.name }}'s action items:
+                  ul
+                    li(*ngFor="let item of prevActionItems?.employee.items.data")
+                      p.items.mb-1 {{ item.note }}
+                br
+                .user-items(*ngIf="prevActionItems?.manager.items.data.length != 0")
+                  span {{ prevActionItems.manager.name }}'s action items:
+                  ul
+                    li(*ngFor="let item of prevActionItems?.manager.items.data")
+                      p.items.mb-1 {{ item.note }}
       .col-md-4#listItems.set-height
         .vertical-align
           meeting-action-items([(actionItems)]="actionItems", [(slug_id)]="slug_id", [(allowEdit)]="actionItemEditable")
@@ -25,15 +43,23 @@
     .row
       .col-md-8
         ul.reset
-          li.inline-block.point-page(*ngFor="let discuss of discussions; let i = index", [class.active]=" i == idx")
-            span {{ i + 1}}
+          li.inline-block.menu-item(*ngIf="followUps()", [class.active]="action == 'follow-up'")
+            span Follow up
+          li.inline-block.menu-item([class.active]="isTalkingPoint(action)")
+            span Talking Points idx={{idx}} discussions={{discussions.length}}
+            span(*ngIf="discussions.length != 0")  ({{idx + 1}}/{{discussions.length}})
+          li.inline-block.menu-item([class.active]="action == 'review'")
+            span Review Summary
+          li.inline-block.menu-item([class.active]="action == 'schedule'")
+            span Next 1-on-1
+
       .col-md-4
         .btn-actions.text-right
-          button.btn-instant-feedback.btn-instant-feedback-cancel(*ngIf="idx == 0", (click)="cancel()")
+          button.btn-instant-feedback.btn-instant-feedback-cancel(*ngIf="showCancelButton()", (click)="cancel()")
             span Cancel
-          button.btn-instant-feedback.btn-instant-feedback-cancel(*ngIf="idx != 0", (click)="prevPoint()")
+          button.btn-instant-feedback.btn-instant-feedback-cancel(*ngIf="showPreviousButton()", (click)="prevPoint()")
             span Previous
-          button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="idx != (discussions.length-1)", (click)="nextPoint()")
+          button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="showNextButton()", (click)="nextPoint()")
             span Next
           button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="idx == (discussions.length-1)", (click)="nextPoint()")
             span Review Summary

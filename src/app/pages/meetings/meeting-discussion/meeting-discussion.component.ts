@@ -17,6 +17,8 @@ export class MeetingDiscussionComponent implements OnInit {
   discussions: any = [];
   actionItems: any = [];
   action: string = '';
+  prevActionItems: any = [];
+  previousMeeting: any = [];
 
   constructor(
     private meetingApi: MeetingService,
@@ -48,6 +50,8 @@ export class MeetingDiscussionComponent implements OnInit {
         console.log(this.obj);
         this.discussions = res['data']['discussions']['data'];
         this.actionItems = res['data']['action_items'];
+        this.prevActionItems = res["data"]["prev_meet_action_items"];
+        this.previousMeeting = res["data"]["previous_meeting"];
       }, err => {
         this.loading = false;
       });

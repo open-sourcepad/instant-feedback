@@ -1,7 +1,8 @@
-discuss-multi-form(*ngIf="action != 'review' && action != 'schedule'", [(actionItems)]="actionItems", [(discussions)]="discussions", [(slug_id)]="slug_id")
+discuss-multi-form(*ngIf="action != 'review' && action != 'schedule'", [(actionItems)]="actionItems", [(discussions)]="discussions", [(slug_id)]="slug_id", [(prevActionItems)]="prevActionItems", [(previousMeeting)]="previousMeeting")
 review-summary(*ngIf="action == 'review' || action == 'schedule'",
   [(actionItems)]="actionItems",
   [(discussions)]="discussions",
   [(slug_id)]="slug_id",
-  [(meeting)]="obj"
+  [(meeting)]="obj",
+  [(prevActionItems)]="prevActionItems"
 )

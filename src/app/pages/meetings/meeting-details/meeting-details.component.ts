@@ -198,12 +198,17 @@ export class MeetingDetailsComponent implements OnInit {
 
   // redirect page: start meeting
   startDiscussion(){
+    let action = 'start'
+    if(this.meeting.prev_meet_action_items.total_count > 0) {
+      action = "follow-up"
+    }
+
     if(!this.meeting.started_at) {
       this.meetingApi.start(this.slug_id).subscribe(res => {
-        this.router.navigateByUrl(`/one-on-ones/${this.slug_id}/discussion?action=start`);
+        this.router.navigateByUrl(`/one-on-ones/${this.slug_id}/discussion?action=${action}`);
       });
     }else {
-      this.router.navigateByUrl(`/one-on-ones/${this.slug_id}/discussion?action=start`);
+      this.router.navigateByUrl(`/one-on-ones/${this.slug_id}/discussion?action=${action}`);
     }
   }
 

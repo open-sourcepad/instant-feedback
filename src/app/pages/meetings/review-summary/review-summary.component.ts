@@ -16,6 +16,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   @Input() discussions;
   @Input() slug_id;
   @Input() meeting;
+  @Input() prevActionItems;
 
 
   action: string = '';
@@ -168,6 +169,14 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
     let datetime = date + ' ' + time;
     datetime = moment(datetime).format()
     return datetime
+  }
+
+  followUps() {
+    return this.prevActionItems.length > 0
+  }
+
+  isTalkingPoint(param) {
+    return /^\d+$/.test(param) || param == 'start'
   }
 
 }
