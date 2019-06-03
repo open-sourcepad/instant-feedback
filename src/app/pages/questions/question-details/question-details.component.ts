@@ -185,16 +185,18 @@ export class QuestionDetailsComponent implements OnInit {
   }
 
   addUser(user) {
-    this.userService.getSpecificUser({name: user})
-      .subscribe(res => {
-        if(res['data']){
-          this.recipients.push(res['data']);
-          this.searchName = '';
-          this.searchUserTerm$.next('');
-        }
-      }, err => {
-        this.errorMsg.addUser = "User not found";
-      });
+    if (!!user) {
+      this.userService.getSpecificUser({name: user})
+        .subscribe(res => {
+          if(res['data']){
+            this.recipients.push(res['data']);
+            this.searchName = '';
+            this.searchUserTerm$.next('');
+          }
+        }, err => {
+          this.errorMsg.addUser = "User not found";
+        });
+    }
   }
 
   removeUser(idx){
