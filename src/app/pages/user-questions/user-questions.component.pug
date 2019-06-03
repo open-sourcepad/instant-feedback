@@ -34,7 +34,7 @@
               span {{ item.question }}
             td
               ng-container(*ngIf="editIdx != idx")
-                span {{ item.asking_date | date: 'MMM d, h:mm a' : '-0500' }}
+                span {{ item.asking_date | date: 'MMM d, h:mm a' : 'EDT' }}
               ng-container(*ngIf="editIdx == idx")
                 .input-group(daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
                   input.form-control(type="text" name="dateRangeInput", [(ngModel)]="new_schedule")

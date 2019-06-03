@@ -5,7 +5,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 
 import * as moment from 'moment';
-
 @Component({
   selector: 'reschedule-modal',
   templateUrl: './reschedule-modal.component.pug',

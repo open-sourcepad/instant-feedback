@@ -40,7 +40,7 @@
               .form-group.col-md-2
             .form-group
               .icon-check-green.icon-sm
-              span.text-information &nbsp;This question will be shown {{ form.get('trigger_schedule').value }} on the {{ (formatedDate | date: 'd') | dateSuffix }} of {{ formatedDate | date: 'MMMM yyyy' }} at {{ formatedDate | date: 'HH:mm a' }}.
+              span.text-information &nbsp;This question will be shown {{ form.get('trigger_schedule').value }} on the {{ (formatedDate | date: 'd' : 'EDT' ) | dateSuffix }} of {{ formatedDate | date: 'MMMM yyyy' : 'EDT' }} at {{ formatedDate | date: 'HH:mm a' : 'EDT' }}.
             .form-group
               label.input-label QUESTION TYPE
               br

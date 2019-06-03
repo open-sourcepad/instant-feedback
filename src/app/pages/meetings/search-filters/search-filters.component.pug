@@ -49,7 +49,7 @@
       .col-md-9
         .search-terms
           button.btn-filter.btn-terms((click)="toggleSearchFilter('in'); ; toggleDateRangePicker()")
-            span {{ f.date_since.value | date: 'MM/dd/yyyy' }} - {{ f.date_until.value | date: 'MM/dd/yyyy' }}
+            span {{ f.date_since.value | date: 'MM/dd/yyyy' : 'EDT' }} - {{ f.date_until.value | date: 'MM/dd/yyyy' : 'EDT' }}
 
           ng-container(*ngIf="selectedStatusesFilter.length > 0")
             ng-container(*ngFor="let q of selectedStatusesFilter; let idx = index")

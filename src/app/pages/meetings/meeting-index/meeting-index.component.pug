@@ -79,9 +79,9 @@
             td
               span {{ obj.manager.display_name }}
             td.schedule
-              span.schedule([class.due]="obj.status == 'due'") {{ obj.scheduled_at | date: 'MMMM d' : '-0500' }}
+              span.schedule([class.due]="obj.status == 'due'") {{ obj.scheduled_at | date: 'MMMM d' : 'EDT'  }}
             td.schedule
-              span([innerHTML]="!!obj.finished_at ? (obj.finished_at | date: 'MMMM d' : '-0500') : '-'")
+              span([innerHTML]="!!obj.finished_at ? (obj.finished_at | date: 'MMMM d' : 'EDT' ) : '-'")
             td
               span.text-capitalize {{ obj.status }}
             td.actions

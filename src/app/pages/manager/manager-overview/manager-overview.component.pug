@@ -10,7 +10,7 @@
             .action-items-box(*ngFor="let obj of meets | paginate: paginationControls")
               div
                 h4.user-name.font-bold.inline-block {{ obj.employee.display_name }}
-                h4.meeting-date.font-bold.inline-block {{ obj.scheduled_at | date: 'MMMM d'}}
+                h4.meeting-date.font-bold.inline-block {{ obj.scheduled_at | date: 'MMMM d' : 'EDT' }}
                 ng-container(*ngIf="obj.action_items.manager.length < 1")
                   ul.action-item-list.reset
                     li
@@ -38,8 +38,8 @@
                   span.facilitator-label(*ngIf="obj.other_party.show_facilitator_label") Facilitator
                   span.check-icon(*ngIf="obj.status == 'done'") &#10003;
                   br
-                  span.date-day {{ obj.scheduled_at | date: 'EEEE ' | uppercase }}
-                  span.date {{ obj.scheduled_at | date: 'MMMM d' | uppercase }}
+                  span.date-day {{ obj.scheduled_at | date: 'EEEE ' : 'EDT'  | uppercase }}
+                  span.date {{ obj.scheduled_at | date: 'MMMM d' : 'EDT'  | uppercase }}
 
           #past-meetings
             h4.section-heading.due-label Due
@@ -58,8 +58,8 @@
                   span.facilitator-label(*ngIf="obj.other_party.show_facilitator_label") Facilitator
                   span.check-icon(*ngIf="obj.status == 'done'") &#10003;
                   br
-                  span.date-day {{ obj.scheduled_at | date: 'EEEE ' | uppercase }}
-                  span.date {{ obj.scheduled_at | date: 'MMMM d' | uppercase }}
+                  span.date-day {{ obj.scheduled_at | date: 'EEEE ' : 'EDT' | uppercase }}
+                  span.date {{ obj.scheduled_at | date: 'MMMM d' : 'EDT' | uppercase }}
             br
 
         #my-team-pulse.col-md-12.mb-5
