@@ -56,6 +56,17 @@ button.disabled {
   border: 1px solid $lightBrown;
 }
 
+.btn-instant-feedback-brown-outline {
+  color: $black;
+  background-color: transparent;
+  border: 1px solid $lightBrown;
+  &.is-active {
+    color: white;
+    background-color: $lightBrown;
+    border: 1px solid $lightBrown;
+  }
+}
+
 .btn-instant-feedback-semi-dark {
   color: $lightBrown;
   background-color: $lightBlack;

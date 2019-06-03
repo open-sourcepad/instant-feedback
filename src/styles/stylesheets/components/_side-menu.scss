@@ -37,3 +37,12 @@
     font-weight: 500;
   }
 }
+
+#side-menu-form > .side-menu-content .commendation-actions {
+  padding-top: 25px;
+  .btn-round {
+    border-radius: 25px;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+}

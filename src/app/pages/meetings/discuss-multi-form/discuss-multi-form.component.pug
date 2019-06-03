@@ -1,13 +1,27 @@
 .wrapper
   .conten
     .row
+      //- TALKING POINT SCREEN
       .col-md-8(*ngIf="isTalkingPoint(action)")
         #talking-point-container.mr-auto
           .vertical-align.set-height
-            .table-cell
+            .table-cell(*ngIf="!editable && discussions.length == 0")
+              button.inline-block.ml-3.btn-circle-add.add-icon((click)="toggleEdit('add')")
+                span.ti-plus
+              .no-content No talking points have been set.
+            .table-cell(*ngIf="editable")
+              edit-talking-points([(talkingPoint)]="discussions[idx]", (toggleEdit)="toggleEdit(action)", (loadData)="loadData($event)", [(slug_id)]="slug_id", (changeQuery)="changeQuery($event)", [(formAction)]="formAction")
+            .table-cell(*ngIf="!editable && discussions.length != 0" )
+              button.inline-block.ml-3.btn-circle-add.add-icon((click)="toggleEdit('add')")
+                span.ti-plus
               h1.font-bold {{ discussions[idx]?.question }}
+              .actions(*ngIf="!editable")
+                button((click)="toggleEdit('edit')")
+                  img.icon-20(src="assets/images/edit.png")
+                button((click)="deleteTalkingPoint(discussions[idx])")
+                  img.icon-20(src="assets/images/delete.png")
 
-              .employee-notes
+              .employee-notes(*ngIf="discussions.length != 0")
                 ng-container(*ngIf="!discussions[idx]?.employee_notes")
                   br
                   p.text-justify {{ discussions[idx]?.employee_name }} didn't add any notes.
@@ -17,7 +31,8 @@
                       p.font-bold.mb-1 {{ discussions[idx]?.employee_name }}'s Note
                     li
                       p.text-justify {{ discussions[idx]?.employee_notes }}
-                      
+
+      //- FOLLOW UP SCREEN
       .col-md-8(*ngIf="action == 'follow-up' && followUps()")
         #prev-action-items-container.mr-auto
           .vertical-align.set-height
@@ -46,7 +61,7 @@
           li.inline-block.menu-item(*ngIf="followUps()", [class.active]="action == 'follow-up'")
             span Follow up
           li.inline-block.menu-item([class.active]="isTalkingPoint(action)")
-            span Talking Points idx={{idx}} discussions={{discussions.length}}
+            span Talking Points
             span(*ngIf="discussions.length != 0")  ({{idx + 1}}/{{discussions.length}})
           li.inline-block.menu-item([class.active]="action == 'review'")
             span Review Summary

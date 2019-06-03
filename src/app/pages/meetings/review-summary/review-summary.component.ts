@@ -113,8 +113,12 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   }
 
   prevAction(){
-    if(this.action == 'review'){
+    if(this.action == 'review' && this.discussions.length > 1){
       this.changeQuery(this.discussions.length);
+    }
+
+    if(this.action == 'review' && this.discussions.length == 1) {
+      this.changeQuery('start')
     }
 
     if(this.action == 'schedule'){
@@ -172,7 +176,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   }
 
   followUps() {
-    return this.prevActionItems.length > 0
+    return this.prevActionItems.total_count > 0
   }
 
   isTalkingPoint(param) {

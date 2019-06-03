@@ -18,6 +18,7 @@ import { MeetingActionItemsComponent } from './meeting-action-items/meeting-acti
 import { SearchFiltersComponent } from './search-filters/search-filters.component';
 import { RescheduleModalComponent } from './reschedule-modal/reschedule-modal.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { EditTalkingPointsComponent } from './edit-talking-points/edit-talking-points.component';
 
 
 
@@ -32,6 +33,7 @@ const MODULE_COMPONENTS = [
   MeetingActionItemsComponent,
   RescheduleModalComponent,
   SearchFiltersComponent,
+  EditTalkingPointsComponent
 ]
 
 @NgModule({
