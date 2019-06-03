@@ -33,6 +33,7 @@ export class ManagerComponent implements OnInit {
   ]
   isError = false;
   errorMsg = '';
+  commendationType = '';
 
   constructor(
     public fb: FormBuilder,
@@ -62,7 +63,8 @@ export class ManagerComponent implements OnInit {
     this.giveForm = this.fb.group({
       recipient_id: ['', Validators.required],
       sender_id: [this.currentUser.id, Validators.required],
-      comment: ['', [Validators.required, ContentValidator.IsBlank]]
+      comment: ['', [Validators.required, ContentValidator.IsBlank]],
+      commendation_type: ['', [Validators.required, ContentValidator.IsBlank]],
     });
   }
 
@@ -121,6 +123,7 @@ export class ManagerComponent implements OnInit {
             recipient_id: '',
             comment: ''
           });
+          this.commendationType = "none";
         }, err => {
           this.isError = true;
           this.errorMsg = err.error.errors[0];
@@ -128,6 +131,11 @@ export class ManagerComponent implements OnInit {
         });
       }
     }
+  }
+
+  setCommendationType(type) {
+    this.commendationType = type;
+    this.gf.commendation_type.setValue(type)
   }
 
 }
