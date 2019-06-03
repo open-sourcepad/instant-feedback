@@ -30,12 +30,15 @@
   .row
     .col-md-8
       ul.reset
-        li.inline-block.point-page(*ngFor="let discuss of discussions; let i = index", [class.active]=" i == idx")
-          span {{ i + 1}}
-        li.inline-block.review
-          span.font-bold([class.text-brown]="action == 'review'") Review Summary
-        li.inline-block.review
-          span.font-bold([class.text-brown]="action == 'schedule'") Schedule Next 1-on-1
+        li.inline-block.menu-item(*ngIf="followUps()", [class.active]="action == 'follow-up'")
+          span Follow up
+        li.inline-block.menu-item([class.active]="isTalkingPoint(action)")
+          span Talking Points
+          span(*ngIf="discussions.length != 0")  ({{discussions.length}}/{{discussions.length}})
+        li.inline-block.menu-item([class.active]="action == 'review'")
+          span Review Summary
+        li.inline-block.menu-item([class.active]="action == 'schedule'")
+          span Next 1-on-1
     .col-md-4
       .btn-actions.text-right
         button.btn-instant-feedback.btn-instant-feedback-cancel((click)="prevAction()")

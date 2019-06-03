@@ -14,10 +14,13 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
   @Input() actionItems;
   @Input() discussions;
   @Input() slug_id;
+  @Input() prevActionItems;
+  @Input() previousMeeting;
 
   idx: number = 0;
   action: string = '';
   actionItemEditable: boolean = true;
+  screen: string = '';
 
   constructor(
     private router: Router,
@@ -47,6 +50,7 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+
     if(changes.discussions && !changes.discussions.isFirstChange()){
       var cur_position = +this.action;
       if(cur_position){
@@ -57,10 +61,14 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
           this.idx = cur_position - 1;
         }
       }else {
-        if(this.action == 'start' || this.action == 'review' || this.action == 'schedule'){
+        if(this.action == 'start' || this.action == 'review' || this.action == 'schedule' || this.action == 'follow-up'){
           this.changeQuery(this.action);
         }else {
-          this.changeQuery('start');
+          if(this.followUps()) {
+            this.changeQuery('follow-up');
+          }else{
+            this.changeQuery('start');
+          }
         }
       }
     }
@@ -74,16 +82,24 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
       if(this.idx > arr_length) {
         this.changeQuery('review');
       }else{
-       this.changeQuery(this.idx+1);
+        if(this.followUps()) {
+          this.changeQuery('start');
+        }else{
+          this.changeQuery(this.idx+1);
+        }
       }
     }
   }
 
   prevPoint(){
-    if(this.idx > 0){
+    if(this.idx > 0 || this.action == 'start'){
       this.idx -= 1;
       if(this.idx <= 0) {
-        this.changeQuery('start');
+        if(this.followUps()) {
+          this.changeQuery('follow-up');
+        }else{
+          this.changeQuery('start');
+        }
       }else{
        this.changeQuery(this.idx+1);
       }
@@ -96,6 +112,26 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
 
   changeQuery(action) {
     this.router.navigate(['.'], { relativeTo: this.activeRoute, queryParams: {action: action}});
+  }
+
+  isTalkingPoint(param) {
+    return /^\d+$/.test(param) || param == 'start'
+  }
+
+  followUps() {
+    return this.prevActionItems.total_count > 0
+  }
+
+  showCancelButton(){
+    return (this.idx == 0 && !this.followUps()) || (this.action == 'follow-up' && this.followUps()) || (this.action == 'start' && !this.followUps())
+  }
+
+  showPreviousButton() {
+    return this.idx != 0 || (this.followUps() && this.action == 'start') || (!this.followUps() && this.action != 'start') || (this.followUps() && this.action != 'follow-up')
+  }
+
+  showNextButton() {
+    return (this.idx != this.discussions.length-1 || this.discussions.length == 1)
   }
 
 }
