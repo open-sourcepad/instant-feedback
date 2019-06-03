@@ -1,3 +1,6 @@
+import * as moment from 'moment';
+import 'moment-timezone';
+
 export class Meeting {
   public id;
   public action_items;
@@ -25,5 +28,6 @@ export class Meeting {
     },
   ) {
      if (fields) Object.assign(this, fields);
+     this.scheduled_at = moment(this.scheduled_at)
   }
 }

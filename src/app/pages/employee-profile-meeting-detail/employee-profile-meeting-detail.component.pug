@@ -15,8 +15,8 @@
               | {{ currentObj?.manager?.display_name.split(" ")[1].charAt(0) }}
         .user-header
           h1.title 1-on-1 with {{ currentObj?.employee?.display_name }}
-          h4 {{ currentObj?.scheduled_at | date: 'MMMM d, y' }}
-          h4.font-bold(*ngIf="currentObj?.status == 'done'") Actual 1-on-1 date: {{ currentObj?.finished_at | date: 'MMMM d, y' }}
+          h4 {{ currentObj?.scheduled_at | date: 'MMMM d, y': 'EDT'  }}
+          h4.font-bold(*ngIf="currentObj?.status == 'done'") Actual 1-on-1 date: {{ currentObj?.finished_at | date: 'MMMM d, y': 'EDT'  }}
           .user-actions(*ngIf="currentObj?.status != 'done' && !employee_id")
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready
         .float-right.meeting-page-nav
@@ -26,12 +26,12 @@
             button.inline-block(*ngIf="employee_id", (click)="navigate('/profile/' + employee_id + '/one-on-ones/' + paginate['prev']['meeting_id'])")
               .icon-prev-nav.icon-xs
             .inline-block.content.ml-2.mr-3
-              span.text-idle.text-uppercase {{ paginate['prev']['scheduled_at'] | date: 'MMMM d' }}
+              span.text-idle.text-uppercase {{ paginate['prev']['scheduled_at'] | date: 'MMMM d': 'EDT'  }}
               br
               span.text-brown 1on1 with {{ paginate['prev']['employee'] }}
           ng-container(*ngIf="paginate['next']")
             .inline-block.content.ml-3.mr-2
-              span.text-idle.text-uppercase {{ paginate['next']['scheduled_at'] | date: 'MMMM d' }}
+              span.text-idle.text-uppercase {{ paginate['next']['scheduled_at'] | date: 'MMMM d': 'EDT'  }}
               br
               span.text-brown 1on1 with {{ paginate['next']['employee'] }}
             button.inline-block(*ngIf="!employee_id", (click)="navigate('/employee/one-on-ones/' + paginate['next']['meeting_id'])")

@@ -93,6 +93,6 @@
                 ng-container(*ngIf="obj.answer == 'x'")
                   span NO ANSWER - X
               td
-                span {{ obj.answered_at | date: 'MM/dd/yyyy' : '-0500' }}
+                span {{ obj.answered_at | date: 'MM/dd/yyyy' : 'EDT'  }}
     .col-md-12.text-right(*ngIf="collection.length > 0")
       pagination([config]="paginationControls", (pageChange)="changePage($event)")

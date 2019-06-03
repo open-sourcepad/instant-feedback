@@ -22,9 +22,9 @@
               span {{ obj.employee.display_name }}
             td
               ng-container(*ngIf="obj.status == 'done'")
-                span {{ obj.finished_at | date: 'MMMM d' }}
+                span {{ obj.finished_at | date: 'MMMM d' : 'EDT' }}
               ng-container(*ngIf="obj.status != 'done'")
-                span {{ obj.scheduled_at | date: 'MMMM d' }}
+                span {{ obj.scheduled_at | date: 'MMMM d' : 'EDT' }}
             td
               span.text-capitalize {{ obj.status }}
             td.actions

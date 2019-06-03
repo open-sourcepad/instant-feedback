@@ -85,7 +85,7 @@
                   button.btn-action(*ngIf="meeting['employee']['id'] != currentUser['id']", [routerLink]="['/profile', meeting['employee']['id'], 'overview']")
                     u {{ meeting['employee']['display_name'] }}
                 td
-                  span {{ meeting['scheduled_at'] | date: 'MMMM d' }}
+                  span {{ meeting['scheduled_at'] | date: 'MMMM d' : 'EDT' }}
                 td
                   span.text-capitalize {{ meeting['status'] }}
                 td.actions

@@ -25,7 +25,7 @@
           td
             span.text-capitalize {{ question.frequency }}
           td
-            span([innerHtml]="(question.category == 'custom' && question.scheduled_at) ? (question.scheduled_at | date: 'HH:mm' : '-0500')+ ' EST' : '-'")
+            span([innerHtml]="(question.category == 'custom' && question.scheduled_at) ? (question.scheduled_at | date: 'HH:mm' : 'EDT' )+ ' EST' : '-'")
           td.actions
             ng-container(*ngIf="question.allow_changes")
               a([routerLink]="['/questions', question.id]")
