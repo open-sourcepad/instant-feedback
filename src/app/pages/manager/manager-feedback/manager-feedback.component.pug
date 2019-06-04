@@ -74,6 +74,9 @@
 
               span.text-idle(*ngIf="obj.question") &nbsp;(in response to {{ obj.recipient.preposition }} feedback request)
             span :
+            span(*ngIf="obj.commendation_type", [ngClass]="'feedback-' + obj.commendation_type") {{'#' + obj.commendation_type }}
+            
+            
             p.text-justify "{{ obj.comment | limitChar }}"
             .text-right
               button.btn-action.font-size-14.font-bold((click)="toggleFeedback('show', 'in'); selectedFeedback = obj") More
