@@ -8,10 +8,12 @@ import { TeamPulseComponent } from './team-pulse/team-pulse.component';
 
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { Ng2LoadingSpinnerModule } from 'ng2-loading-spinner';
+import { TrendsComponent } from './trends/trends.component';
 
 const MODULE_COMPONENTS = [
   DashboardComponent,
-  TeamPulseComponent
+  TeamPulseComponent,
+  TrendsComponent
 ]
 
 @NgModule({

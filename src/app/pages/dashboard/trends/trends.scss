@@ -1,0 +1,49 @@
+.trends {
+  background: #fff;
+  padding: 20px;
+  height: 100%;
+
+  .trend-header {
+    padding: 0px 20px;
+    .header-icon {
+      background-image: url('../../../../assets/images/trend-coffee.png');
+      height: 100%;
+      position: relative;
+      margin-top: 5px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    h1 {
+      font-weight: bold;
+    }
+
+    h5 {
+      font-weight: bold;
+      color: #d2d2d2;
+    }
+  }
+
+  .trend-container {
+    .trend-content {
+      margin-top: 10px;
+    }
+
+    .indicator {
+      margin-right: 10px;
+  
+      &.trend-sad {
+        color: red;
+      }
+  
+      &.trend-happy {
+        color: green;
+      }
+
+      &.trend-nuetral {
+        color: yellow;
+      }
+    }
+  }
+  
+}

@@ -1,8 +1,10 @@
 .page-data-content
   .row
     .col-md-10
-      team-pulse
+      team-pulse('[(filter)]'='filter', '[(daterange)]'='daterange')
     .col-md-2
+      trends('[filter]'='filter', '[daterange]'='daterange')
+
     //- .col-md-3
     //-   .team-pulse-percent-container
     //-     .team-pulse-percent-data

@@ -14,4 +14,8 @@ export class PulseService extends BaseService {
   ) {
     super(http, ENDPOINT);
   }
+
+  trends(payload: Object): any {
+    return this.http.get(`${this.apiEndpoint}/trends?${this.buildParams(payload)}`);
+  }
 }

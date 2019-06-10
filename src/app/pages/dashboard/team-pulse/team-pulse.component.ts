@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { Chart } from 'chart.js';
 import { PulseService } from '../../../services/api/pulse.service';
@@ -11,7 +11,10 @@ import { QuestionService } from 'src/app/services/api';
   styleUrls: ['./team-pulse.scss']
 })
 export class TeamPulseComponent implements OnInit {
-  filter: string;
+  
+  @Input() filter: string;
+  @Output() filterChange: EventEmitter<any> = new EventEmitter<any>();
+
   happyUsers: any;
   sadUsers: any;
   questionsData: any;
@@ -25,10 +28,10 @@ export class TeamPulseComponent implements OnInit {
 
   form: FormGroup;
   selectedDateFilter = 1;
-  daterange = {
-    start: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
-    end: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59')
-  };
+
+  @Input() daterange: any;
+  @Output() daterangeChange: EventEmitter<any> = new EventEmitter<any>();
+
   //daterangepicker options
   options: any = {
     locale: {
@@ -200,6 +203,8 @@ export class TeamPulseComponent implements OnInit {
         break;
       }
     }
+
+    this.filterChange.emit(this.filter)
   }
 
   selectedDate(value: any, datepicker?: any) {
@@ -207,9 +212,11 @@ export class TeamPulseComponent implements OnInit {
       datepicker.start = value.start;
       datepicker.end = value.end;
       this.filter = 'custom'
+      this.filterChange.emit(this.filter)
       this.form.get('filter').setValue(this.filter);
     }
 
+    this.daterangeChange.emit(value);
     this.daterange.start = value.start;
     this.daterange.end = value.end;
     this.form.get('date_since').setValue(moment(value.start).format('YYYY/MM/DD 00:00:00'));

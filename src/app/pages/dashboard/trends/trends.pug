@@ -1,0 +1,37 @@
+.trends
+  .trend-header.row
+    .col-md-4(style="padding:0px")
+      .header-icon
+    .col-md-8
+      h1 Trends
+      h5 This {{filter == 'custom' ? "Duration" : filter}}
+  .trend-container(*ngIf="trends")
+    .trend-content(*ngIf="trends['general'] != null")
+      span.indicator([ngClass]="'trend-' + get_trend('general')")
+        i.fa.fa-circle
+      span {{'The team is generally ' + get_trend('general') + ' ' + get_duration()}}
+
+    .trend-content(*ngIf="trends['scrum'] != null && trends['scrum'] <= 0.4")
+      span.indicator.trend-sad
+        i.fa.fa-circle
+      span {{'The scrums might be taking long for some ' + get_duration()}}
+
+    .trend-content(*ngIf="trends['tasks'] != null && trends['tasks'] <= 0.4")
+      span.indicator([ngClass]="'trend-' + get_trend('tasks')")
+        i.fa.fa-circle
+      span {{'People might be getting overwhelmed with the amount of tasks they\'re working on ' + get_duration() + '.'}}
+
+    .trend-content(*ngFor="let user of trends['sad_trends']['general']")
+      span.indicator.trend-sad
+          i.fa.fa-circle
+      span {{user.display_name + ' has been generally not happy for ' + get_duration(true)}}
+
+    .trend-content(*ngFor="let user of trends['sad_trends']['amount_of_tasks']")
+      span.indicator.trend-sad
+          i.fa.fa-circle
+      span {{user.display_name + ' might be handling too much tasks' + get_duration(true)}}
+
+    .trend-content(*ngFor="let user of trends['sad_trends']['mental_health']")
+      span.indicator.trend-sad
+          i.fa.fa-circle
+      span {{user.display_name + ' might be burntout or they might need help with their overall well-being.'}}
