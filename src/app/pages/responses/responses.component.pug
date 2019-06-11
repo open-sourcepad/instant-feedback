@@ -10,8 +10,14 @@
             [answers]="answers",
             [users]="users",
             [loading]="loading",
-            (submit)="search($event)"
+            (submit)="search($event)",
+            [selectedDateFilter]="dateFilter",
+            [selectedQuestionsFilter]="questionFilter",
+            [dateSince]="dateSince",
+            [dateUntil]="dateUntil",
+            [selectedUserFilter]="userFilter"
           )
+
         .col-md-3
           ng-container(*ngIf="queryParams['answers'][0] == 'None' && !!recordAnswerSummary")
             #answer-summary-count.row

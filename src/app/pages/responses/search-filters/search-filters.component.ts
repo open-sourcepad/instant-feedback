@@ -29,6 +29,7 @@ export class SearchFiltersComponent implements OnInit {
   @Input() loading;
   @Output() submit = new EventEmitter<object>();
 
+  @Input()
   daterange: any;
   //daterangepicker options
   options: any = {
@@ -70,46 +71,55 @@ export class SearchFiltersComponent implements OnInit {
   allUser = {id: '', display_name: 'None'};
 
   //selected search filters
-  selectedDateFilter: number;
-  selectedQuestionsFilter: any;
+  @Input() selectedDateFilter: number;
+  @Input() selectedQuestionsFilter: any;
+  @Input() dateSince: any;
+  @Input() dateUntil: any;
+  @Input() selectedUserFilter: any;
+
   selectedAnswersFilter: any;
-  selectedUserFilter: any;
   showDateRangePicker = false;
 
   constructor(private fb: FormBuilder) { }
 
   get filters() { return this.form.controls; }
 
+  buildForm() {
+    this.form = this.fb.group({
+      date_since: ['', Validators.required],
+      date_until: ['', Validators.required],
+      user_id: ['', Validators.required],
+      questions: ['', Validators.required],
+      answers: ['', Validators.required],
+    });
+  }
+
   ngOnInit() {
-    this.resetFilter();
+    this.buildForm()
+
+    this.options.startDate = moment(this.dateSince || this.options.startDate).format('YYYY/MM/DD 00:00:00');
+    this.options.endDate = moment(this.dateUntil || this.options.endDate).format('YYYY/MM/DD 23:59:59');
+
+    this.resetFilter(false);
     this.skipToggle = false;
   }
 
-  chooseDateRange(option) {
+  chooseDateRange(option, skipSubmit=false) {
     this.selectedDateFilter = option;
     switch(option){
       case 1: {
-        this.form.patchValue({
-          date_since: moment().format('YYYY/MM/DD 00:00:00'),
-          date_until: moment().format('YYYY/MM/DD 23:59:59')
-        });
-
+        this.options.startDate = moment().format('YYYY/MM/DD 00:00:00');
+        this.options.endDate = moment().format('YYYY/MM/DD 23:59:59');
         break;
       }
       case 2: {
-        this.form.patchValue({
-          date_since: moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00'),
-          date_until: moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59')
-        });
-
+        this.options.startDate = moment().startOf('isoWeek').format('YYYY/MM/DD 00:00:00');
+        this.options.endDate = moment().endOf('isoWeek').format('YYYY/MM/DD 23:59:59');
         break;
       }
       case 3: {
-        this.form.patchValue({
-          date_since: moment().startOf('month').format('YYYY/MM/DD 00:00:00'),
-          date_until: moment().endOf('month').format('YYYY/MM/DD 23:59:59')
-        });
-
+        this.options.startDate = moment().startOf('month').format('YYYY/MM/DD 00:00:00');
+        this.options.endDate = moment().endOf('month').format('YYYY/MM/DD 23:59:59');
         break;
       }
       case 4: {
@@ -120,7 +130,13 @@ export class SearchFiltersComponent implements OnInit {
         break;
       }
     }
-    if(option != 4) {
+
+    this.form.patchValue({
+      date_since: this.options.startDate,
+      date_until: this.options.endDate
+    });
+
+    if(option != 4 && !skipSubmit) {
       this.onSubmit(this.form.value);
       this.showDateRangePicker = false;
     }
@@ -132,7 +148,7 @@ export class SearchFiltersComponent implements OnInit {
       datepicker.start = value.start;
       datepicker.end = value.end;
     }
-
+    
     // or manupulat your own internal property
     this.form.patchValue({
       date_since: moment(value.start).format('YYYY/MM/DD 00:00:00'),
@@ -160,7 +176,6 @@ export class SearchFiltersComponent implements OnInit {
   }
 
   removeFilter(arr, idx, attr) {
-
     arr.splice(idx, 1);
     if(arr.length < 1) {
       this.skipToggle = true;
@@ -183,19 +198,35 @@ export class SearchFiltersComponent implements OnInit {
     this.onSubmit(this.form.value);
   }
 
-  resetFilter() {
+  initValues() {
+    this.chooseDateRange(this.selectedDateFilter || 2, true)
+    this.selectedQuestionsFilter = this.selectedQuestionsFilter ? [this.selectedQuestionsFilter] : ['None'];
+    this.selectedAnswersFilter = ['None'];
+    this.selectedUserFilter = this.selectedUserFilter ? this.selectedUserFilter : this.allUser ;
+  }
+
+  resetValues() {
     this.selectedDateFilter = 2;
     this.selectedQuestionsFilter = ['None'];
     this.selectedAnswersFilter = ['None'];
     this.selectedUserFilter = this.allUser;
+  }
 
-    this.form = this.fb.group({
-      date_since: [this.options.startDate, Validators.required],
-      date_until: [this.options.endDate, Validators.required],
-      user_id: [this.selectedUserFilter.id, Validators.required],
-      questions: [this.selectedQuestionsFilter, Validators.required],
-      answers: [this.selectedAnswersFilter, Validators.required],
-    });
+  resetFilter(resetValues=true) {
+    if (resetValues) {
+      this.resetValues()
+    } else {
+      this.initValues()
+    }
+
+    this.form.patchValue({
+      date_since: this.options.startDate,
+      date_until: this.options.endDate,
+      user_id: this.selectedUserFilter.id,
+      questions: this.selectedQuestionsFilter,
+      answers: this.selectedAnswersFilter
+    })
+    
     this.onSubmit(this.form.value);
   }
 

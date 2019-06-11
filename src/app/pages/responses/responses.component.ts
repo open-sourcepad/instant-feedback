@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Route } from '@angular/router';
 import { AnswerService, QuestionService, UserService } from '../../services/api'
 import {PaginationInstance} from 'ngx-pagination';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-responses',
@@ -30,13 +32,26 @@ export class ResponsesComponent implements OnInit {
   };
   order: any = {answered_at: 'desc'};
 
+  questionFilter: any;
+  dateFilter: any;
+  dateSince: any;
+  dateUntil: any;
+  userFilter: any;
+
   constructor(
     private answerApi: AnswerService,
     private questionApi: QuestionService,
-    private userApi: UserService
+    private userApi: UserService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.questionFilter = this.route.snapshot.queryParams.questionFilter;
+    this.dateFilter = +this.route.snapshot.queryParams.dateFilter;
+    this.dateSince = this.route.snapshot.queryParams.dateSince;
+    this.dateUntil = this.route.snapshot.queryParams.dateUntil;
+    this.userFilter = !!this.route.snapshot.queryParams.userFilter ? JSON.parse(this.route.snapshot.queryParams.userFilter) : null;
+
     this.loadQuestions();
     this.loadUsers();
   }

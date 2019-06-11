@@ -72,4 +72,14 @@ export class TrendsComponent implements OnInit, OnChanges {
       filter: this.filter
     }
   }
+
+  getDateQueryParams(filter=null, user=null) {
+    return {
+      questionFilter: filter,
+      dateFilter: 4,
+      dateSince: this.daterange.start,
+      dateUntil: this.daterange.end,
+      userFilter: !!user ? JSON.stringify({id: user.id, display_name: user.display_name}) : ''
+    }
+  }
 }
