@@ -430,4 +430,13 @@ export class TeamPulseComponent implements OnInit {
         options: options
     });
   }
+
+  generate_query_param(user) {
+    return {
+      dateFilter: 4,
+      dateSince: this.daterange.start,
+      dateUntil: this.daterange.end,
+      userFilter: JSON.stringify({id: user.id, display_name: user.user})
+    }
+  }
 }

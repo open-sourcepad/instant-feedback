@@ -48,7 +48,11 @@
                           .user-info
                             span No users
                       ng-container(*ngIf="happyUsers.length > 0")
-                        .user-details(*ngFor="let user of happyUsers")
+                        .user-details(
+                          *ngFor="let user of happyUsers",
+                          '[routerLink]'="['/responses']",
+                          '[queryParams]'="generate_query_param(user)"
+                        )
                           .avatar-user
                             .avatar-name
                               | {{ user.user.split(" ")[0].charAt(0) }}
@@ -69,7 +73,11 @@
                           .user-info
                             span No users
                       ng-container(*ngIf="sadUsers.length > 0")
-                        .user-details(*ngFor="let user of sadUsers")
+                        .user-details(
+                          *ngFor="let user of sadUsers",
+                          '[routerLink]'="['/responses']",
+                          '[queryParams]'="generate_query_param(user)"
+                        )
                           .avatar-user
                             .avatar-name
                               | {{ user.user.split(" ")[0].charAt(0) }}
