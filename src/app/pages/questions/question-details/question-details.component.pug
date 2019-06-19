@@ -55,6 +55,15 @@
                 ng-container(*ngFor="let type of recipientTypes")
                   input.form-check-input(type="radio", formControlName="recipient_type", [value]="type.value")
                   label.form-check-label {{ type.label }}
+            .form-group
+              label.input-label SHOW FEEDBACK FORM
+              br
+              .checkbox-group.border-lightgray.form-check.form-check-inline
+                input.form-check-input(type="radio", formControlName="show_feedback_form", [value]="true")
+                label.form-check-label Yes
+                input.form-check-input(type="radio", formControlName="show_feedback_form", [value]="false")
+                label.form-check-label No
+
           .container(*ngIf="form.get('recipient_type').value == 'specific'")
             .row(*ngIf="errorMsg.addUser")
               .col-md-3.alert.alert-danger {{ errorMsg.addUser }}

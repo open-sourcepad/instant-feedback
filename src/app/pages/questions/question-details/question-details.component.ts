@@ -147,7 +147,8 @@ export class QuestionDetailsComponent implements OnInit {
       'chosenMinute': [0, Validators.required],
       'chosenDay': [this.chosenDay],
       'recipient_type': [this.recipientTypes[0].value, Validators.required],
-      'question_type': [this.questionTypes[0].value, Validators.required]
+      'question_type': [this.questionTypes[0].value, Validators.required],
+      'show_feedback_form': [false]
     });
 
     this.activeRoute.params.subscribe(params => {
