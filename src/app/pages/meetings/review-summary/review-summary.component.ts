@@ -176,7 +176,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   }
 
   followUps() {
-    return this.prevActionItems.total_count > 0
+    return !!this.prevActionItems && this.prevActionItems.total_count > 0
   }
 
   isTalkingPoint(param) {

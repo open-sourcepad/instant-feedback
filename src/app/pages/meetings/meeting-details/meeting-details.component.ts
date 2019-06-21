@@ -199,7 +199,7 @@ export class MeetingDetailsComponent implements OnInit {
   // redirect page: start meeting
   startDiscussion(){
     let action = '1'
-    if(this.meeting.prev_meet_action_items.total_count > 0) {
+    if(!!this.meeting.prev_meet_action_items && this.meeting.prev_meet_action_items.total_count > 0) {
       action = "follow-up"
     }
 
