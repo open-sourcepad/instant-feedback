@@ -1,0 +1,24 @@
+.card-box(*ngIf="questionData")
+  .card-title {{questionData?.question}}
+  .stats-summary.container
+    ng-container(*ngIf="!questionData?.answers")
+      .row.summary-count
+        .col-md-12
+          span No data available
+    ng-container(*ngIf="questionData?.answers")
+      .row.summary-count
+        .col-md-3
+          span Happy
+          br
+          span.text-green {{ questionData?.answers?.happy }}%
+        .col-md-3
+          span Not Happy
+          br
+          span.text-red {{ questionData?.answers?.sad }}%
+        .col-md-6
+          span No Answer&nbsp;
+          span.text-idle.font-light (X / Idle)
+          br
+          span.text-idle {{ questionData?.answers?.x }}% / {{ questionsData?.answers?.idle }}%
+    ng-container(*ngIf="filter != 'custom'")
+      canvas(id="canvas{{index}}")
