@@ -161,6 +161,10 @@ export class DiscussMultiFormComponent implements OnInit, OnChanges {
     this.meetingApi.get(this.slug_id)
       .subscribe( res => {
         this.discussions = res.data.discussions.data
+
+        if(this.idx >= this.discussions.length) {
+          this.idx = this.discussions.length - 1
+        }
       }, err => {
       });
   }
