@@ -23,6 +23,8 @@ export class EmployeeComponent implements OnInit {
   showModal: boolean = false;
   giveForm: FormGroup;
   askForm: FormGroup;
+  commendationType = '';
+
   existingQs = [
     "What's one thing that I'm doing well with and should carry on doing?",
     "What's one thing that I could do to be more effective?",
@@ -55,13 +57,15 @@ export class EmployeeComponent implements OnInit {
       recipient_id: [this.currentUser.id, Validators.required],
       sender_ids: ['', Validators.required],
       question: ['', [Validators.required, ContentValidator.IsBlank]],
-      questionFormat: ['', Validators.required]
+      questionFormat: ['', Validators.required],
+      commendation_type: ['', [Validators.required, ContentValidator.IsBlank]],
     });
 
     this.giveForm = this.fb.group({
       recipient_id: ['', Validators.required],
       sender_id: [this.currentUser.id, Validators.required],
-      comment: ['', [Validators.required, ContentValidator.IsBlank]]
+      comment: ['', [Validators.required, ContentValidator.IsBlank]],
+      commendation_type: ['', [Validators.required, ContentValidator.IsBlank]],
     });
   }
 
@@ -129,4 +133,9 @@ export class EmployeeComponent implements OnInit {
     }
   }
 
+  setCommendationType(type) {
+    this.commendationType = type;
+    debugger
+    this.gf.commendation_type.setValue(type)
+  }
 }
