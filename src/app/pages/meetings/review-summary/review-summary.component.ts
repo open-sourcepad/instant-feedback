@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ActionItemService, MeetingService } from '../../../services/api';
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 
 @Component({
   selector: 'review-summary',
@@ -24,6 +24,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   new_schedule: string = moment().add(2, 'w').format('D MMMM YYYY');
   loading: boolean = false;
   editSchedule: boolean = false;
+  tz: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
   time;
 
   meetingForm: FormGroup;
@@ -151,14 +152,12 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   }
 
   finishMeeting(createVal){
-    let datetime = this.formatDateTime(createVal);
-    createVal["scheduled_at"] = datetime;
-
     this.loading = true;
     this.meetingApi.update(this.slug_id, {status: 'done', finished_at: moment().format('YYYY-MM-DD HH:mm')})
       .subscribe(res => {
         this.createMeeting(createVal);
       }, err => {
+        console.log('error', err);
         this.loading = false;
       });
   }
@@ -169,10 +168,10 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
       time = this.time["hour"] + ':' + this.time["minute"];
     }
 
-    let date = moment(values["scheduled_at"]).format("YYYY-MM-DD")
+    let date = moment.tz(values['scheduled_at'], this.tz).format('YYYY-MM-DD');
     let datetime = date + ' ' + time;
-    datetime = moment(datetime).format()
-    return datetime
+
+    return moment.tz(datetime, this.tz).format();
   }
 
   followUps() {
