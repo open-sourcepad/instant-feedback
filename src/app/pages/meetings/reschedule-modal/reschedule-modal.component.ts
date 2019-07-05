@@ -57,6 +57,7 @@ export class RescheduleModalComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.meetingForm = this.fb.group({
+      add_to_calendar: [true, Validators.required],
       scheduled_at: [this.options.startDate, Validators.required],
       time: [Validators.required],
     });
@@ -68,6 +69,7 @@ export class RescheduleModalComponent implements OnInit, OnChanges {
       let time = this.extractTime(this.meeting.scheduled_at);
       this.meetingForm.get('scheduled_at').setValue(initSched);
       this.meetingForm.get('time').patchValue(time);
+      this.meetingForm.get('add_to_calendar').setValue(this.meeting.add_to_calendar);
     }
   }
 
@@ -88,6 +90,7 @@ export class RescheduleModalComponent implements OnInit, OnChanges {
   save(values) {
     let datetime = this.formatDateTime(values);
     let params = {
+      add_to_calendar: values.add_to_calendar,
       scheduled_at: datetime
     }
     this.loading = true;

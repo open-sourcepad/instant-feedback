@@ -7,6 +7,9 @@
           span {{ m.scheduled_at.value | date: 'MMMM d, yyyy hh:mm a' : 'EDT' }} (EST)
           button#edit-date-icon.btn-action((click)="editSchedule = true")
             span.icon-holder.ti-pencil.text-brown
+        #add-to-calendar.form-check.mt-3(*ngIf="!editSchedule")
+          input.form-check-input(id="addToCalendar" type="checkbox", name="dateRangeInput", [(ngModel)]="addToCalendar")
+          label.form-check-label(for="addToCalendar") Add to my calendar
 
         .input-group(*ngIf="editSchedule", daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
           input.form-control(type="text" name="dateRangeInput", [(ngModel)]="new_schedule")

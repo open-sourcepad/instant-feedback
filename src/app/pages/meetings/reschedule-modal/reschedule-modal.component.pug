@@ -15,6 +15,9 @@
         br
         .input-group.time-picker
           ngb-timepicker(formControlName="time", [meridian]="true", [spinners]="false")
+        .form-check.mt-3
+          input.form-check-input(id="addToCalendar" type="checkbox", name="dateRangeInput", formControlName="add_to_calendar")
+          label.form-check-label(for="addToCalendar", style="font-weight: 400;") Add to my calendar
         br
 
       .col-sm-12

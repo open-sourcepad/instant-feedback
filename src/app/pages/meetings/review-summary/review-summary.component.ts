@@ -22,6 +22,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   action: string = '';
   actionItemEditable: boolean = true;
   new_schedule: string = moment().add(2, 'w').format('D MMMM YYYY');
+  addToCalendar: boolean = true;
   loading: boolean = false;
   editSchedule: boolean = false;
   tz: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -81,6 +82,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.loading = true;
     this.meetingForm = this.fb.group({
+      'add_to_calendar': [Validators.required],
       'scheduled_at': [this.options.startDate, Validators.required],
       'time': [Validators.required],
     });
@@ -143,6 +145,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   }
 
   createMeeting(values){
+    values['add_to_calendar'] = this.addToCalendar;
     this.meetingApi.create(values)
       .subscribe(res => {
         this.router.navigateByUrl(`/one-on-ones/${this.slug_id}`);
