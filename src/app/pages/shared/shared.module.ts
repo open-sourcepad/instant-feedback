@@ -13,6 +13,8 @@ import { datePrettyFormat } from 'src/app/services/pipes/date-pretty-format.pipe
 import { FeedbackMenuComponent } from './feedback-menu/feedback-menu.component';
 import { limitChar } from 'src/app/services/pipes/limit-char.pipe';
 
+import { AutofocusDirective } from 'src/app/services/directives/autofocus';
+
 const SHARED_COMPONENTS = [
   NavbarComponent,
   ModalComponent,
@@ -38,10 +40,12 @@ const SHARED_PIPES = [
   declarations: [
     ...SHARED_COMPONENTS,
     ...SHARED_PIPES,
+    AutofocusDirective,
   ],
   exports: [
     ...SHARED_COMPONENTS,
     ...SHARED_PIPES,
+    AutofocusDirective,
   ],
   providers: [
   ]
