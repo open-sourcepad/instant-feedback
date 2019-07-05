@@ -165,7 +165,7 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   formatDateTime(values) {
     let time = "00:00"
     if(!!this.time) {
-      time = this.time["hour"] + ':' + this.time["minute"];
+      time = String(this.time['hour']).padStart(2, '0') + ':' + String(this.time['minute']).padStart(2, '0');
     }
 
     let date = moment.tz(values['scheduled_at'], this.tz).format('YYYY-MM-DD');

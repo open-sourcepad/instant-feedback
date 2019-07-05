@@ -103,7 +103,7 @@ export class RescheduleModalComponent implements OnInit, OnChanges {
   }
 
   formatDateTime(values) {
-    let time = values["time"]["hour"] + ':' + values["time"]["minute"];
+    let time = String(values['time']['hour']).padStart(2, '0') + ':' + String(values['time']['minute']).padStart(2, '0');
     let date = moment(values["scheduled_at"]).format("YYYY-MM-DD")
     let datetime = date + ' ' + time;
     datetime = moment(datetime).format()
