@@ -72,4 +72,29 @@
     box-shadow: none !important;
     margin: 0;
   }
+
+  &.est {
+    .ngb-tp-input-container {
+      input.ngb-tp-input {
+        width: 4em;
+      }
+    }
+    .ngb-tp-meridian {
+      position: relative;
+      button.btn-outline-primary {
+        padding-left: 12px;
+        padding-right: 48px;
+      }
+      button.btn-outline-primary:after {
+        content: '(EST)';
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding-top: 11px;
+        padding-right: 10px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+    }
+  }
 }

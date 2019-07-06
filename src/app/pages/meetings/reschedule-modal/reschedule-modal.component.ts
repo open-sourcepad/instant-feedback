@@ -4,7 +4,7 @@ import { MeetingService } from '../../../services/api';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 @Component({
   selector: 'reschedule-modal',
   templateUrl: './reschedule-modal.component.pug',
@@ -22,6 +22,7 @@ export class RescheduleModalComponent implements OnInit, OnChanges {
   loading: boolean = false;
   newSchedule: string;
   meridian = true;
+  localTimezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   daterange: any;
   options: any = {
@@ -106,11 +107,12 @@ export class RescheduleModalComponent implements OnInit, OnChanges {
   }
 
   formatDateTime(values) {
-    let time = String(values['time']['hour']).padStart(2, '0') + ':' + String(values['time']['minute']).padStart(2, '0');
-    let date = moment(values["scheduled_at"]).format("YYYY-MM-DD")
-    let datetime = date + ' ' + time;
-    datetime = moment(datetime).format()
-    return datetime
+    let formatted = moment.tz(values['scheduled_at'], 'DD MMMM YYYY', 'America/New_york');
+
+    formatted.hours(values['time']['hour'] || 0);
+    formatted.minutes(values['time']['minute'] || 0);
+
+    return formatted.format();
   }
 
 }

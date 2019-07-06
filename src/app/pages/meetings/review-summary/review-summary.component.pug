@@ -4,7 +4,7 @@
       .text-center(*ngIf="action == 'schedule'")
         h2.font-bold All done! Your next 1-on-1 with {{ meeting?.employee?.display_name?.split(' ')[0] }} is scheduled on
         h1.font-bold.text-brown(*ngIf="!editSchedule")
-          span {{ m.scheduled_at.value | date: 'MMMM d, yyyy hh:mm a' : 'EDT' }} (EST)
+          span {{ m.scheduled_at.value | date: 'MMMM d, yyyy hh:mm a' }} (EST)
           button#edit-date-icon.btn-action((click)="editSchedule = true")
             span.icon-holder.ti-pencil.text-brown
         #add-to-calendar.form-check.mt-3(*ngIf="!editSchedule")
@@ -19,7 +19,7 @@
                 span.icon-holder.ti-calendar.text-brown
         br
         br
-        .input-group.time-picker(*ngIf="editSchedule")
+        .input-group.time-picker.est(*ngIf="editSchedule")
           ngb-timepicker([(ngModel)]="time", [meridian]="true", [spinners]="false")
         br
         br

@@ -18,14 +18,13 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   @Input() meeting;
   @Input() prevActionItems;
 
-
   action: string = '';
   actionItemEditable: boolean = true;
   new_schedule: string = moment().add(2, 'w').format('D MMMM YYYY');
   addToCalendar: boolean = true;
   loading: boolean = false;
+  localTimezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
   editSchedule: boolean = false;
-  tz: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
   time;
 
   meetingForm: FormGroup;
@@ -134,18 +133,17 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
   }
 
   selectedDate(value: any, datepicker?: any) {
-    this.new_schedule = moment(value.start).format('D MMMM YYYY');
-    this.meetingForm.get('scheduled_at').setValue(this.new_schedule);
-    this.meetingForm.get('scheduled_at').updateValueAndValidity();
+    this.new_schedule = moment.tz(value.start, this.localTimezone).format('D MMMM YYYY');
   }
 
   doneEdit(values) {
     this.editSchedule = false;
-    this.meetingForm.get('scheduled_at').setValue(this.formatDateTime(values));
+    this.meetingForm.get('scheduled_at').setValue(this.formatDateTime());
   }
 
   createMeeting(values){
     values['add_to_calendar'] = this.addToCalendar;
+    values['scheduled_at'] = moment.tz(values.scheduled_at.slice(0, 19), moment.defaultFormat.slice(0, 19), 'America/New_york').format();
     this.meetingApi.create(values)
       .subscribe(res => {
         this.router.navigateByUrl(`/one-on-ones/${this.slug_id}`);
@@ -160,21 +158,22 @@ export class ReviewSummaryComponent implements OnInit, OnChanges {
       .subscribe(res => {
         this.createMeeting(createVal);
       }, err => {
-        console.log('error', err);
         this.loading = false;
       });
   }
 
-  formatDateTime(values) {
-    let time = "00:00"
-    if(!!this.time) {
-      time = String(this.time['hour']).padStart(2, '0') + ':' + String(this.time['minute']).padStart(2, '0');
+  formatDateTime() {
+    let formatted = moment.tz(this.new_schedule, 'DD MMMM YYYY', this.localTimezone);
+
+    if (this.time) {
+      formatted.hours(this.time['hour']);
+      formatted.minutes(this.time['minute']);
+    } else {
+      formatted.hours(0);
+      formatted.minutes(0);
     }
 
-    let date = moment.tz(values['scheduled_at'], this.tz).format('YYYY-MM-DD');
-    let datetime = date + ' ' + time;
-
-    return moment.tz(datetime, this.tz).format();
+    return formatted.format();
   }
 
   followUps() {
