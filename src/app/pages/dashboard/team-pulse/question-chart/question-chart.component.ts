@@ -70,7 +70,7 @@ export class QuestionChartComponent implements AfterViewInit {
           },
           tooltips: {
             backgroundColor: 'transparent',
-            bodyFontFamily: 'Avenir',
+            bodyFontFamily: 'Barlow',
             bodyFontColor: '#4A4A4A',
             bodyFontStyle: 'light',
             bodySpacing: 5,

@@ -275,7 +275,7 @@ export class TeamPulseComponent implements OnInit {
         },
         tooltips: {
           backgroundColor: '#fff',
-          bodyFontFamily: 'Avenir',
+          bodyFontFamily: 'Barlow',
           bodyFontColor: '#4A4A4A',
           bodyFontStyle: 'light',
           custom: function(tooltip) {

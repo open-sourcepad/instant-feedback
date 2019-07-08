@@ -32,7 +32,7 @@
       border: 1px solid #C3BAAA;
       font-size: 16px;
       padding: 6px 12px;
-      font-family: 'Avenir';
+      font-family: 'Barlow';
     }
 
     .card {
@@ -54,7 +54,7 @@
       > li {font-size: xx-large;}
       li > span {
         color: #4a4a4a;
-        font-family: "Avenir";
+        font-family: "Barlow";
         font-size: 18px;
         position: relative;
         top: -5px;
@@ -96,7 +96,7 @@
       }
 
       .table-cell > .text-muted {
-        font-family: 'Avenir';
+        font-family: 'Barlow';
       }
 
       .form-add-talking-point {
@@ -110,7 +110,7 @@
     list-style: none;
 
     p {
-      font-family: 'Avenir' !important;
+      font-family: 'Barlow' !important;
       color: #4A4A4A;
     }
   }
@@ -140,7 +140,7 @@
   }
 
   #user-add-topic p {
-    font-family: 'Avenir';
+    font-family: 'Barlow';
   }
 
   .meeting-page-nav button {
