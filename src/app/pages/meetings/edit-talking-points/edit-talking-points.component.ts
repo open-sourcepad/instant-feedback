@@ -90,4 +90,8 @@ export class EditTalkingPointsComponent implements OnInit {
 
   }
 
+  cancel() {
+    this.toggleEdit.emit({action: this.formAction});
+  }
+
 }
