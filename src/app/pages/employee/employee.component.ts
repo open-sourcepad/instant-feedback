@@ -58,7 +58,6 @@ export class EmployeeComponent implements OnInit {
       sender_ids: ['', Validators.required],
       question: ['', [Validators.required, ContentValidator.IsBlank]],
       questionFormat: ['', Validators.required],
-      commendation_type: ['', [Validators.required, ContentValidator.IsBlank]],
     });
 
     this.giveForm = this.fb.group({
@@ -135,7 +134,6 @@ export class EmployeeComponent implements OnInit {
 
   setCommendationType(type) {
     this.commendationType = type;
-    debugger
     this.gf.commendation_type.setValue(type)
   }
 }
