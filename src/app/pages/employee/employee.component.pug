@@ -100,9 +100,11 @@ feedback-menu([(menuState)]="feedBackState")
         h3 Is this feedback CIT/Shoutout worthy?
 
         .commendation-actions
-          button.btn.btn-round.btn-instant-feedback-brown-outline((click)="setCommendationType('cit')", [class.is-active]="commendationType == 'cit'") Yes, a CIT.
-          button.btn.btn-round.btn-instant-feedback-brown-outline((click)="setCommendationType('shoutout')", [class.is-active]="commendationType == 'shoutout'") A Shoutout.
-          button.btn.btn-round.btn-instant-feedback-brown-outline((click)="setCommendationType('none')", [class.is-active]="commendationType == 'none'") Not this time.
+          a.btn.btn-round.btn-instant-feedback-brown-outline((click)="setCommendationType('cit')", [class.is-active]="commendationType == 'cit'", [class.is-invalid]="submitted && gf.commendation_type.errors") Yes, a CIT.
+          a.btn.btn-round.btn-instant-feedback-brown-outline((click)="setCommendationType('shoutout')", [class.is-active]="commendationType == 'shoutout'", [class.is-invalid]="submitted && gf.commendation_type.errors") A Shoutout.
+          a.btn.btn-round.btn-instant-feedback-brown-outline((click)="setCommendationType('none')", [class.is-active]="commendationType == 'none'", [class.is-invalid]="submitted && gf.commendation_type.errors") Not this time.
+        .invalid-feedback
+          span Please select one
 
   div([ng2-loading]="loading", feedback-footer)
     ng-container(*ngIf="feedback['ask']")

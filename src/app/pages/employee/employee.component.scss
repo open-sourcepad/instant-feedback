@@ -71,7 +71,7 @@
 }
 
 .form-header-text {
-  @extend .font-karla;
+  @extend .font-barlow;
   font-size: 26px;
   letter-spacing: -0.62px;
   line-height: 31px;
@@ -152,4 +152,8 @@
     margin-bottom: 50px;
   }
 
+}
+
+.btn.is-invalid {
+  border: 1px solid #d1211a;
 }

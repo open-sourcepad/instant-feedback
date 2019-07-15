@@ -1,7 +1,7 @@
 ng-container
   form.mt-3(#ngForm="ngForm" automcoplete="off", novalidate, [formGroup]="talkingPointForm", (ngSubmit)="submit(talkingPointForm.value)")
-    .enter-tp Enter yout talking point:
-    input.form-control.input-lg.form-edit([class.is-invalid] = "ngForm.submitted && t.talking_point.errors", type="text", formControlName="talking_point", value="{{question}}")
+    .enter-tp Enter your talking point:
+      input.form-control.input-lg.form-edit([class.is-invalid] = "ngForm.submitted && t.talking_point.errors", type="text", formControlName="talking_point", value="{{question}}", [autofocus])
     .invalid-feedback
 
     br
@@ -10,3 +10,4 @@ ng-container
     br
 
     button(type="submit").save Save
+    button.cancel((click)="cancel()") Cancel

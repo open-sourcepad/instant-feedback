@@ -25,7 +25,7 @@
 
 // import fonts
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,600,700');
-@import url('https://fonts.googleapis.com/css?family=Karla:100,400,700');
+@import url('https://fonts.googleapis.com/css?family=Barlow:100,400,700');
 @import url('https://fonts.googleapis.com/css?family=Chivo:400');
 
 
@@ -71,5 +71,30 @@
     font-weight: bold;
     box-shadow: none !important;
     margin: 0;
+  }
+
+  &.est {
+    .ngb-tp-input-container {
+      input.ngb-tp-input {
+        width: 4em;
+      }
+    }
+    .ngb-tp-meridian {
+      position: relative;
+      button.btn-outline-primary {
+        padding-left: 12px;
+        padding-right: 48px;
+      }
+      button.btn-outline-primary:after {
+        content: '(EST)';
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding-top: 11px;
+        padding-right: 10px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+    }
   }
 }

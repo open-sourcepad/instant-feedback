@@ -4,9 +4,12 @@
       .text-center(*ngIf="action == 'schedule'")
         h2.font-bold All done! Your next 1-on-1 with {{ meeting?.employee?.display_name?.split(' ')[0] }} is scheduled on
         h1.font-bold.text-brown(*ngIf="!editSchedule")
-          span {{ m.scheduled_at.value | date: 'MMMM d, yyyy hh:mm a' : 'EDT' }} (EST)
+          span {{ m.scheduled_at.value | date: 'MMMM d, yyyy hh:mm a' }} (EST)
           button#edit-date-icon.btn-action((click)="editSchedule = true")
             span.icon-holder.ti-pencil.text-brown
+        #add-to-calendar.form-check.mt-3(*ngIf="!editSchedule")
+          input.form-check-input(id="addToCalendar" type="checkbox", name="dateRangeInput", [(ngModel)]="addToCalendar")
+          label.form-check-label(for="addToCalendar") Add to my calendar
 
         .input-group(*ngIf="editSchedule", daterangepicker, [options]="options", (selected)="selectedDate($event, daterange)")
           input.form-control(type="text" name="dateRangeInput", [(ngModel)]="new_schedule")
@@ -16,7 +19,7 @@
                 span.icon-holder.ti-calendar.text-brown
         br
         br
-        .input-group.time-picker(*ngIf="editSchedule")
+        .input-group.time-picker.est(*ngIf="editSchedule")
           ngb-timepicker([(ngModel)]="time", [meridian]="true", [spinners]="false")
         br
         br
@@ -26,24 +29,25 @@
 
       ng-container(*ngIf="action == 'review'")
         meeting-action-items([(actionItems)]="actionItems", [(slug_id)]="slug_id", [(allowEdit)]="actionItemEditable", [(allowReviewEdit)]="actionItemEditable")
-#discuss-multi-form-footer([ng2-loading]="loading")
-  .row
-    .col-md-8
-      ul.reset
-        li.inline-block.menu-item(*ngIf="followUps()", [class.active]="action == 'follow-up'")
-          span Follow up
-        li.inline-block.menu-item([class.active]="isTalkingPoint(action)")
-          span Talking Points
-          span(*ngIf="discussions.length != 0")  ({{discussions.length}}/{{discussions.length}})
-        li.inline-block.menu-item([class.active]="action == 'review'")
-          span Review Summary
-        li.inline-block.menu-item([class.active]="action == 'schedule'")
-          span Next 1-on-1
-    .col-md-4
-      .btn-actions.text-right
-        button.btn-instant-feedback.btn-instant-feedback-cancel((click)="prevAction()")
-          span Previous
-        button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="action == 'review'", (click)="nextAction('schedule')")
-          span Schedule Next 1on1
-        button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="action == 'schedule'", (click)="finishMeeting(meetingForm.value)")
-          span Finish
+.wrapper([ng2-loading]="loading")
+  #footer-menu.footer
+    .row
+      .col-md-8
+        ul.reset
+          li.inline-block.menu-item(*ngIf="followUps()", [class.active]="action == 'follow-up'")
+            span Follow up
+          li.inline-block.menu-item([class.active]="isTalkingPoint(action)")
+            span Talking Points
+            span(*ngIf="discussions.length != 0")  ({{discussions.length}}/{{discussions.length}})
+          li.inline-block.menu-item([class.active]="action == 'review'")
+            span Review Summary
+          li.inline-block.menu-item([class.active]="action == 'schedule'")
+            span Next 1-on-1
+      .col-md-4
+        .btn-actions.text-right
+          button.btn-instant-feedback.btn-instant-feedback-cancel((click)="prevAction()")
+            span Previous
+          button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="action == 'review'", (click)="nextAction('schedule')")
+            span Schedule Next 1on1
+          button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="action == 'schedule'", (click)="finishMeeting(meetingForm.value)")
+            span Finish

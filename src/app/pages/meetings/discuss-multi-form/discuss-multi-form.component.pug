@@ -7,13 +7,14 @@
           .vertical-align.set-height
             .table-cell(*ngIf="!editable && discussions.length == 0")
               button.inline-block.ml-3.btn-circle-add.add-icon((click)="toggleEdit('add')")
-                span.ti-plus
+                img.icon-36(src="assets/images/add.png")
               .no-content No talking points have been set.
             .table-cell(*ngIf="editable")
               edit-talking-points([(talkingPoint)]="discussions[idx]", (toggleEdit)="toggleEdit(action)", (loadData)="loadData($event)", [(slug_id)]="slug_id", (changeQuery)="changeQuery($event)", [(formAction)]="formAction")
             .table-cell(*ngIf="!editable && discussions.length != 0" )
               button.inline-block.ml-3.btn-circle-add.add-icon((click)="toggleEdit('add')")
-                span.ti-plus
+                img.icon-36(src="assets/images/add.png")
+              span.question-count {{1+idx}}/{{discussions.length}}
               h1.font-bold {{ discussions[idx]?.question }}
               .actions(*ngIf="!editable")
                 button((click)="toggleEdit('edit')")
@@ -75,6 +76,6 @@
           button.btn-instant-feedback.btn-instant-feedback-cancel(*ngIf="showPreviousButton()", (click)="prevPoint()")
             span Previous
           button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="showNextButton()", (click)="nextPoint()")
-            span Next
+            span NEXT
           button.btn-instant-feedback.btn-instant-feedback-brown(*ngIf="idx == (discussions.length-1)", (click)="nextPoint()")
             span Review Summary

@@ -4,7 +4,7 @@ import { MeetingService } from '../../../services/api';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 @Component({
   selector: 'reschedule-modal',
   templateUrl: './reschedule-modal.component.pug',
@@ -22,6 +22,7 @@ export class RescheduleModalComponent implements OnInit, OnChanges {
   loading: boolean = false;
   newSchedule: string;
   meridian = true;
+  localTimezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   daterange: any;
   options: any = {
@@ -57,6 +58,7 @@ export class RescheduleModalComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.meetingForm = this.fb.group({
+      add_to_calendar: [true, Validators.required],
       scheduled_at: [this.options.startDate, Validators.required],
       time: [Validators.required],
     });
@@ -68,6 +70,7 @@ export class RescheduleModalComponent implements OnInit, OnChanges {
       let time = this.extractTime(this.meeting.scheduled_at);
       this.meetingForm.get('scheduled_at').setValue(initSched);
       this.meetingForm.get('time').patchValue(time);
+      this.meetingForm.get('add_to_calendar').setValue(this.meeting.add_to_calendar);
     }
   }
 
@@ -88,6 +91,7 @@ export class RescheduleModalComponent implements OnInit, OnChanges {
   save(values) {
     let datetime = this.formatDateTime(values);
     let params = {
+      add_to_calendar: values.add_to_calendar,
       scheduled_at: datetime
     }
     this.loading = true;
@@ -103,11 +107,12 @@ export class RescheduleModalComponent implements OnInit, OnChanges {
   }
 
   formatDateTime(values) {
-    let time = values["time"]["hour"] + ':' + values["time"]["minute"];
-    let date = moment(values["scheduled_at"]).format("YYYY-MM-DD")
-    let datetime = date + ' ' + time;
-    datetime = moment(datetime).format()
-    return datetime
+    let formatted = moment.tz(values['scheduled_at'], 'DD MMMM YYYY', 'America/New_york');
+
+    formatted.hours(values['time']['hour'] || 0);
+    formatted.minutes(values['time']['minute'] || 0);
+
+    return formatted.format();
   }
 
 }

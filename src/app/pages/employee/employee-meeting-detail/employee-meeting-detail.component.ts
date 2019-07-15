@@ -68,7 +68,7 @@ export class EmployeeMeetingDetailComponent implements OnInit {
   loadData(slug_id: number) {
     this.loading = true;
 
-    this.meetingApi.profile(slug_id)
+    this.meetingApi.profile(slug_id, {order: {scheduled_at: 'asc'}})
       .subscribe( res => {
         this.loading = false;
         this.currentObj = res['data'];

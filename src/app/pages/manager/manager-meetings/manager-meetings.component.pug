@@ -2,33 +2,7 @@
   .col-md-10.m-auto
     .mt-5.mb-5
       .row
-        #default-questions-container.col-md-4([ng2-loading]="loading.topics")
-          h5.font-karla.font-bold.text-brown.mb-3 Default Questions
-          form.container(novalidate, autocomplete="off", [formGroup]="questionForm")
-            ul#default-questions
-              li(formArrayName="questions", *ngFor="let question of questionformData; let i = index;")
-                div([formGroupName]="i")
-                  .relative
-                    .inline-block.text(*ngIf="!question.get('user_id').value || editIndex != i") {{ question.get('question').value }}
-                    input.form-control.inline-block(*ngIf="editIndex == i", [class.is-invalid]="submitUpdated && question.controls.question.errors", type="text", formControlName="question", (keydown.enter)="updateQuestion(question.value)")
-                    .float-right.press-enter(*ngIf="editIndex == i && question.controls.question.valid") press enter
-                    .inline-block.ml-1(*ngIf="question.get('user_id').value && editIndex != i")
-                      button.btn-action((click)="editQuestion(question.value, i)")
-                        span.ti-pencil
-                      button.btn-action((click)="removeQuestion(question.value, i)")
-                        span.ti-trash
-                    .invalid-feedback
-                      span Please enter a question
-          br
-          h5.section-heading.mt-2.font-karla Add a question:
-          form(novalidate, autocomplete="off", [formGroup]="addQuestionForm", (ngSubmit)="submitQuestion(addQuestionForm.value)")
-            input.relative.inline-block.form-control([class.is-invalid]="submitted && f.question.errors", type="text", formControlName="question")
-            .float-right.press-enter(*ngIf="f.question.valid") press enter
-            .invalid-feedback
-              span Please enter a question
-          br
-          br
-        #meetings-container.col-md-7([ng2-loading]="loading.meetings")
+        #meetings-container.container([ng2-loading]="loading.meetings")
           form.mt-4(novalidate, autocomplete="off", [formGroup]="searchForm", (ngSubmit)="onSearch(searchForm.value)")
             #date-range.inline-block
               span.font-bold {{ filters.date_since.value | date : 'MMMM d, y'}} - {{ filters.date_until.value | date : 'MMMM d, y'}}&nbsp;&nbsp;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup, Validators } from '@angular/forms';
-import { MyMeetingService, TalkingPointService, SessionService } from '../../../services/api';
+import { MyMeetingService, SessionService } from '../../../services/api';
 import { PaginationInstance } from 'ngx-pagination';
 import { MeetingTopic, User } from 'src/app/models';
 import * as moment from 'moment';
@@ -15,20 +15,12 @@ import { RoutingState } from 'src/app/services/utils';
 
 export class ManagerMeetingsComponent implements OnInit {
 
-  loading: any = {meetings: false, topics: false};
-  submitted: boolean = false;
-  submitUpdated: boolean = false;
+  loading: any = {meetings: false};
   meetings: any = [];
-  defaultQuestions: any = [];
-  recordCount: number = 0;
   orderParams: any = {scheduled_at: 'desc'};
   currentUser: User;
-  editIndex: number;
-  editObj: any;
   queryParams = {page: 1};
 
-  questionForm: FormGroup;
-  addQuestionForm: FormGroup;
   searchForm: FormGroup;
 
   paginationControls: PaginationInstance = {
@@ -69,27 +61,16 @@ export class ManagerMeetingsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private myMeetingApi: MyMeetingService,
-    private topicApi: TalkingPointService,
     private session: SessionService,
     private router: Router,
     private route: ActivatedRoute,
     private routingState: RoutingState
   ) { }
 
-  get questions() { return <FormArray>this.questionForm.controls['questions']; }
-  get questionformData() { return this.questionForm.get('questions')['controls']; }
-  get f() { return this.addQuestionForm.controls; }
   get filters() { return this.searchForm.controls; }
 
   ngOnInit() {
     this.currentUser = new User(this.session.getCurrentUser());
-    //existing questions
-    this.questionForm = this.fb.group({
-      questions: this.fb.array([])
-    });
-
-    //add new question
-    this.addQuestionForm = this.createQuestionForm();
 
     //search form filters
     this.searchForm = this.fb.group({
@@ -115,20 +96,10 @@ export class ManagerMeetingsComponent implements OnInit {
         this.loadMeetings(this.searchForm.value);
       }
     });
-
-    this.loadTopics();
   }
 
   ngOnDestroy(){
     this.routingState.stopRouting();
-  }
-
-  createQuestionForm(){
-    return this.fb.group({
-      id: [null],
-      question: ['', Validators.required],
-      user_id: [this.currentUser.id, Validators.required] 
-    })
   }
 
   loadMeetings(values) {
@@ -149,80 +120,6 @@ export class ManagerMeetingsComponent implements OnInit {
     });
 
     return false;
-  }
-
-  loadTopics() {
-    this.loading['topics'] = true;
-    this.topicApi.myTopics().subscribe(res => {
-        this.loading['topics'] = false;
-        res['collection']['data'].forEach( x => {
-          var obj = new MeetingTopic(x);
-          this.questions.push(obj.setForm(this.createQuestionForm()));
-        });
-      }, err => {
-        this.loading['topics'] = false;
-      });
-  }
-
-  editQuestion(obj,idx) {
-    var prevIdx = this.editIndex;
-    if(prevIdx) {
-      this.questions.controls[prevIdx].get('question').setValue(this.editObj.question);
-    }
-    this.editObj = obj;
-    this.editIndex = idx;
-    this.submitUpdated = false;
-  }
-
-  submitQuestion(values) {
-    this.loading['topics'] = true;
-    this.submitted = true;
-
-    if(values.question.trim() == '') this.f.question.setValue('');
-    if(this.addQuestionForm.invalid) {
-      this.loading['topics'] = false;
-      return;
-    }
-
-    this.topicApi.addDefaultTopic(values).subscribe(res => {
-      var obj = new MeetingTopic(res['data']);
-      this.questions.push(obj.setForm(this.createQuestionForm()));
-      this.addQuestionForm = this.createQuestionForm();      
-      this.loading['topics'] = false;
-      this.submitted = false;
-    }, err => {
-      this.loading['topics'] = false;
-    });
-  }
-
-  updateQuestion(values){
-    this.loading['topics'] = true;
-    this.submitUpdated = true;
-
-    if(values.question.trim() == ''){
-      this.loading = false;
-    }else {
-      this.topicApi.update(values.id, values).subscribe(res => {
-          this.loading['topics'] = false;
-          this.submitUpdated = false;
-          this.editIndex = null;
-          this.editObj = null;
-        }, err => {
-          this.loading['topics'] = false;
-        });
-    }
-    return false;
-  }
-
-  removeQuestion(values, idx) {
-    this.loading['topics'] = true;
-
-    this.topicApi.destroy(values.id).subscribe(res => {
-      this.loading['topics'] = false;
-      this.questions.removeAt(idx);
-    }, err =>{
-      this.loading['topics'] = false;
-    });
   }
 
   selectedDate(value: any, datepicker?: any) {
