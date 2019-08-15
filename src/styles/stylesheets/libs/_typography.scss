@@ -43,7 +43,7 @@
 }
 
 /* FONT FAMILY */
-.font-barlow {
+.font-barlow, .card-title {
   font-family: 'Barlow', sans-serif !important;
 }
 
@@ -53,6 +53,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 p {
+  font-family: 'Barlow';
   color: initial;
 }
 
