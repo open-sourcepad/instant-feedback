@@ -21,7 +21,7 @@
           h3.font-bold(*ngIf="meetingStatus == 'done'") Actual 1-on-1 date: {{ meeting.finished_at | date: 'MMMM d, y h:mm a': 'EDT'  }} (EST)
           .user-actions(*ngIf="meetingStatus != 'done'")
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3(*ngIf="(userIsManager && currentUser.id == meeting.manager?.id)", (click)="showReschedModal=true") Reschedule
-            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready
+            //button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready
             button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-brown(*ngIf="(userIsManager && currentUser.id == meeting.manager?.id)", (click)="startDiscussion()") Start
     ng-container(*ngIf="meetingStatus == 'done'")
       .row

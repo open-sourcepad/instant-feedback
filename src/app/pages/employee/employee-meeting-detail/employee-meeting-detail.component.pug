@@ -18,7 +18,7 @@
           h4 {{ currentObj?.scheduled_at | date: 'MMMM d, y' : 'EDT' }}
           h4.font-bold(*ngIf="currentObj?.status == 'done'") Actual 1-on-1 date: {{ currentObj?.finished_at | date: 'MMMM d, y' : 'EDT' }}
           .user-actions(*ngIf="currentObj?.status != 'done'")
-            button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready
+            //button.btn.btn-instant-feedback.btn-md.btn-instant-feedback-dark.mr-3 Mark as Ready
         .float-right.meeting-page-nav
           ng-container(*ngIf="paginate['prev']")
             button.inline-block((click)="navigate('/employee/one-on-ones/' + paginate['prev']['meeting_id'])")
