@@ -14,6 +14,7 @@ import * as moment from 'moment';
 export class ManagerOverviewComponent implements OnInit {
 
   meets: any = [];
+  action_items: any = [];
   meetsThisWeek: any = [];
   meetsOnDue: any = [];
   currentUser: User;
@@ -117,8 +118,14 @@ export class ManagerOverviewComponent implements OnInit {
       number: this.paginationControls['currentPage'],
       size: this.paginationControls['itemsPerPage']
     };
-    this.myMeetingApi.query({page: params}).subscribe(res => {
+    this.myMeetingApi.query({page: params, action_items: true, order:{scheduled_at: 'desc'}}).subscribe(res => {
       this.meets = res['collection']['data'];
+
+      this.meets.map(item => {
+       var existItem = this.action_items.find(x=>x.employee.id==item.employee.id);
+       if(!existItem)
+        this.action_items.push(item);
+      });
       this.paginationControls['totalItems'] = res['metadata']['record_count'];
     }, err => {
       console.error(err);

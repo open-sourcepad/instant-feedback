@@ -5,16 +5,16 @@
         .col-md-8
           h4.section-heading.text-brown.mb-5 Action Items
           .no-content(*ngIf="meets?.length == 0")
-            span.text-muted No action items yet.
+            span.text-muted No action items currently assigned.
           .action-items-scroll
-            .action-items-box(*ngFor="let obj of meets | paginate: paginationControls")
+            .action-items-box(*ngFor="let obj of action_items | paginate: paginationControls")
               div
                 h4.user-name.font-bold.inline-block {{ obj.employee.display_name }}
                 h4.meeting-date.font-bold.inline-block {{ obj.scheduled_at | date: 'MMMM d' : 'EDT' }}
                 ng-container(*ngIf="obj.action_items.manager.length < 1")
                   ul.action-item-list.reset
                     li
-                      span.text-muted No action items
+                      span.text-muted No action items currently assigned.
                   br
                 ng-container(*ngIf="obj.action_items.manager.length > 0")
                   ul.action-item-list
@@ -25,7 +25,7 @@
         .col-md-4
           h4.section-heading.text-brown.mb-5 1-on-1s This Week
           .no-content(*ngIf="meetsThisWeek?.length == 0")
-            span.text-muted No upcoming 1-on-1 meeting.
+            span.text-muted No upcoming 1-on-1 meetings.
           #upcoming-meetings.mb-5
             .upcoming-meeting(*ngFor="let obj of meetsThisWeek")
               .clickable([routerLink]="['/one-on-ones', obj.id]")
@@ -86,11 +86,11 @@
                             u {{ user['user']['display_name'] }}
                           span.ti-arrow-up.text-green.float-right(*ngIf="user.mood == 'up'")
                         .text-center(*ngIf="pulseHappy.length < 1")
-                          h6 No happy users
+                          h6 No users
                   .col-md-4
                     .card.h-100([ng2-loading]="pulseLoading")
                       .card-body
-                        h4 Sad
+                        h4 Not Happy
                         hr
                         .card-content(*ngFor="let user of pulseSad")
                           span(*ngIf="user['user']['id'] == currentUser['id']") {{ user['user']['display_name'] }}
@@ -98,7 +98,7 @@
                             u {{ user['user']['display_name'] }}
                           span.ti-arrow-down.text-red.float-right(*ngIf="user.mood == 'down'")
                         .text-center(*ngIf="pulseSad.length < 1")
-                          h6 No sad users
+                          h6 No users
 
             .col-md-12
               .mt-2
