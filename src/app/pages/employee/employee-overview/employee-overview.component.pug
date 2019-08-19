@@ -5,8 +5,8 @@
         .col-md-6
           h4.font-bold.text-brown.mb-5 Action Items
           .no-content(*ngIf="past_meetings?.length == 0")
-            span.text-muted No action items yet.
-          .action-items-scroll(*ngIf="past_meetings?.length > 1")
+            span.text-muted No action items currently assigned.
+          .action-items-scroll(*ngIf="past_meetings?.length > 0")
             .action-items-box(*ngFor="let obj of past_meetings; let idx = index", [ng2-loading]="loading")
               div((mouseover)="hoverActionItemIdx=idx", (mouseout)="hoverActionItemIdx=null")
                 h4.font-bold.inline-block {{ obj.finished_at | date: 'MMMM d, y' : 'EDT' }}
@@ -17,7 +17,7 @@
                 ng-container(*ngIf="obj.action_items.employee.length <= 0")
                   ul.action-item-list.reset
                     li
-                      span.text-muted No action items
+                      span.text-muted No action items currently assigned.
                 ng-container(*ngIf="obj.action_items.employee.length > 0")
                   ul.action-item-list
                     li(*ngFor="let action of obj.action_items.employee")
@@ -31,7 +31,7 @@
             h4.font-bold.text-indigo Upcoming
 
             .no-content(*ngIf="upcoming_meetings?.length == 0")
-              span.text-muted No upcoming 1-on-1 meeting.
+              span.text-muted No upcoming 1-on-1 meetings.
 
             .upcoming-meeting-item.mb-3(*ngFor="let obj of upcoming_meetings | slice:0:3")
               button(*ngIf="!employee_id", [routerLink]="['/employee/one-on-ones', obj.id]")
