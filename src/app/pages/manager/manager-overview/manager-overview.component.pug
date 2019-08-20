@@ -85,6 +85,7 @@
                           button.btn-action(*ngIf="user['user']['id'] != currentUser['id']", [routerLink]="['/profile', user['user']['id'], 'overview']")
                             u {{ user['user']['display_name'] }}
                           span.ti-arrow-up.text-green.float-right(*ngIf="user.mood == 'up'")
+                          span.mr-1.ti-layout-line-solid.mr-1.float-right(*ngIf="!user.mood")
                         .text-center(*ngIf="pulseHappy.length < 1")
                           h6 No users
                   .col-md-4
@@ -97,6 +98,7 @@
                           button.btn-action(*ngIf="user['user']['id'] != currentUser['id']", [routerLink]="['/profile', user['user']['id'], 'overview']")
                             u {{ user['user']['display_name'] }}
                           span.ti-arrow-down.text-red.float-right(*ngIf="user.mood == 'down'")
+                          span.mr-1.ti-layout-line-solid.mr-1.float-right(*ngIf="!user.mood")
                         .text-center(*ngIf="pulseSad.length < 1")
                           h6 No users
 
