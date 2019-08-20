@@ -10,6 +10,7 @@ export class QuestionChartComponent implements AfterViewInit {
   
   @Input() filter: string;
   @Input() questionData: any;
+  @Input() questionStat: any;
   @Input() index: any;
   @Input() loading: any;
 
@@ -36,7 +37,7 @@ export class QuestionChartComponent implements AfterViewInit {
     gradientFill.addColorStop(1, "rgba(0,172,255,0)");
 
     let data  = {
-        labels: this.questionData["data"].map(data => data['date']),
+        labels: this.questionStat["data"].map(data => data['date']),
         datasets: [{
           backgroundColor: gradientFill,
           pointBackgroundColor: 'rgba(162,185,253,1)',
@@ -46,7 +47,7 @@ export class QuestionChartComponent implements AfterViewInit {
           pointHoverBorderColor: '#fff',
           borderWidth: 3,
           borderColor: "rgba(0,170,255,0.8)",
-          data: this.questionData["data"].map(data => data['percentage']['happy'])
+          data: this.questionStat["data"].map(data => data['percentage']['happy'])
         }]
     };
 
