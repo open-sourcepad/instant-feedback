@@ -1,5 +1,5 @@
 .card-box(*ngIf="questionData")
-  .card-title {{questionData?.question}}
+  .card-title {{questionData?.question }}
   .stats-summary.container
     ng-container(*ngIf="!questionData?.answers")
       .row.summary-count
@@ -19,6 +19,6 @@
           span No Answer&nbsp;
           span.text-idle.font-light (X / Idle)
           br
-          span.text-idle {{ questionData?.answers?.x }}% / {{ questionsData?.answers?.idle }}%
+          span.text-idle {{ questionData?.answers?.x }}% / {{ questionData?.answers?.idle }}%
     ng-container(*ngIf="filter != 'custom'")
       canvas(id="canvas{{index}}")

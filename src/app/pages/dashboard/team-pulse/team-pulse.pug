@@ -102,6 +102,6 @@
       .row.equal
         .col-md-4.col-sm-6.card.card-questions(
           [ng2-loading]="loading",
-          *ngFor="let questionStat of questionStats;let i = index"
+          *ngFor="let qd of questionsData;let i = index"
         )
-          question-chart('[questionData]'="questionStat", '[index]'="i", '[filter]'="filter", '[loading]'="loading")
+          question-chart('[questionData]'="qd", '[questionStat]'="questionStats[i]", '[index]'="i", '[filter]'="filter", '[loading]'="loading")
