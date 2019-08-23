@@ -84,7 +84,7 @@
               span([innerHTML]="!!obj.finished_at ? (obj.finished_at | date: 'MMMM d' : 'EDT' ) : '-'")
             td
               span.text-capitalize {{ obj.status }}
-            td.actions
+            td.actions(*ngIf="obj.manager.id == currentUser.id")
               a([routerLink]="['/one-on-ones', obj.id]")
                 .icon-edit.icon-sm.icon-holder
               a()

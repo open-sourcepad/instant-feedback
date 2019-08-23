@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { MeetingService } from '../../../services/api';
+import { MeetingService, SessionService } from '../../../services/api';
 
 
 @Component({
@@ -19,11 +19,16 @@ export class MeetingDiscussionComponent implements OnInit {
   action: string = '';
   prevActionItems: any = [];
   previousMeeting: any = [];
+  currentUser: any = {};
 
   constructor(
     private meetingApi: MeetingService,
-    private activeRoute: ActivatedRoute
-  ) { }
+    private session: SessionService,
+    private activeRoute: ActivatedRoute,
+    private router: Router
+  ) {
+    this.currentUser = this.session.getCurrentUser();
+  }
 
   ngOnInit() {
 
@@ -47,6 +52,9 @@ export class MeetingDiscussionComponent implements OnInit {
       .subscribe( res => {
         this.loading = false;
         this.obj = res['data'];
+        if(this.obj['manager']['id'] != this.currentUser['id']) {
+          this.router.navigate(['/one-on-ones']);
+        }
         this.discussions = res['data']['discussions']['data'];
         this.actionItems = res['data']['action_items'];
         this.prevActionItems = res["data"]["prev_meet_action_items"];
