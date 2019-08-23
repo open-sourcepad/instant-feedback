@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MeetingService, UserService } from '../../../services/api';
+import { MeetingService, SessionService, UserService } from '../../../services/api';
 import {PaginationInstance} from 'ngx-pagination';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutingState } from 'src/app/services/utils';
@@ -20,6 +20,7 @@ export class MeetingIndexComponent implements OnInit {
   recordCount: number = 0;
   recordShownCount;
   queryParams: any;
+  currentUser: any = {};
 
   paginationControls: PaginationInstance = {
     id: 'meetingCollection',
@@ -32,12 +33,14 @@ export class MeetingIndexComponent implements OnInit {
 
   constructor(
     private meetingApi: MeetingService,
+    private session: SessionService,
     private userApi: UserService,
     private route: ActivatedRoute,
     private router: Router,
     private routingState: RoutingState
   ) {
     this.sort_by = {scheduled_at: 'asc'};
+    this.currentUser = this.session.getCurrentUser();
   }
 
   ngOnInit() {

@@ -104,8 +104,11 @@ export class MeetingDetailsComponent implements OnInit {
     this.loading = true;
     this.meetingApi.get(slug_id)
       .subscribe( res => {
-        this.loading = false;
         this.meeting = new Meeting(res['data']);
+        if(this.meeting['manager']['id'] != this.currentUser['id']) {
+          this.router.navigate(['/one-on-ones']);
+        }
+        this.loading = false;
         this.meetingStatus = this.meeting.status;
         this.actionEditable = this.meetingStatus != 'done';
         res['data']['discussions']['data'].forEach(discussion => {
