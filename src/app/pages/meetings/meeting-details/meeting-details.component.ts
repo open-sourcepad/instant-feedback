@@ -106,7 +106,7 @@ export class MeetingDetailsComponent implements OnInit {
       .subscribe( res => {
         this.meeting = new Meeting(res['data']);
         if(this.meeting['manager']['id'] != this.currentUser['id']) {
-          this.router.navigate(['/one-on-ones']);
+          this.router.navigate(['/page-not-found']);
         }
         this.loading = false;
         this.meetingStatus = this.meeting.status;

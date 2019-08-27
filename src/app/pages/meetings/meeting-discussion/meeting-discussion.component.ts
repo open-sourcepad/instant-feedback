@@ -53,7 +53,7 @@ export class MeetingDiscussionComponent implements OnInit {
         this.loading = false;
         this.obj = res['data'];
         if(this.obj['manager']['id'] != this.currentUser['id']) {
-          this.router.navigate(['/one-on-ones']);
+          this.router.navigate(['/page-not-found']);
         }
         this.discussions = res['data']['discussions']['data'];
         this.actionItems = res['data']['action_items'];
