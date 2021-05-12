@@ -23,7 +23,7 @@
     "@angular/router": "^6.0.3",
     "@ng-bootstrap/ng-bootstrap": "^4.1.0",
     "@ng-select/ng-select": "^2.13.3",
-    "chart.js": "^2.7.2",
+    "chart.js": "^2.9.4",
     "core-js": "^2.5.4",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.25",
